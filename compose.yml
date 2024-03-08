@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      TZ: Europe/Paris
+    volumes:
+      - mydb:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+  
+volumes:
+  mydb:

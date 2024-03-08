@@ -1,11 +1,13 @@
-import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Logger, Module } from '@nestjs/common';
+import { PropertyController } from './controllers/property/property.controller';
+import { PropertyService } from './services/property/property.service';
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [PropertyController],
+  providers: [PropertyService, Logger],
 })
+
 export class AppModule {}
