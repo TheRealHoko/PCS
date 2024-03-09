@@ -1,4 +1,8 @@
-<mat-toolbar>
+<mat-toolbar *ngIf="role != 'admin'">
     <span>PCS</span>
     <button mat-button color="warn">Test</button>
+</mat-toolbar>
+
+<mat-toolbar *ngIf=" role == 'admin'">
+    <h1> Mon caca </h1>
 </mat-toolbar>
