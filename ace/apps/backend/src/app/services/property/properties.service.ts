@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Property } from '../../interfaces/property.interface';
 
 @Injectable()
-export class PropertyService {
+export class PropertiesService {
     private readonly properties:  Property[] = [
         {
             id: 0,
@@ -19,6 +19,10 @@ export class PropertyService {
     }
 
     getProperty(id: number): Property {
-        return this.properties.find((x) => x.id === id);
+        const property: Property = this.properties.find((x) => x.id === id);
+        if (!property) {
+            throw new NotFoundException(`Property ${id} doesn't exist`);
+        }
+        return property;
     }
 }
