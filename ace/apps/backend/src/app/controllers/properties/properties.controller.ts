@@ -1,5 +1,5 @@
 import { Controller, Get, Ip, Logger, Param } from '@nestjs/common';
-import { PropertiesService } from '../../services/property/properties.service';
+import { PropertiesService } from '../../services/properties/properties.service';
 import { Property } from '../../interfaces/property.interface';
 
 @Controller('property')
