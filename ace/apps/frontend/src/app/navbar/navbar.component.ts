@@ -16,5 +16,6 @@ import { Role } from "../../../role";
   styleUrl: './navbar.component.sass',
 })
 export class NavbarComponent {
-  public role: Role = Role.ADMIN; 
+  public Role = Role;
+  public role: Role = Role.USER;
 }
