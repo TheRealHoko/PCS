@@ -1,8 +1,5 @@
-<mat-toolbar [ngSwitch]="role">
-    <div *ngSwitchCase="Role.ADMIN">
-        <h1> Admin Panel Test </h1>
-    </div>
-    <div *ngSwitchDefault>
+<mat-toolbar *ngIf="role != Role.ADMIN">
+    <div>
         <h1 class="text-primary">PCS</h1>
         <button mat-button color="warn">Test</button>
     </div>
