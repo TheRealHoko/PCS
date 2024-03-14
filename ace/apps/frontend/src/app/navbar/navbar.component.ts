@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { Role } from "../../../role";
 
 @Component({
@@ -10,12 +11,14 @@ import { Role } from "../../../role";
   imports: [
     CommonModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSidenavModule
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.sass',
 })
 export class NavbarComponent {
   public Role = Role;
-  public role: Role = Role.USER;
+  public role: Role = Role.ADMIN;
 }
+

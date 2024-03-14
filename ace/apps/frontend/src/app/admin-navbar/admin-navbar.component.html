@@ -1,0 +1,13 @@
+<mat-drawer-container class="globalContent" *ngIf="role == Role.ADMIN" autosize>
+    <mat-drawer #drawer class="adminNavBar" mode="side">
+      <p>PCS Admin Panel</p>
+
+    </mat-drawer>
+  
+    <div class="actualPage">
+      <button type="button" mat-button (click)="drawer.toggle()">
+        <mat-icon fontIcon="home" aria-label="navbarButton"></mat-icon>
+      </button>
+      <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
