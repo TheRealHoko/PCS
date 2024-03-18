@@ -9,13 +9,14 @@ services:
       MYSQL_ROOT_PASSWORD: toor
       TZ: Europe/Paris
     volumes:
-      - mydb:/var/lib/mysql
+      - db:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
   phpmyadmin:
     image: phpmyadmin
     ports:
       - 8080:80
     depends_on:
       - db
-  
+
 volumes:
-  mydb:
+  db:
