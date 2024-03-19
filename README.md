@@ -22,4 +22,4 @@ Projet annuel 2A2
 ## Cleanup database and rerun init script
 1. `sudo docker compose down`
 2. `sudo docker volume rm pcs_db`
-3. `sudo docker compose down`
+3. `sudo docker compose up`
