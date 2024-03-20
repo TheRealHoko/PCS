@@ -17,7 +17,7 @@ export class User {
     email: string;
 
     @Column()
-    password: string;
+    hash: string;
 
     @Column({default: null})
     access_token?: string;

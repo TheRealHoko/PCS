@@ -5,9 +5,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 @Module({
     imports: [
       TypeOrmModule.forRootAsync({
-        imports: [ConfigModule.forRoot({
-          envFilePath: ['.env.local']
-        })],
+        imports: [ConfigModule],
         useFactory: (configService: ConfigService) => ({
           type: 'mysql',
           host: configService.get('DB_HOST'),
