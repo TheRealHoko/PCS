@@ -1,13 +1,12 @@
 import { Controller, Get, Ip, Logger, Param } from '@nestjs/common';
 import { PropertiesService } from '../../services/properties/properties.service';
 import { Property } from '../../interfaces/property.interface';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('property')
 export class PropertiesController {
     constructor(
-        private propertyService: PropertiesService,
-        private logger: Logger
-        ) {}
+        private propertyService: PropertiesService) {}
 
     @Get()
     async getProperties(): Promise<Property[]> {

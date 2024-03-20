@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail } from "class-validator";
 
 @Entity()
 export class User {
@@ -12,12 +13,13 @@ export class User {
     lastname: string;
 
     @Column()
+    @IsEmail()
     email: string;
 
     @Column()
     password: string;
 
-    @Column()
+    @Column({default: null})
     access_token?: string;
 
     @Column()

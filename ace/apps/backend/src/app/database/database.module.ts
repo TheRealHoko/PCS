@@ -1,21 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
-      ConfigModule.forRoot(),
       TypeOrmModule.forRootAsync({
-        useFactory: () => ({
+        imports: [ConfigModule.forRoot({
+          envFilePath: ['.env.local']
+        })],
+        useFactory: (configService: ConfigService) => ({
           type: 'mysql',
-          host: process.env.DB_HOST,
-          port: parseInt(process.env.DB_PORT) || 3306,
-          username: process.env.DB_USER,
-          password: process.env.DB_PASSWORD,
-          database: process.env.DB_NAME,
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          host: configService.get('DB_HOST'),
+          port: +configService.get('DB_PORT') || 3306,
+          username: configService.get('DB_USER'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_NAME'),
+          autoLoadEntities: true,
           synchronize: true,
-        })
+        }),
+        inject: [ConfigService]
       })
 ]})
 export class DatabaseModule {}
