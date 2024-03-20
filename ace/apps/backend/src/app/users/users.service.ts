@@ -20,12 +20,15 @@ export class UsersService {
     user.email = createUserDto.email;
     user.firstname = createUserDto.firstname;
     user.lastname = createUserDto.lastname;
-    bcrypt.hash(createUserDto.password, saltRounds, (err ,hash) => {
-      user.hash = hash;
-    });
     user.tel = createUserDto.tel;
-
-    return this.usersRepository.save(user);
+    
+    bcrypt.hash(createUserDto.password, saltRounds, (err ,hash) => {
+      if (err) {
+        console.log(err);
+      }
+      user.hash = hash;
+      this.usersRepository.save(user);
+    });    
   }
 
   async findAll(): Promise<User[]> {
