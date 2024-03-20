@@ -1,11 +1,12 @@
 import { Logger, Module } from '@nestjs/common';
 import { PropertiesController } from './controllers/properties/properties.controller';
 import { PropertiesService } from './services/properties/properties.service';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [],
+  imports: [
+    UsersModule,
+  ],
   controllers: [PropertiesController],
   providers: [PropertiesService, Logger],
 })
