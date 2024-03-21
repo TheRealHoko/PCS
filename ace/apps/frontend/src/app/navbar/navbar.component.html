@@ -4,3 +4,31 @@
         <button mat-button color="warn">Test</button>
     </div>
 </mat-toolbar>
+
+
+<mat-drawer-container class="globalContent" *ngIf="role == Role.ADMIN" autosize>
+    <mat-drawer #drawer class="adminNavBar" mode="side">
+      <div class="PCS">
+      <p>PCS Admin Panel</p>
+      </div>
+      <div class="navbarButton">
+        <button class="current">Utilisateurs</button><br>
+        <button >Location</button><br>
+        <button>Gestion avis</button><br>
+        <button>Gestion prestataire</button><br>
+        <button>Outil</button><br>
+        <button>Déconnexion</button>
+      </div>
+      <div class="adminFooter">
+        <p> ACE&#64;2024 </p>
+        <p> ace&#64;support.fr </p>
+      </div>
+    </mat-drawer>
+  
+    <div class="actualPage">
+      <button type="button" mat-button (click)="drawer.toggle()">
+        <mat-icon fontIcon="notes" aria-label="navbarButton"></mat-icon>
+      </button>
+      <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
