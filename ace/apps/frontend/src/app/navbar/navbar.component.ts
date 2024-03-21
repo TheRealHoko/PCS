@@ -4,6 +4,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
+import { ReviewComponent } from '../admin/review/review.component';
 import { Router, RouterModule } from '@angular/router';
 import { Role } from "../../../role";
 import { AuthService } from '../services/auth.service';
@@ -18,6 +19,7 @@ import { AlertService } from '../services/alert.service';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
+    ReviewComponent,
     RouterModule
   ],
   templateUrl: './navbar.component.html',
