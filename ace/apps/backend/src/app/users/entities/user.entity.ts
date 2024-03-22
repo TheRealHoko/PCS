@@ -6,18 +6,18 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({nullable: false})
     firstname: string;
 
-    @Column()
+    @Column({nullable: false})
     lastname: string;
 
-    @Column()
+    @Column({nullable: false})
     @IsEmail()
     email: string;
 
-    @Column()
-    hash: string;
+    @Column({nullable: false})
+    hash?: string;
 
     @Column({default: null})
     access_token?: string;

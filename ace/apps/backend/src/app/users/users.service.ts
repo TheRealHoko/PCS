@@ -13,7 +13,7 @@ export class UsersService {
     private usersRepository: Repository<User>
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  create(createUserDto: CreateUserDto) {
     const user = new User();
     const saltRounds = 10;
 
@@ -32,21 +32,32 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find();
-    if (!users)
+    const users = await this.usersRepository.find({
+      select: ['id', 'firstname', 'lastname', 'email', 'tel']
+    });
+    
+    if (!users) {
       throw new NotFoundException("No users");
+    }
+
     return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<User> {
+    const user = await this.usersRepository.findOneBy({id: id});
+
+    if (!user) {
+      throw new NotFoundException("User doesn't exist")
+    }
+
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    this.usersRepository.update(id, updateUserDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    this.usersRepository.delete(id);
   }
 }
