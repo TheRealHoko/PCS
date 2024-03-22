@@ -6,8 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  BadRequestException,
   Logger,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -35,12 +36,8 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe({skipMissingProperties: true}))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    this.logger.log(updateUserDto);
-    if (!Object.keys(updateUserDto).length) {
-      throw new BadRequestException("Update body is empty");
-    }
-
     return this.usersService.update(+id, updateUserDto);
   }
 

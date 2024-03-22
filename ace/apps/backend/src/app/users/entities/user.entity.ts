@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IsEmail } from "class-validator";
+import { Role } from "../../roles/entities/role.entity";
 
 @Entity()
 export class User {
@@ -24,4 +25,8 @@ export class User {
 
     @Column()
     tel: string;
+
+    @ManyToMany(() => Role)
+    @JoinTable()
+    roles: Role[]    
 }
