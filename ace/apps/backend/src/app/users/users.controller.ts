@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,6 +16,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  logger = new Logger(UsersController.name);
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -32,6 +36,11 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    this.logger.log(updateUserDto);
+    if (!Object.keys(updateUserDto).length) {
+      throw new BadRequestException("Update body is empty");
+    }
+
     return this.usersService.update(+id, updateUserDto);
   }
 
