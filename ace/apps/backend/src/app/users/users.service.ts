@@ -1,19 +1,23 @@
-import { BadRequestException, Injectable, NotFoundException, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Role } from '../roles/entities/role.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private readonly usersRepository: Repository<User>,
+    @InjectRepository(Role)
+    private readonly rolesRepository: Repository<Role>,
+    private readonly loggerService: Logger
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = new User();
     const saltRounds = 10;
 
@@ -22,9 +26,19 @@ export class UsersService {
     user.lastname = createUserDto.lastname;
     user.tel = createUserDto.tel;
     
+    if (createUserDto.roles) {
+      this.loggerService.log(createUserDto);
+      const roles = await Promise.all(createUserDto.roles.map(async role_name => {
+        return this.rolesRepository.findOne({ where: { name: role_name } });
+      }));
+  
+      user.roles = roles.filter(role => role !== undefined);
+    }
+
     bcrypt.hash(createUserDto.password, saltRounds, (err ,hash) => {
       if (err) {
         console.log(err);
+        return;
       }
       user.hash = hash;
       this.usersRepository.save(user);
@@ -33,7 +47,7 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     const users = await this.usersRepository.find({
-      select: ['id', 'firstname', 'lastname', 'email', 'tel']
+      select: ['id', 'firstname', 'lastname', 'email', 'tel', 'roles']
     });
     
     if (!users) {
@@ -48,7 +62,7 @@ export class UsersService {
       where: {
         id: id
       },
-      select: ['id', 'firstname', 'lastname', 'email', 'tel']
+      select: ['id', 'firstname', 'lastname', 'email', 'tel', 'roles']
     });
 
     if (!user) {
@@ -59,12 +73,20 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    if (!(await this.usersRepository.existsBy({id: id}))) {
-      throw new BadRequestException("User doesn't exist")
-    }
-
     try {
-      await this.usersRepository.update(id, updateUserDto)
+      const user = await this.usersRepository.findOne({where: {id}});
+
+      if (!user) {
+        throw new NotFoundException("User not found");
+      }
+
+      if (updateUserDto.roles) {
+        const roles = await Promise.all(updateUserDto.roles.map(async role_name => {
+          return this.rolesRepository.findOne({ where: { name: role_name } });
+        }));
+    
+        user.roles = roles.filter(role => role !== undefined);
+      }
     } catch (error) {
       const err = error as Error;
       throw new BadRequestException("Error : " + err.message);

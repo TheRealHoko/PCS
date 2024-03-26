@@ -26,7 +26,9 @@ export class User {
     @Column()
     tel: string;
 
-    @ManyToMany(() => Role)
+    @ManyToMany(() => Role, {
+        eager: true
+    })
     @JoinTable()
-    roles: Role[]    
+    roles: Role[]
 }

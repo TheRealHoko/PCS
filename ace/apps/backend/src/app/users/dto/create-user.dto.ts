@@ -15,4 +15,6 @@ export class CreateUserDto {
     
     @IsNotEmpty()
     tel: string;
+
+    roles: string[];
 }
