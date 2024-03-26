@@ -5,9 +5,7 @@ import { Property } from '../../interfaces/property.interface';
 @Controller('property')
 export class PropertiesController {
     constructor(
-        private propertyService: PropertiesService,
-        private logger: Logger
-        ) {}
+        private propertyService: PropertiesService) {}
 
     @Get()
     async getProperties(): Promise<Property[]> {

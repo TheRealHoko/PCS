@@ -1,25 +1,34 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { IsEmail } from "class-validator";
+import { Role } from "../../roles/entities/role.entity";
 
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({nullable: false})
     firstname: string;
 
-    @Column()
+    @Column({nullable: false})
     lastname: string;
 
-    @Column()
+    @Column({nullable: false})
+    @IsEmail()
     email: string;
 
-    @Column()
-    password: string;
+    @Column({nullable: false})
+    hash?: string;
 
-    @Column()
+    @Column({default: null})
     access_token?: string;
 
     @Column()
     tel: string;
+
+    @ManyToMany(() => Role, {
+        eager: true
+    })
+    @JoinTable()
+    roles: Role[]
 }
