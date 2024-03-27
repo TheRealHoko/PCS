@@ -23,3 +23,13 @@ Projet annuel 2A2
 1. `sudo docker compose down`
 2. `sudo docker volume rm pcs_db`
 3. `sudo docker compose up`
+
+## .env structure
+```
+DB_HOST=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_PORT=
+SECRET=
+```

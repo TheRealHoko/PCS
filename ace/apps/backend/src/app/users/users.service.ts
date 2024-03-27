@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException} from '@nest
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles/entities/role.entity';
@@ -46,24 +46,22 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find({
-      select: ['id', 'firstname', 'lastname', 'email', 'tel', 'roles']
-    });
+    const users = await this.usersRepository.find();
     
     if (!users) {
       throw new NotFoundException("No users");
     }
 
-    return users;
+    const usersWithoutHash = users.map(user => {
+      const {hash, ...userWithoutHash} = user;
+      return userWithoutHash;
+    });
+
+    return usersWithoutHash;
   }
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne({
-      where: {
-        id: id
-      },
-      select: ['id', 'firstname', 'lastname', 'email', 'tel', 'roles']
-    });
+  async findOne(where: FindOptionsWhere<User>): Promise<User | null> {
+    const user = await this.usersRepository.findOne({where});
 
     if (!user) {
       throw new NotFoundException("User doesn't exist")
@@ -86,7 +84,15 @@ export class UsersService {
         }));
     
         user.roles = roles.filter(role => role !== undefined);
+        this.loggerService.log(`Updating user ${user.id} with ${JSON.stringify(updateUserDto)}`);
       }
+
+      const {roles, ...updateUserDtoWithoutRoles} = updateUserDto;
+
+      Object.assign(user, updateUserDtoWithoutRoles);
+      
+      this.usersRepository.save(user);
+
     } catch (error) {
       const err = error as Error;
       throw new BadRequestException("Error : " + err.message);

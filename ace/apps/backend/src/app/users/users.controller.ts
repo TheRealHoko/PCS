@@ -6,9 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Logger,
-  ValidationPipe,
-  UsePipes,
+  Logger
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -32,11 +30,12 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne({
+      id :+id
+    });
   }
 
   @Patch(':id')
-  @UsePipes(new ValidationPipe({skipMissingProperties: true}))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
