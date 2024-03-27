@@ -6,24 +6,31 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
   Logger
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RolesGuard } from '../roles/roles.guard';
+import { Roles } from '../roles/roles.decorator';
+import { Role } from '../roles/enums/role.enum';
 
 @Controller('users')
+@UseGuards(RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   logger = new Logger(UsersController.name);
 
   @Post()
+  @Roles(Role.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
+  @Roles(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
