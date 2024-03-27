@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesGuard } from '../roles/roles.guard';
 import { Roles } from '../roles/roles.decorator';
+import { Role } from '../roles/enums/role.enum';
 
 @Controller('users')
 @UseGuards(RolesGuard)
@@ -23,13 +24,13 @@ export class UsersController {
   logger = new Logger(UsersController.name);
 
   @Post()
-  @Roles(["admin"])
+  @Roles(Role.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  @Roles(["admin"])
+  @Roles(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }

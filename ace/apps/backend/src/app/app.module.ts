@@ -4,11 +4,26 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, DatabaseModule, RolesModule, AuthModule],
+  imports: [
+    UsersModule, 
+    DatabaseModule, 
+    RolesModule, 
+    AuthModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      global:true,
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('SECRET'),
+        signOptions: {expiresIn: '60s'}
+      }),
+      inject: [ConfigService]
+    })],
   controllers: [],
-  providers: [Logger],
+  providers: [Logger]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
