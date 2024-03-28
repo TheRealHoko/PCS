@@ -1,1 +1,43 @@
-<p>login works!</p>
+<section class="flex flex-col justify-center items-center h-full">
+    <div class="bg-primary rounded-md w-1/2 p-5">
+        <h1 class="text-center text-2xl mb-5">Login</h1>
+        <form 
+            class="flex flex-col w-full max-w-xs" 
+            [formGroup]="loginForm" 
+            (ngSubmit)="onLogin()">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input 
+                    matInput 
+                    formControlName="email" 
+                    name="email" 
+                    placeholder="Enter your email" 
+                    type="email">
+            </mat-form-field>
+            <span *ngIf="email.touched && email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</span>
+            
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input 
+                    matInput 
+                    formControlName="password" 
+                    name="password" 
+                    placeholder="Enter your password" 
+                    type="password">
+            </mat-form-field>
+
+            <!-- TODO: same validation for password -->
+            <!-- <span *ngIf="email.touched && email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</span> -->
+            
+            <button 
+                class="text-tertiary"
+                mat-raised-button 
+                [disabled]="!loginForm.valid" 
+                type="submit">
+                Login
+            </button>
+        </form>
+    </div>
+</section>
