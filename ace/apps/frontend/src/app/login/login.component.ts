@@ -34,7 +34,9 @@ export class LoginComponent {
         Validators.email
       ]),
       password: new FormControl('', [
-        Validators.required
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(16),
       ])
     });
   }
