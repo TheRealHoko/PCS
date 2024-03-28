@@ -1,13 +1,34 @@
-import { Logger, Module } from '@nestjs/common';
-import { PropertiesController } from './controllers/properties/properties.controller';
-import { PropertiesService } from './services/properties/properties.service';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [],
-  controllers: [PropertiesController],
-  providers: [PropertiesService, Logger],
+  imports: [
+    UsersModule, 
+    DatabaseModule, 
+    RolesModule, 
+    AuthModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      global:true,
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('SECRET'),
+        signOptions: {expiresIn: '60s'}
+      }),
+      inject: [ConfigService]
+    })],
+  controllers: [],
+  providers: [Logger]
 })
-
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(LoggerMiddleware)
+    .forRoutes('*');
+  }
+}

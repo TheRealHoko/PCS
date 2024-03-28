@@ -8,22 +8,15 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/frontend",
         "index": "apps/frontend/src/index.html",
         "browser": "apps/frontend/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "sass",
-        "assets": [
-          "apps/frontend/src/favicon.ico",
-          "apps/frontend/src/assets"
-        ],
+        "assets": ["apps/frontend/src/favicon.ico", "apps/frontend/src/assets"],
         "styles": [
           "apps/frontend/src/custom-theme.scss",
           "apps/frontend/src/styles.sass"
