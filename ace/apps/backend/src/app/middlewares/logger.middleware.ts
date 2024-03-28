@@ -6,7 +6,7 @@ export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly logger: Logger) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    this.logger.log(`${req.baseUrl}`);
+    this.logger.log(`${req.baseUrl} ${JSON.stringify(req.body)}`);
     next();
   }
 }

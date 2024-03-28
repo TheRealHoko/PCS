@@ -23,7 +23,7 @@ import { Role } from "../../../role";
 })
 export class NavbarComponent {
   public Role = Role;
-  public role: Role = Role.ADMIN;
+  public role: Role = Role.USER;
   showFiller = false;
 }
 
