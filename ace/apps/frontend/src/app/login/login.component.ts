@@ -6,6 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
+import { CustomValidators } from '../shared/custom.validators';
 
 @Component({
   selector: 'ace-login',
@@ -34,11 +35,9 @@ export class LoginComponent {
         Validators.email
       ]),
       password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(16),
+        CustomValidators.passwordPolicy()
       ])
-    });
+    });   
   }
 
   get email() {
