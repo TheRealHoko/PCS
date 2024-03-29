@@ -27,17 +27,26 @@
                     type="password">
             </mat-form-field>
 
-            <small class="text-error" *ngIf="password.touched && password.errors?.['required']">Password is required</small>
-            <!-- TODO: find a way to make progressive validation (P.S: I'm lazy) -->
-            <small class="text-error" *ngIf="password.touched && password.errors?.['pattern']">
-                <ul>
-                    <li>Password must contain 1 number (0-9)</li>
-                    <li>Password must contain 1 uppercase letters</li>
-                    <li>Password must contain 1 lowercase letters</li>
-                    <li>Password must contain 1 non-alpha numeric number</li>
-                    <li>Password is 8-16 characters with no space</li>
-                </ul>
-            </small>
+            <ul *ngIf="password.touched">
+                <li class="text-error" *ngIf="password.errors?.['required']">
+                    <small>Password is required</small>
+                </li>
+                <li class="text-error" *ngIf="password.errors?.['hasNumeric']">
+                    <small>Password must contain 1 number (0-9)</small>
+                </li>
+                <li class="text-error" *ngIf="password.errors?.['hasUpperCase']">
+                    <small>Password must contain 1 uppercase letters</small>
+                </li>
+                <li class="text-error" *ngIf="password.errors?.['hasLowerCase']">
+                    <small>Password must contain 1 lowercase letters</small>
+                </li>
+                <li class="text-error" *ngIf="password.errors?.['hasSpecialCharacter']">
+                    <small>Password must contain 1 non-alpha numeric number</small>
+                </li>
+                <li class="text-error" *ngIf="password.errors?.['minLength'] && password.errors?.['maxLength']">
+                    <small>Password is 8-16 characters with no space</small>
+                </li>
+            </ul>
             
             <button 
                 class="text-tertiary"
