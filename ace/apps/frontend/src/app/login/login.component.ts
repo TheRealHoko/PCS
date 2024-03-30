@@ -7,6 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'ace-login',
@@ -16,7 +17,8 @@ import { CustomValidators } from '../shared/custom.validators';
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterOutlet
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -27,7 +29,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private loginService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [
@@ -56,6 +59,7 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.alertService.info('Token received');
+        this.router.navigateByUrl('/home');
       },
       error: (error: Error) => {
         this.alertService.info(error.message);

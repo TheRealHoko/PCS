@@ -13,11 +13,10 @@
                     name="email" 
                     placeholder="Enter your email" 
                     type="email">
+                <mat-error *ngIf="email.touched && email.errors?.['required']">Email is required</mat-error>
+                <mat-error *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</mat-error>    
             </mat-form-field>
-            <span class="text-error" *ngIf="email.touched && email.errors?.['required']">Email is required</span>
-            <span class="text-error" *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</span>
-            
-            <mat-form-field appearance="fill">
+            <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input 
                     matInput 
@@ -25,29 +24,27 @@
                     name="password" 
                     placeholder="Enter your password" 
                     type="password">
+    
+                <mat-error *ngIf="password.errors?.['required']">
+                    Password is required
+                </mat-error>
+                <mat-error *ngIf="password.errors?.['hasNumeric']">
+                    Password must contain 1 number (0-9)
+                </mat-error>
+                <mat-error *ngIf="password.errors?.['hasUpperCase']">
+                    Password must contain 1 uppercase letters
+                </mat-error>
+                <mat-error *ngIf="password.errors?.['hasLowerCase']">
+                    Password must contain 1 lowercase letters
+                </mat-error>
+                <mat-error *ngIf="password.errors?.['hasSpecialCharacter']">
+                    Password must contain 1 non-alpha numeric number
+                </mat-error>
+                <mat-error *ngIf="password.errors?.['minLength'] && password.errors?.['maxLength']">
+                    Password is 8-16 characters with no space
+                </mat-error>
             </mat-form-field>
 
-            <ul *ngIf="password.touched">
-                <li class="text-error" *ngIf="password.errors?.['required']">
-                    <small>Password is required</small>
-                </li>
-                <li class="text-error" *ngIf="password.errors?.['hasNumeric']">
-                    <small>Password must contain 1 number (0-9)</small>
-                </li>
-                <li class="text-error" *ngIf="password.errors?.['hasUpperCase']">
-                    <small>Password must contain 1 uppercase letters</small>
-                </li>
-                <li class="text-error" *ngIf="password.errors?.['hasLowerCase']">
-                    <small>Password must contain 1 lowercase letters</small>
-                </li>
-                <li class="text-error" *ngIf="password.errors?.['hasSpecialCharacter']">
-                    <small>Password must contain 1 non-alpha numeric number</small>
-                </li>
-                <li class="text-error" *ngIf="password.errors?.['minLength'] && password.errors?.['maxLength']">
-                    <small>Password is 8-16 characters with no space</small>
-                </li>
-            </ul>
-            
             <button 
                 class="text-tertiary"
                 mat-raised-button 
