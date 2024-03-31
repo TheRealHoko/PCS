@@ -1,8 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsDefined, IsEmail, IsNotEmpty } from "class-validator";
 import { CreateAddressDto } from "../../address/dto/create-address.dto";
 
-export class CreateUserDto {
+export class RegisterDto {
     @IsNotEmpty()
+    @IsEmail()
     email: string;
     
     @IsNotEmpty()
@@ -17,7 +18,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     tel: string;
 
-    roles?: string[];
-
+    @IsDefined()
     address: CreateAddressDto;
 }

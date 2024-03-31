@@ -3,23 +3,24 @@ import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@ang
 export class CustomValidators {
   static passwordPolicy(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      const value: string = control.value;
+      let errors: ValidationErrors = {};
+
       const required = Validators.required(control);
       if (required) {
-          return required;
+        return required;
       }
 
       const minLength = Validators.minLength(8)(control);
       if (minLength) {
-        return minLength;
+        errors['minLength'] = true;
       }
 
       const maxLength = Validators.maxLength(16)(control);
       if (maxLength) {
-        return maxLength;
+        errors['maxLength'] = true;
       }
 
-      const value: string = control.value;
-      let errors: ValidationErrors = {};
 
       const hasUpperCase = /[A-Z]+/.test(value);
       if (!hasUpperCase) {
