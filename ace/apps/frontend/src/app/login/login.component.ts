@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
 import { Router, RouterOutlet } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'ace-login',
@@ -18,17 +19,19 @@ import { Router, RouterOutlet } from '@angular/router';
     MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    RouterOutlet
+    RouterOutlet,
+    MatIconModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  hide: boolean = true;
 
   constructor(
     private fb: FormBuilder,
-    private loginService: AuthService,
+    private authService: AuthService,
     private alertService: AlertService,
     private router: Router
   ) {
@@ -55,10 +58,10 @@ export class LoginComponent {
     console.log(this.loginForm.value);
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
-    this.loginService.login(email, password).subscribe({
+    this.authService.login(email, password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
-        this.alertService.info('Token received');
+        this.alertService.info('Logged in successfully');
         this.router.navigateByUrl('/home');
       },
       error: (error: Error) => {

@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IsEmail } from "class-validator";
 import { Role } from "../../roles/entities/role.entity";
+import { Address } from "../../address/entities/address.entity";
 
 @Entity()
 export class User {
@@ -30,5 +31,11 @@ export class User {
         eager: true
     })
     @JoinTable()
-    roles: Role[]
+    roles: Role[];
+
+    @OneToMany(() => Address, (address) => address.user, {
+        cascade: ['insert', 'update'], 
+        eager: true
+    })
+    addresses: Address[];
 }
