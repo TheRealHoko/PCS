@@ -30,10 +30,10 @@ export class LoginComponent {
   hide: boolean = true;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private alertService: AlertService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly alertService: AlertService,
+    private readonly router: Router
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [
@@ -43,7 +43,7 @@ export class LoginComponent {
       password: new FormControl('', [
         CustomValidators.passwordPolicy()
       ])
-    });   
+    });
   }
 
   get email() {
@@ -55,7 +55,6 @@ export class LoginComponent {
   }
 
   onLogin() {
-    console.log(this.loginForm.value);
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
     this.authService.login(email, password).subscribe({

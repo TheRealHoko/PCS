@@ -16,5 +16,5 @@
   ],
   "include": [
     "src/**/*.ts"
-  ]
+, "../../shared/src/dtos/signin.dto.ts"  ]
 }

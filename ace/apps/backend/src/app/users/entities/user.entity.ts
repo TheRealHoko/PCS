@@ -25,7 +25,7 @@ export class User {
     access_token?: string;
 
     @Column()
-    tel: string;
+    phone: string;
 
     @ManyToMany(() => Role, {
         eager: true

@@ -1,1 +1,79 @@
-<p>register works!</p>
+<section class="flex justify-center items-start mt-16">
+    <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
+        <h1 class="text-secondary text-center text-2xl mb-5">Register</h1>
+        <form 
+            class="flex flex-col justify-center"
+            [formGroup]="registerForm" 
+            (ngSubmit)="onRegister()">
+            <mat-form-field appearance="fill">
+                <mat-label>Firstname</mat-label>
+                <input 
+                    matInput 
+                    formControlName="firstname" 
+                    name="firstname" 
+                    placeholder="Ex. John" 
+                    type="text">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Lastname</mat-label>
+                <input 
+                    matInput 
+                    formControlName="lastname" 
+                    name="lastname" 
+                    placeholder="Ex. Smith" 
+                    type="text">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input 
+                    matInput 
+                    formControlName="email" 
+                    name="email" 
+                    placeholder="john.smith@email.com" 
+                    type="email">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Phone number</mat-label>
+                <input 
+                    matInput 
+                    formControlName="phone" 
+                    name="phone" 
+                    placeholder="01.23.45.67.89"
+                    type="tel">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input 
+                    matInput 
+                    formControlName="password" 
+                    name="password" 
+                    placeholder="Enter your password">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Confirm password</mat-label>
+                <input 
+                    matInput 
+                    formControlName="confirmPassword" 
+                    name="password" 
+                    placeholder="Confirm your password">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input 
+                    matInput 
+                    formControlName="password" 
+                    name="password" 
+                    placeholder="Enter your password">
+            </mat-form-field>
+
+            <!-- Styling doesn't work on material angular (find fix ?)-->
+            <button 
+                class="bg-tertiary"
+                mat-raised-button 
+                [disabled]="registerForm.invalid" 
+                type="submit">
+                Sign up
+            </button>
+        </form>
+    </div>
+</section>
