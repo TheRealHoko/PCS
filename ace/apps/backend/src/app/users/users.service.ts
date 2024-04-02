@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from "@ace/shared";
+import { UpdateUserDto } from "@ace/shared";
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -26,7 +26,7 @@ export class UsersService {
     user.email = createUserDto.email;
     user.firstname = createUserDto.firstname;
     user.lastname = createUserDto.lastname;
-    user.tel = createUserDto.tel;
+    user.phone = createUserDto.phone;
 
     const address = new Address();
     Object.assign(address, createUserDto.address);

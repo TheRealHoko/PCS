@@ -2,9 +2,9 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { UsersService } from '../users/users.service';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
-import { RegisterDto } from './dto/register.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { SignInDto } from './dto/signin.dto';
+import { RegisterDto } from '@ace/shared';
+import { CreateUserDto } from '@ace/shared';
+import { SignInDto } from '@ace/shared';
 
 @Injectable()
 export class AuthService {
@@ -51,7 +51,7 @@ export class AuthService {
             firstname: registerInfo.firstname,
             lastname: registerInfo.lastname,
             password: registerInfo.password,
-            tel: registerInfo.tel,
+            phone: registerInfo.phone,
             address: registerInfo.address
         };
 
