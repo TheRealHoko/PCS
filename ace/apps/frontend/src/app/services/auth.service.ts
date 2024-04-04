@@ -7,7 +7,7 @@ import { RegisterDto } from "@ace/shared";
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   login(email: string, password: string) {
     if (!email || !password) {
@@ -18,6 +18,10 @@ export class AuthService {
   }
 
   register(registerDto: RegisterDto) {
-    return this.http.post(`${environment.apiUrl}/api/auth/register`, {registerDto});
+    return this.http.post(`${environment.apiUrl}/api/auth/register`, registerDto);
+  }
+
+  logout() {
+    localStorage.removeItem('token');
   }
 }
