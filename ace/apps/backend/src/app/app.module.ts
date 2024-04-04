@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
+import { MailModule } from './services/mail.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AddressModule } from './address/address.module';
       inject: [ConfigService],
     }),
     AddressModule,
+    MailModule,
   ],
   controllers: [],
   providers: [Logger],
