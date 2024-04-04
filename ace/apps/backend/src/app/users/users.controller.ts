@@ -15,14 +15,12 @@ import { UpdateUserDto } from "@ace/shared";
 import { RolesGuard } from '../roles/roles.guard';
 import { Roles } from '../roles/roles.decorator';
 import { Role } from '../roles/enums/role.enum';
-import { MailService } from '../services/mail.service';
 
 @Controller('users')
 @UseGuards(RolesGuard)
 export class UsersController {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly mailService: MailService
+    private readonly usersService: UsersService
     ) {}
 
   logger = new Logger(UsersController.name);
@@ -36,7 +34,6 @@ export class UsersController {
   @Get()
   @Roles(Role.ADMIN)
   findAll() {
-    this.mailService.sendMail("test@mail.com");
     return this.usersService.findAll();
   }
 

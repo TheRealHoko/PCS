@@ -1,15 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import * as mailer from "nodemailer";
+import { Transporter, createTransport } from "nodemailer";
 
 @Injectable()
 export class MailService {
+    transporter: Transporter;
+
     constructor(
         private configService: ConfigService
-    ) {}
-
-    sendMail(to: string) {
-        const transporter = mailer.createTransport({
+    ) {
+        this.transporter = createTransport({
             host: 'smtp.gmail.com',
             port: 587,
             secure: false,
@@ -18,12 +18,9 @@ export class MailService {
                 pass: this.configService.get<string>('MAIL_PASS')
             }
         });
+    }
 
-        transporter.sendMail({
-            from: this.configService.get<string>('MAIL_NOREPLY'),
-            to: to,
-            subject: "Test mail",
-            html: "<h1>Test</h1>"
-        })
+    sendVerificationMail(to: string, token: string) {
+        const url = ''
     }
 }

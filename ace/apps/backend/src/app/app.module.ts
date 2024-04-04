@@ -15,6 +15,9 @@ import { MailModule } from './services/mail.module';
     DatabaseModule,
     RolesModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       global: true,
