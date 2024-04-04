@@ -39,4 +39,7 @@ export class User {
         onDelete: 'CASCADE',
     })
     addresses: Address[];
+
+    @Column()
+    email_verification_token: string;
 }

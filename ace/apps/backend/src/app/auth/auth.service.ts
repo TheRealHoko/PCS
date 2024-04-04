@@ -41,7 +41,6 @@ export class AuthService {
 
     async register(registerInfo: RegisterDto) {
         const isEmailAlreadyExist = await this.usersService.findOne({email: registerInfo.email});
-        console.log(isEmailAlreadyExist);
         if (isEmailAlreadyExist) {
             throw new BadRequestException("Email already exists");
         }
