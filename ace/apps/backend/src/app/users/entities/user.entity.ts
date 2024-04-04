@@ -35,7 +35,8 @@ export class User {
 
     @OneToMany(() => Address, (address) => address.user, {
         cascade: ['insert', 'update'], 
-        eager: true
+        eager: true,
+        onDelete: 'CASCADE',
     })
     addresses: Address[];
 }

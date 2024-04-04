@@ -1,8 +1,8 @@
 <mat-toolbar *ngIf="role != Role.ADMIN">
-    <div>
+    <div class="flex flex-row">
         <h1 class="text-primary">PCS</h1>
-        <button mat-button color="warn">Test</button>
-    </div>
+        <button mat-button color="warn" (click)="logout()">Logout</button>
+      </div>
 </mat-toolbar>
 
 
@@ -17,7 +17,7 @@
         <button>Gestion avis</button><br>
         <button>Gestion prestataire</button><br>
         <button>Outil</button><br>
-        <button>Déconnexion</button>
+        <button (click)="logout()">Déconnexion</button>
       </div>
       <div class="adminFooter">
         <p> ACE&#64;2024 </p>
