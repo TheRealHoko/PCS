@@ -84,11 +84,12 @@ export class UsersService {
         throw new NotFoundException("User not found");
       }
 
-      const isOldPasswordCorrect = await bcrypt.compare(updateUserDto.oldPassword, user.hash);
+      // Apply this when we do user profile logic
+      // const isOldPasswordCorrect = await bcrypt.compare(updateUserDto.oldPassword, user.hash);
 
-      if (!isOldPasswordCorrect) {
-        throw new BadRequestException("Old password is wrong");
-      }
+      // if (!isOldPasswordCorrect) {
+      //   throw new BadRequestException("Old password is wrong");
+      // }
       
       if (updateUserDto.roles) {
         const roles = await Promise.all(updateUserDto.roles.map(async role_name => {

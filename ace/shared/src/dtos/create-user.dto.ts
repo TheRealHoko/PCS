@@ -20,4 +20,6 @@ export class CreateUserDto {
     roles?: string[];
 
     address!: CreateAddressDto;
+
+    status?: boolean;
 }
