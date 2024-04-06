@@ -42,4 +42,7 @@ export class User {
 
     @Column()
     email_verification_token: string;
+
+    @Column({default: false})
+    status: boolean
 }

@@ -5,12 +5,15 @@ import { JwtService } from "@nestjs/jwt";
 import { RegisterDto } from '@ace/shared';
 import { CreateUserDto } from '@ace/shared';
 import { SignInDto } from '@ace/shared';
+import { User } from '../users/entities/user.entity';
+import { MailService } from '../services/mail.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly usersService: UsersService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly mailService: MailService
     ) {}
 
     async signIn(signInDto: SignInDto): Promise<any> {
@@ -54,6 +57,22 @@ export class AuthService {
             address: registerInfo.address
         };
 
+        this.mailService.sendVerificationMail(registerInfo.email);
         this.usersService.create(user);
+    }
+
+    async verify(email: string, token: string) {
+        const user: User = await this.usersService.findOne({
+            email_verification_token: token,
+            email: email
+        });
+
+        if (!user) {
+            throw new Error('Validation failed');
+        }
+
+        user.status = true;
+
+        this.usersService.update(user.id, { status: true });
     }
 }

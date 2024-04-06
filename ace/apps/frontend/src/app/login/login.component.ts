@@ -7,7 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -33,7 +33,8 @@ export class LoginComponent {
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly alertService: AlertService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly route: ActivatedRouteSnapshot
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [
@@ -67,5 +68,10 @@ export class LoginComponent {
         this.alertService.info(error.message);
       }
     });
+  }
+
+  onLoginRegisterVerification() {
+    this.onLogin()
+    this.alertService.info('Account verified successfully')
   }
 }
