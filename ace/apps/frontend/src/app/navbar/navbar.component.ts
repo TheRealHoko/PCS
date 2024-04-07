@@ -5,6 +5,7 @@ import { MatButtonModule } from "@angular/material/button";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { ReviewComponent } from '../admin/review/review.component';
 import { Role } from "../../../role";
 
 @Component({
@@ -16,6 +17,7 @@ import { Role } from "../../../role";
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
+    ReviewComponent,
     RouterModule
   ],
   templateUrl: './navbar.component.html',
