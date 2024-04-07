@@ -21,6 +21,10 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/api/auth/register`, registerDto);
   }
 
+  verify(email: string, token: string) {
+    return this.http.post(`${environment.apiUrl}/api/auth/verify`, { email, token });
+  }
+
   logout() {
     localStorage.removeItem('token');
   }

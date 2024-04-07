@@ -7,6 +7,7 @@ import { CreateUserDto } from '@ace/shared';
 import { SignInDto } from '@ace/shared';
 import { User } from '../users/entities/user.entity';
 import { MailService } from '../services/mail.service';
+import { randomBytes } from "crypto";
 
 @Injectable()
 export class AuthService {
@@ -48,20 +49,33 @@ export class AuthService {
             throw new BadRequestException("Email already exists");
         }
 
-        const user: CreateUserDto = {
-            email: registerInfo.email,
-            firstname: registerInfo.firstname,
-            lastname: registerInfo.lastname,
-            password: registerInfo.password,
-            phone: registerInfo.phone,
-            address: registerInfo.address
-        };
+        randomBytes(48, (err, buf) => {
+            if (err) {
+                throw err;
+            }
 
-        this.mailService.sendVerificationMail(registerInfo.email);
-        this.usersService.create(user);
+            const token = buf.toString('hex');
+            console.log(token);
+            const user: CreateUserDto = {
+                email: registerInfo.email,
+                firstname: registerInfo.firstname,
+                lastname: registerInfo.lastname,
+                password: registerInfo.password,
+                phone: registerInfo.phone,
+                address: registerInfo.address,
+                email_verification_token: token
+            };
+    
+            this.mailService.sendVerificationMail(registerInfo.email, token);
+            this.usersService.create(user);
+        });
     }
 
     async verify(email: string, token: string) {
+        if (!token) {
+            throw new Error('Verification token missing');
+        }
+
         const user: User = await this.usersService.findOne({
             email_verification_token: token,
             email: email

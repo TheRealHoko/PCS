@@ -27,6 +27,7 @@ export class UsersService {
     user.firstname = createUserDto.firstname;
     user.lastname = createUserDto.lastname;
     user.phone = createUserDto.phone;
+    user.email_verification_token = createUserDto.email_verification_token;
 
     const address = new Address();
     Object.assign(address, createUserDto.address);

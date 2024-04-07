@@ -92,6 +92,7 @@ export class RegisterComponent {
       error: (error) => {
         // Show error msg to user in snackbar ?
         console.error(error);
+        this.alertService.info(error.error.message);
       }
     });
   }
