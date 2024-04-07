@@ -7,7 +7,7 @@ import {MatTableModule} from '@angular/material/table';
   standalone: true,
   imports: [
     CommonModule,
-    MatTableModule
+    MatTableModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
