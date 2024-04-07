@@ -7,7 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
-import { ActivatedRouteSnapshot, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -28,13 +28,14 @@ import { MatIconModule } from '@angular/material/icon';
 export class LoginComponent {
   loginForm: FormGroup;
   hide: boolean = true;
+  snapshot: ActivatedRouteSnapshot;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly alertService: AlertService,
     private readonly router: Router,
-    private readonly route: ActivatedRouteSnapshot
+    private readonly activatedRoute: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [
@@ -45,6 +46,8 @@ export class LoginComponent {
         CustomValidators.passwordPolicy()
       ])
     });
+
+    this.snapshot = this.activatedRoute.snapshot;
   }
 
   get email() {
@@ -58,20 +61,29 @@ export class LoginComponent {
   onLogin() {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
+    const email_token = this.snapshot.queryParams['token'];
+
+    if (email_token) {
+      this.authService.verify(email, email_token).subscribe({
+        complete: () => {
+          this.alertService.info('Account verified successfully');
+        },
+        error: (err: Error) => {
+          this.alertService.info(err.message);
+          throw new Error(err.message);
+        }
+      });
+    }
+
     this.authService.login(email, password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.alertService.info('Logged in successfully');
         this.router.navigateByUrl('/home');
       },
-      error: (error: Error) => {
-        this.alertService.info(error.message);
+      error: (err: Error) => {
+        this.alertService.info(err.message);
       }
     });
-  }
-
-  onLoginRegisterVerification() {
-    this.onLogin()
-    this.alertService.info('Account verified successfully')
   }
 }

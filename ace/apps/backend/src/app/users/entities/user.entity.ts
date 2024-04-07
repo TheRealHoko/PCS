@@ -40,8 +40,8 @@ export class User {
     })
     addresses: Address[];
 
-    @Column()
-    email_verification_token: string;
+    @Column({nullable: true})
+    email_verification_token?: string;
 
     @Column({default: false})
     status: boolean

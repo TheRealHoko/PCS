@@ -22,4 +22,6 @@ export class CreateUserDto {
     address!: CreateAddressDto;
 
     status?: boolean;
+
+    email_verification_token?: string;
 }
