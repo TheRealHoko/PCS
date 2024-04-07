@@ -1,0 +1,79 @@
+<section class="flex justify-center items-start mt-16">
+    <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
+        <h1 class="text-secondary text-center text-2xl mb-5">Login</h1>
+        <form 
+            class="flex flex-col justify-center"
+            [formGroup]="loginForm" 
+            (ngSubmit)="onLogin()">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input 
+                    matInput 
+                    formControlName="email" 
+                    name="email" 
+                    placeholder="Enter your email" 
+                    type="email">
+                <ul>
+                    <li>
+                        <mat-error *ngIf="email.touched && email.errors?.['required']">Email is required</mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</mat-error>    
+                    </li>
+                </ul>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input 
+                    matInput 
+                    formControlName="password" 
+                    name="password" 
+                    placeholder="Enter your password" 
+                    [type]="hide ? 'password' : 'text'">
+                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{ hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <ol>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['required']">
+                            Password is required
+                        </mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['hasNumeric']">
+                            Password must contain 1 number (0-9)
+                        </mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['hasUpperCase']">
+                            Password must contain 1 uppercase letters
+                        </mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['hasLowerCase']">
+                            Password must contain 1 lowercase letters
+                        </mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['hasSpecialCharacter']">
+                            Password must contain 1 non-alpha numeric number
+                        </mat-error>
+                    </li>
+                    <li>
+                        <mat-error *ngIf="password.errors?.['minLength'] || password.errors?.['maxLength']">
+                            Password is 8-16 characters with no space
+                        </mat-error>
+                    </li>
+                </ol>
+            </mat-form-field>
+
+            <button 
+                class="bg-tertiary"
+                mat-raised-button 
+                [disabled]="loginForm.invalid" 
+                type="submit">
+                Sign in
+            </button>
+        </form>
+    </div>
+</section>

@@ -4,9 +4,11 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
 import { ReviewComponent } from '../admin/review/review.component';
+import { Router, RouterModule } from '@angular/router';
 import { Role } from "../../../role";
+import { AuthService } from '../services/auth.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'ace-navbar',
@@ -25,7 +27,19 @@ import { Role } from "../../../role";
 })
 export class NavbarComponent {
   public Role = Role;
-  public role: Role = Role.ADMIN;
+  public role: Role = Role.USER;
   showFiller = false;
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly alertService: AlertService
+  ) {}
+
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
+    this.alertService.info("Logged out successfully");
+  }
 }
 

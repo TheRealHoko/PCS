@@ -4,31 +4,37 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
-import { JwtModule } from "@nestjs/jwt";
+import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AddressModule } from './address/address.module';
+import { MailModule } from './services/mail.module';
 
 @Module({
   imports: [
-    UsersModule, 
-    DatabaseModule, 
-    RolesModule, 
+    UsersModule,
+    DatabaseModule,
+    RolesModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      global:true,
+      global: true,
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('SECRET'),
-        signOptions: {expiresIn: '60s'}
+        signOptions: { expiresIn: '1d' },
       }),
-      inject: [ConfigService]
-    })],
+      inject: [ConfigService],
+    }),
+    AddressModule,
+    MailModule,
+  ],
   controllers: [],
-  providers: [Logger]
+  providers: [Logger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
