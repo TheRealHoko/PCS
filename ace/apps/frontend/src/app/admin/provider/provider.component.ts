@@ -25,7 +25,7 @@ export interface provider {
   lieu: string;
 }
 
-export interface providerAttente {
+export interface providerWaitlist {
   name: string;
   service: string;
   lieu: string;
@@ -35,7 +35,7 @@ const PROVIDER : provider[] = [
   {name: 'Mehdi', service: 'Nettoyage', lieu: 'Paris'},
 ]
 
-const PROVIDER_WAITLIST: providerAttente[] = [
+const PROVIDER_WAITLIST: providerWaitlist[] = [
   {name: 'Mehdi', service: 'Nettoyage', lieu: 'Paris'},
 ];
 
