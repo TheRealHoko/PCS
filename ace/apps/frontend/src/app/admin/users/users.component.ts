@@ -5,6 +5,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { UsersService } from '../../services/users.service';
 import { User } from '@ace/shared';
 import { MatButtonModule } from '@angular/material/button';
+import { TableComponent } from '../../table/table.component';
 
 @Component({
   selector: 'ace-users',
@@ -13,13 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MatTableModule,
     MatExpansionModule,
-    MatButtonModule
+    MatButtonModule,
+    TableComponent
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  users!: User[];
+  users: User[] = [];
   columns = [
     { key: 'id', display: 'ID' },
     { key: 'firstname', display: 'First Name' },
@@ -29,8 +31,6 @@ export class UsersComponent {
     { key: 'roles', display: 'Roles' },
     { key: 'addresses', display: 'Addresses' }
   ];
-
-  displayedColumns: string[] = [...this.columns.map(c => c.key), 'actions'];
 
   constructor(private readonly usersService: UsersService) {
     this.usersService.getUsers().subscribe({
@@ -44,17 +44,6 @@ export class UsersComponent {
     });
   }
 
-  editRow(row: any) {
-    console.log(`editing ${row}`);
-  }
-
-  deleteRow(row: any) {
-    console.log(`deleting ${row}`);
-  }
-
-  isObjectType(value: any): boolean {
-    return typeof value === 'object' && value.length !== 0;
-  }
 }
 
 
