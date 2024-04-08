@@ -27,7 +27,7 @@ import { AlertService } from '../services/alert.service';
 })
 export class NavbarComponent {
   public Role = Role;
-  public role: Role = Role.USER;
+  public role: Role = Role.ADMIN;
   showFiller = false;
 
   constructor(

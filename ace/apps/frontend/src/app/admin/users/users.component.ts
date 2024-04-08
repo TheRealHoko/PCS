@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
+import { UsersService } from '../../services/users.service';
+import { User } from '@ace/shared';
 
 @Component({
   selector: 'ace-users',
@@ -13,24 +15,23 @@ import {MatTableModule} from '@angular/material/table';
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  dataSource = USER;
-  tableContenu: string[] = ['position', 'firstName', 'lastName', 'age'];
+  users!: User[];
+  columns: string[] = [];
+
+  constructor(private readonly usersService: UsersService) {
+    this.usersService.getUsers().subscribe({
+      next: (response) => {
+        console.log(response);
+        this.columns = Object.keys(response[0]);
+        console.log(this.columns);
+        this.users = response;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
 }
-
-
-// en attendant API GET pour user - m
-
-export interface user {
-  position: number;
-  firstName: string;
-  lastName: string;
-  age: number;
-}
-
-const USER : user[] = [
-  {position: 1, firstName: 'Mehdi', lastName: 'Benchrif', age: 21 },
-  {position: 1, firstName: 'Lucas', lastName: 'Defaud', age: 20 },
-  {position: 1, firstName: 'Julien', lastName: 'Zeybel', age: 47 }
-]
 
 
