@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
