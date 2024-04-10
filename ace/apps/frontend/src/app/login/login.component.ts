@@ -7,7 +7,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
-import { ActivatedRoute, ActivatedRouteSnapshot, Params, Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({

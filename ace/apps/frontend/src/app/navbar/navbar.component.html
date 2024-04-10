@@ -1,12 +1,4 @@
-<mat-toolbar *ngIf="role != Role.ADMIN">
-    <div class="flex flex-row">
-        <h1 class="text-primary">PCS</h1>
-        <button mat-button color="warn" (click)="logout()">Logout</button>
-      </div>
-</mat-toolbar>
-
-
-<mat-drawer-container class="globalContent" *ngIf="role == Role.ADMIN" autosize>
+<mat-drawer-container class="globalContent" *ngIf="isAdmin | async; else notAdmin" autosize>
     <mat-drawer #drawer class="adminNavBar" mode="side">
       <div class="PCS">
       <p>PCS Admin Panel</p>
@@ -32,3 +24,13 @@
       <router-outlet></router-outlet>
     </div>
 </mat-drawer-container>
+
+<ng-template #notAdmin>
+  <mat-toolbar>
+      <div class="flex flex-row">
+          <h1 class="text-primary">PCS</h1>
+          <button mat-button color="warn" (click)="logout()">Logout</button>
+        </div>
+  </mat-toolbar>
+</ng-template>
+
