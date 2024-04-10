@@ -1,15 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Service } from './entities/service.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ServicesService {
-  create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new service';
+  constructor(
+    @InjectRepository(Service)
+    private readonly servicesRepository: Repository<Service>
+  ) {}
+
+  async create(createServiceDto: CreateServiceDto) {
+
+    return this.servicesRepository.create(createServiceDto)
+  
   }
 
-  findAll() {
-    return `This action returns all services`;
+  async findAll() {
+    const services = await this.servicesRepository.find();
+
+    if (!services){
+      throw new NotFoundException("No services")
+    }
+    return services;
   }
 
   findOne(id: number) {

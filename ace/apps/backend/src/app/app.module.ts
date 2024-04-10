@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     DatabaseModule, 
     RolesModule, 
     AuthModule,
+    ServicesModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       global:true,
