@@ -1,0 +1,14 @@
+<div class="flex flex-col justify-center w-1/2 mx-auto">
+  <div>
+    <input 
+      accept="*" 
+      type="file" 
+      aceUpload 
+      (dropFiles)="onDropFiles($event)"
+      class="relative flex flex-col text-gray-400 border border-gray-200 border-dashed rounded cursor-pointer">
+    <span class="message">Drop File Images Here</span>
+  </div>
+  <div class="row">
+      <img *ngFor="let file of files" [src]="file.url" />
+  </div>
+</div>

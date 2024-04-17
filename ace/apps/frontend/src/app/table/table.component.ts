@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -18,7 +18,7 @@ import { CdkTableDataSourceInput } from '@angular/cdk/table';
   styleUrl: './table.component.css',
 })
 export class TableComponent implements OnChanges {
-  @Input() datasource: CdkTableDataSourceInput<any> = [];
+  datasource = input<CdkTableDataSourceInput<any>>([]);
   @Input() columns: { key: string, display: string }[] = [];
   
   displayedColumns: string[] = [];

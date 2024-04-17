@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -21,7 +21,7 @@ import { TableComponent } from '../../table/table.component';
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  users: User[] = [];
+  users = this.usersService.getUsers();
   columns = [
     { key: 'id', display: 'ID' },
     { key: 'firstname', display: 'First Name' },
@@ -32,17 +32,9 @@ export class UsersComponent {
     { key: 'addresses', display: 'Addresses' }
   ];
 
-  constructor(private readonly usersService: UsersService) {
-    this.usersService.getUsers().subscribe({
-      next: (response) => {
-        console.log(response);
-        this.users = response;
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-  }
+  constructor(
+    private readonly usersService: UsersService
+  ) {}
 
 }
 

@@ -9,6 +9,9 @@ import { AlertService } from '../services/alert.service';
 import { CustomValidators } from '../shared/custom.validators';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { UsersService } from '../services/users.service';
+import { User } from '@ace/shared';
+import { Role } from 'apps/frontend/role';
 
 @Component({
   selector: 'ace-login',
@@ -35,7 +38,8 @@ export class LoginComponent {
     private readonly authService: AuthService,
     private readonly alertService: AlertService,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly usersService: UsersService
   ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [
@@ -77,7 +81,20 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
+        this.authService.setToken(response.token)
+        const token = this.authService.getToken();
+        if (token && token.sub) {
+          this.usersService.getUser(+token.sub).subscribe({
+            next: (user: User) => {
+              console.log(user);
+              this.authService.isAuthenticated$.next(true);
+              if (user.roles) {
+                this.authService.isAdmin$.next(!!user.roles.find(role => role.name == Role.ADMIN))
+              }
+            }
+          });
+        }
+        this.authService.isAuthenticated$.next(true);
         this.alertService.info('Logged in successfully');
         this.router.navigateByUrl('/home');
       },
