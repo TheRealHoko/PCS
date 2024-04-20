@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
+import { PropertiesModule } from './properties/properties.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MailModule } from './services/mail.module';
     DatabaseModule,
     RolesModule,
     AuthModule,
+    PropertiesModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),

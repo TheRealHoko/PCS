@@ -13,6 +13,8 @@ Projet annuel 2A2
 ### Run database and phpmyadmin
 `sudo docker compose up [-d]`
 
+# Setup .env
+1. Add [.env.local](#env-structure)  file inside 'ace' directory
 ### Run frontend and backend
 1. `cd ace`
 2. `npm i` (whenever new package added)
@@ -31,5 +33,10 @@ DB_NAME=
 DB_USER=
 DB_PASSWORD=
 DB_PORT=
-SECRET=<>
+SECRET=
+MAIL_USERNAME=
+MAIL_PASS=
+MAIL_NOREPLY=
+API_URL=
+FRONT_URL=
 ```
