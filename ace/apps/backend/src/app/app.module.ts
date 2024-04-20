@@ -21,6 +21,7 @@ import { PropertiesModule } from './properties/properties.module';
     AuthModule,
     PropertiesModule,
     ServicesModule,
+    PropertiesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
