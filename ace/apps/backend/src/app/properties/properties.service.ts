@@ -1,26 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
+import { Properties } from './entities/properties.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PropertiesService {
-  create(createPropertyDto: CreatePropertyDto) {
-    return 'This action adds a new property';
+  constructor(
+    @InjectRepository(Properties)
+    private readonly propertyRepository: Repository<Properties>
+  ) {}
+
+  async create(createPropertyDto: CreatePropertyDto): Promise<Properties> {
+    const property = this.propertyRepository.create(createPropertyDto);
+    return this.propertyRepository.save(property);  
   }
 
-  findAll() {
-    return `This action returns all properties`;
+  findAll(): Promise<Properties[]> {
+    return this.propertyRepository.find();  
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} property`;
+  async findOne(where: FindOptionsWhere<Properties>): Promise<Properties | null> {
+    const property = await this.propertyRepository.findOne({ where });
+    return property;
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
-    return `This action updates a #${id} property`;
+  async update(id: number, updatePropertyDto: UpdatePropertyDto): Promise<Properties> {
+    const property = await this.propertyRepository.preload({
+      id: id,
+      ...updatePropertyDto
+    });
+    if (!property) {
+      throw new Error(`Property #${id} not found`);
+    }
+    return this.propertyRepository.save(property);  
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} property`;
+  async remove(where: FindOptionsWhere<Properties>): Promise<void> {
+    const property = await this.propertyRepository.findOne({ where });  
+    await this.propertyRepository.remove(property);
   }
 }

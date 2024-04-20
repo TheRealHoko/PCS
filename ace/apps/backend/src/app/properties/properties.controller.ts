@@ -19,7 +19,7 @@ export class PropertiesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.propertiesService.findOne(+id);
+    return this.propertiesService.findOne({id: +id});
   }
 
   @Patch(':id')
@@ -29,6 +29,6 @@ export class PropertiesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.propertiesService.remove(+id);
+    return this.propertiesService.remove({id: +id});
   }
 }
