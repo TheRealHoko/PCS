@@ -17,9 +17,5 @@ export const appRoutes: Route[] = [
     { path: 'admin/review', component: ReviewComponent},
     { path: 'admin/location', component: LocationComponent},
     { path: 'admin/provider', component: ProviderComponent},
-    { path: 'admin/tools', component: ToolsComponent},
-    {
-        path: 'upload',
-        component: UploadComponent
-    }
+    { path: 'admin/tools', component: ToolsComponent}
 ];

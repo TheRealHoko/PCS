@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUpload, UploadDirective } from '../upload.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'ace-upload',
   standalone: true,
   imports: [
     CommonModule,
+    MatIconModule,
+    MatButtonModule,
     UploadDirective
   ],
   templateUrl: './upload.component.html',
@@ -15,9 +19,13 @@ import { FileUpload, UploadDirective } from '../upload.directive';
 export class UploadComponent {
   files: FileUpload[] = [];
 
+  @Output() uploadFiles: EventEmitter<FileUpload[]> = new EventEmitter();
+
   onDropFiles(files: FileUpload[]) {
     this.files = [...this.files, ...files];
-    console.log(this.files);
-    console.log(...this.files);
+
+    if (this.files.length > 0) {
+      this.uploadFiles.emit(this.files);
+    }
   }
 }

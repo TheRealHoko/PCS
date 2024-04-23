@@ -7,7 +7,7 @@ export interface FileUpload {
 }
 
 export enum DropColor {
-  Default = '#C6E4F1',
+  Default = '#C18428',
   Over = '#FF8383'
 }
 

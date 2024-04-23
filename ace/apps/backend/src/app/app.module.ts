@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
+import { UploadController } from './upload/upload.controller';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { MailModule } from './services/mail.module';
     RolesModule,
     AuthModule,
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -29,8 +31,11 @@ import { MailModule } from './services/mail.module';
     }),
     AddressModule,
     MailModule,
+    MulterModule.register({
+      dest: './files'
+    })
   ],
-  controllers: [],
+  controllers: [UploadController],
   providers: [Logger],
 })
 export class AppModule implements NestModule {
