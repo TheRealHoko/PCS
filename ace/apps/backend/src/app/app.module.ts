@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 
@@ -15,6 +16,7 @@ import { MailModule } from './services/mail.module';
     DatabaseModule,
     RolesModule,
     AuthModule,
+    ServicesModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
