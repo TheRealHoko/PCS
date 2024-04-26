@@ -14,7 +14,7 @@ export class ServicesService {
 
   async create(createServiceDto: CreateServiceDto) {
 
-    return this.servicesRepository.create(createServiceDto)
+    return await this.servicesRepository.save(createServiceDto)
   
   }
 
@@ -27,15 +27,23 @@ export class ServicesService {
     return services;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
+  async findOne(id: number) {
+    const service = await this.servicesRepository.findOne({where: {id}});
+
+    if (!service){
+      throw new NotFoundException(`Service #${id} not found`)
+    }
+    return service;
   }
 
   update(id: number, updateServiceDto: UpdateServiceDto) {
     return `This action updates a #${id} service`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  async remove(id: number) {
+    if (! await this.servicesRepository.exists({where: {id}})) {
+      throw new NotFoundException(`Service #${id} not found`) 
+    }
+    this.servicesRepository.delete(id);
   }
 }

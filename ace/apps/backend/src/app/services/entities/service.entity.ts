@@ -11,7 +11,7 @@ export class Service {
     @Column({nullable: false})
     description: string;
 
-    @Column({nullable: false})
+    @Column({default: true})
     available: Boolean;
 
     @Column({nullable: false})
