@@ -1,13 +1,28 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { RegisterDto } from "@ace/shared";
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { Role } from 'apps/frontend/role';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private readonly http: HttpClient) {}
+  isAuthenticated$ = new BehaviorSubject<boolean>(false);
+  isAdmin$ = new BehaviorSubject<boolean>(false);
+
+  private isBrowser: boolean;
+
+  constructor(
+    private readonly http: HttpClient,
+    @Inject(PLATFORM_ID)
+    private readonly platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   login(email: string, password: string) {
     if (!email || !password) {
@@ -25,7 +40,29 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/api/auth/verify`, { email, token });
   }
 
+  setToken(value: string) {
+    if (this.isBrowser) {
+      localStorage.setItem('token', value);
+    }
+  }
+
+  getToken(): JwtPayload | void {
+    if (this.isBrowser) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const jwtToken = jwtDecode(token);
+        return jwtToken;
+      }
+    }
+  }
+
+  checkRoles() {
+
+  }
   logout() {
-    localStorage.removeItem('token');
+    if (this.isBrowser) {
+      localStorage.removeItem('token');
+      this.isAuthenticated$.next(false);
+    }
   }
 }

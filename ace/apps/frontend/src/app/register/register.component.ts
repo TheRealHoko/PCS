@@ -69,6 +69,10 @@ export class RegisterComponent {
     });
   }
 
+  get password() {
+    return this.registerForm.get('password') as FormControl;
+  }
+  
   onRegister() {
     const registerInfo = this.registerForm.getRawValue();
 

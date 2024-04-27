@@ -1,34 +1,45 @@
-<mat-toolbar *ngIf="role != Role.ADMIN">
-    <div class="flex flex-row">
-        <h1 class="text-primary">PCS</h1>
-        <button mat-button color="warn" (click)="logout()">Logout</button>
+@if ((isAdmin$ | async) && (isAuthenticated$ | async)) {
+  <mat-drawer-container class="globalContent" autosize>
+      <mat-drawer #drawer class="adminNavBar" mode="side">
+        <div class="PCS">
+        <p>PCS Admin Panel</p>
+        </div>
+        <div class="navbarButton">
+          <button routerLink="admin/users" routerLinkActive="current">Utilisateurs</button><br>
+          <button routerLink="admin/location" routerLinkActive="current">Location</button><br>
+          <button routerLink="admin/review" routerLinkActive="current">Gestion avis</button><br>
+          <button routerLink="admin/provider" routerLinkActive="current">Gestion prestataire</button><br>
+          <button routerLink="admin/tools" routerLinkActive="current">Outil</button><br>
+          <button (click)="logout()">Déconnexion</button>
+        </div>
+        <div class="adminFooter">
+          <p> ACE&#64;2024 </p>
+          <p> ace&#64;support.fr </p>
+        </div>
+      </mat-drawer>
+    
+      <div class="actualPage">
+        <button type="button" mat-button (click)="drawer.toggle()">
+          <mat-icon fontIcon="notes" aria-label="navbarButton"></mat-icon>
+        </button>
+        <router-outlet></router-outlet>
       </div>
-</mat-toolbar>
+  </mat-drawer-container>
+}
+@else {
+  <mat-toolbar>
+      <div class="flex flex-row">
+          <a routerLink="/" class="text-primary">PCS</a>
+          @if (isAuthenticated$ | async) {
+            <button mat-button color="warn">Become a renter</button>
+            <button mat-button color="warn" (click)="logout()">Logout</button>
+          }
+          @else {
+            <button routerLink="login" mat-button color="warn">Login</button>
+            <button routerLink="register" mat-button color="warn">Register</button>
+          }
+      </div>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
 
-
-<mat-drawer-container class="globalContent" *ngIf="role == Role.ADMIN" autosize>
-    <mat-drawer #drawer class="adminNavBar" mode="side">
-      <div class="PCS">
-      <p>PCS Admin Panel</p>
-      </div>
-      <div class="navbarButton">
-        <button routerLink="admin/users" routerLinkActive="current">Utilisateurs</button><br>
-        <button routerLink="admin/location" routerLinkActive="current">Location</button><br>
-        <button routerLink="admin/review" routerLinkActive="current">Gestion avis</button><br>
-        <button routerLink="admin/provider" routerLinkActive="current">Gestion prestataire</button><br>
-        <button routerLink="admin/tools" routerLinkActive="current">Outil</button><br>
-        <button (click)="logout()">Déconnexion</button>
-      </div>
-      <div class="adminFooter">
-        <p> ACE&#64;2024 </p>
-        <p> ace&#64;support.fr </p>
-      </div>
-    </mat-drawer>
-  
-    <div class="actualPage">
-      <button type="button" mat-button (click)="drawer.toggle()">
-        <mat-icon fontIcon="notes" aria-label="navbarButton"></mat-icon>
-      </button>
-      <router-outlet></router-outlet>
-    </div>
-</mat-drawer-container>
+}
