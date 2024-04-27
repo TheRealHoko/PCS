@@ -17,18 +17,19 @@ import { UploadService } from '../services/upload.service';
   styleUrl: './home.component.sass',
 })
 export class HomeComponent {
-  files: FileUpload[] = [];
+  // files: FileUpload[] = [];
 
-  constructor(private readonly uploadService: UploadService) {}
+  // constructor(private readonly uploadService: UploadService) {}
 
-  getFiles(files: FileUpload[]) {
-    this.files = [...this.files, ...files];
-    console.log(this.files);
-  }
+  // getFiles(files: FileUpload[]) {
+  //   this.files = [...this.files, ...files];
+  //   console.log(this.files);
+  // }
 
-  onSubmit() {
-    const form = new FormData();
-    form.append('file', this.files[0].file);
-    this.uploadService.upload(form).subscribe(console.log);
-  }
+  // onSubmit() {
+  //   const form = new FormData();
+
+  //   form.append('files', this.files[0].file);
+  //   this.uploadService.upload(form).subscribe(console.log);
+  // }
 }

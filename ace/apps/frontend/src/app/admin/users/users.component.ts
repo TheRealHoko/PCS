@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { UsersService } from '../../services/users.service';
-import { User } from '@ace/shared';
 import { MatButtonModule } from '@angular/material/button';
 import { TableComponent } from '../../table/table.component';
 

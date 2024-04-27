@@ -3,18 +3,18 @@ import { IsNotEmpty } from "class-validator";
 export class CreateServiceDto {
     
     @IsNotEmpty()
-    name: string;
+    name!: string;
 
     @IsNotEmpty()
-    description: string;
+    description!: string;
 
     @IsNotEmpty()
-    effectif: Number;
+    effectif!: Number;
 
     @IsNotEmpty()
-    price: Number;
+    price!: Number;
 
     @IsNotEmpty()
-    service_type: string;
+    service_type!: string;
 
 }
