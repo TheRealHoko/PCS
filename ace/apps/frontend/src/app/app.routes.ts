@@ -8,7 +8,7 @@ import { ToolsComponent } from './admin/tools/tools.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UploadComponent } from './upload/upload.component';
-import { ProviderComponent } from "./provider/provider.component";
+// import { ProviderComponent } from "./provider/provider.component";
 import { authGuard } from './guard/auth.guard';
 import { ProviderComponent } from "./provider/provider.component";
 
@@ -21,7 +21,5 @@ export const appRoutes: Route[] = [
     { path: 'admin/location', component: LocationComponent, canActivate: [authGuard] },
     { path: 'admin/provider', component: ProviderComponent, canActivate: [authGuard] },
     { path: 'admin/tools', component: ToolsComponent, canActivate: [authGuard] },
-    { path: 'provider', component: ProviderComponent}
+    { path: 'provider', component: ProviderComponent }
 ];
-
-

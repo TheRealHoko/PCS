@@ -11,7 +11,4 @@ export * from './update-user.dto';
 export * from './users.dto';
 export * from './address.dto';
 export * from './roles.dto';
-export * from './create-service.dto';
-export * from './update-service.dto';
-
 export * from './services.dto';
