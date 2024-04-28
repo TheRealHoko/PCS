@@ -36,7 +36,7 @@ import { MulterModule } from '@nestjs/platform-express';
     AddressModule,
     MailModule,
     MulterModule.register({
-      dest: './files'
+      dest: './uploads'
     })
   ],
   controllers: [UploadController],

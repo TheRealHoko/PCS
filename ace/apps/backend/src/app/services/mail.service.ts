@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Transporter, createTransport } from "nodemailer";
 
 @Injectable()
 export class MailService {
     transporter: Transporter;
+    logger: Logger = new Logger(MailService.name);
 
     constructor(
         private configService: ConfigService
@@ -33,6 +34,7 @@ export class MailService {
                 <p>Please click on the link to verify your email : ${url}</p>
                 `
             });
+            this.logger.log(`Verification mail sent to ${to}`);
         } catch (error) {
             throw new Error(error);
         }

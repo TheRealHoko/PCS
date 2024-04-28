@@ -8,7 +8,6 @@ export class UploadController {
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log(file);
-        console.log("hi");
+        console.log(file.mimetype);
     }
 }
