@@ -36,7 +36,7 @@ export class AuthService {
             // TODO: Remove roles and GET them in the front with a req instead
             const payload = {sub: user.id, email: user.email, roles: user.roles.map(x => x.name)};
     
-            return { token: await this.jwtService.signAsync(payload, {}) };
+            return { token: await this.jwtService.signAsync(payload) };
         } catch (error) {
             if (error.status === 404) {
                 throw new UnauthorizedException("Invalid credentials");
