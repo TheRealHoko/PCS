@@ -6,3 +6,6 @@ export * from './signin.dto';
 export * from './update-address.dto';
 export * from './update-role.dto';
 export * from './update-user.dto';
+export * from './users.dto';
+export * from './address.dto';
+export * from './roles.dto';

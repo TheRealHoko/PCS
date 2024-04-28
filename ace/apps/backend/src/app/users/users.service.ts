@@ -60,7 +60,7 @@ export class UsersService {
     }
 
     const usersWithoutHash = users.map(user => {
-      const {hash, ...userWithoutHash} = user;
+      const { hash, ...userWithoutHash } = user;
       return userWithoutHash;
     });
 
@@ -73,7 +73,7 @@ export class UsersService {
     if (!user) {
       return null;
     }
-
+    
     return user;
   }
 
@@ -105,14 +105,18 @@ export class UsersService {
 
       Object.assign(user, updateUserDtoWithoutRoles);
       
-      bcrypt.hash(updateUserDto.password, this.saltRounds, (err ,hash) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        user.hash = hash;
+      if (updateUserDto.password) {
+        bcrypt.hash(updateUserDto.password, this.saltRounds, (err ,hash) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          user.hash = hash;
+          this.usersRepository.save(user);
+        });
+      } else {
         this.usersRepository.save(user);
-      });
+      }
     } catch (error) {
       const err = error as Error;
       throw new BadRequestException("Error : " + err.message);

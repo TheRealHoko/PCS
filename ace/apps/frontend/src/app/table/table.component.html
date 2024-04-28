@@ -1,0 +1,33 @@
+<table mat-table [dataSource]="datasource()">
+    <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+        <th mat-header-cell *matHeaderCellDef> {{ col.display }} </th>
+        <td mat-cell *matCellDef="let cell">
+            <mat-accordion multi *ngIf="isObjectType(cell[col.key]); else notObjectType">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Details
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-container *ngFor="let items of cell[col.key]">
+                        <p *ngFor="let item of items | keyvalue">
+                            <b>{{ item.key }}</b> : {{item.value}}
+                        </p>
+                    </ng-container>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <ng-template #notObjectType>{{ cell[col.key] }}</ng-template>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-button color="primary" (click)="editRow(row)">Edit</button>
+          <button mat-button color="warn" (click)="deleteRow(row)">Delete</button>
+        </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+</table>

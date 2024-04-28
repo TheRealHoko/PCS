@@ -7,6 +7,7 @@ import { ProviderComponent } from './admin/provider/provider.component';
 import { ToolsComponent } from './admin/tools/tools.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { UploadComponent } from './upload/upload.component';
 
 export const appRoutes: Route[] = [
     { path: 'home', component: HomeComponent },
