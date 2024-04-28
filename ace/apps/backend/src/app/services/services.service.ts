@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
+import { CreateServiceDto } from '@ace/shared';
+import { UpdateServiceDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Service } from './entities/service.entity';
 import { Repository } from 'typeorm';
