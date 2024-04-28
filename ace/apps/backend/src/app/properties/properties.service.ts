@@ -42,7 +42,7 @@ export class PropertiesService {
       ...updatePropertyDto,
     });
     if (!property) {
-      throw NotFoundException;
+      throw new NotFoundException();
     }
     return this.propertyRepository.save(property);
   }
