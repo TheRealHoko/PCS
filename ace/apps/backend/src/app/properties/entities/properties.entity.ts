@@ -25,6 +25,9 @@ export class Properties {
     @Column({nullable: false})
     room_count: number;
 
+    @Column({nullable: false})
+    isActive: boolean;
+
     /** Crée la relation avec USER_ID et ADDRESS_ID pour la suite
      * 
      * @JoinTable()
