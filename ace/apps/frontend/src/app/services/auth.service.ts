@@ -46,14 +46,20 @@ export class AuthService {
     }
   }
 
-  getToken(): JwtPayload | void {
+  getRawToken() {
     if (this.isBrowser) {
-      const token = localStorage.getItem('token');
+      console.log("ready")
+      return localStorage.getItem('token');
+    }
+    return "";
+  }
+
+  getToken(): JwtPayload | void {
+      const token = this.getRawToken();
       if (token) {
         const jwtToken = jwtDecode(token);
         return jwtToken;
       }
-    }
   }
 
   checkRoles() {

@@ -36,7 +36,7 @@ import { PropertiesModule } from './properties/properties.module';
     AddressModule,
     MailModule,
     MulterModule.register({
-      dest: './files'
+      dest: './uploads'
     })
   ],
   controllers: [UploadController],
