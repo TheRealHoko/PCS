@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
@@ -17,14 +17,14 @@ export class AuthService {
         private readonly mailService: MailService
     ) {}
 
-    async signIn(signInDto: SignInDto): Promise<any> {
+    async login(signInDto: SignInDto): Promise<any> {
         const {email, password} = signInDto;
 
         try {
             const user = await this.usersService.findOne({email});
             
             if (!user) {
-                throw new UnauthorizedException("Invalid credentials");
+                throw new NotFoundException("Invalid credentials");
             }
     
             const isAuthorized = await bcrypt.compare(password, user.hash);

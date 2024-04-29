@@ -3,15 +3,17 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { RegisterDto } from "@ace/shared";
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 import { Role } from 'apps/frontend/role';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthenticated$ = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = new BehaviorSubject<boolean>(false);
   isAdmin$ = new BehaviorSubject<boolean>(false);
 
   private isBrowser: boolean;
@@ -19,17 +21,47 @@ export class AuthService {
   constructor(
     private readonly http: HttpClient,
     @Inject(PLATFORM_ID)
-    private readonly platformId: Object
+    private readonly platformId: Object,
+    private readonly router: Router,
+    private readonly usersService: UsersService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
+
+  isLoggedIn() {
+    const token: JwtPayload | void = this.getToken();
+    if (token && token.exp) {
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+      const isTokenExpired = currentTimeInSeconds >= token.exp;
+      console.log(`current time: ${currentTimeInSeconds}, token exp: ${token.exp}, is expired ? ${isTokenExpired}`)
+      return !isTokenExpired;
+    }
+    return false;
+  }
+
+  hasRoles(roles: Role[]): Observable<boolean> {
+    const token = this.getToken();
+    if (!token || !token.sub) {
+      return of(false);
+    }
+
+    return this.usersService.getUser(+token.sub).pipe(
+      map(user => {
+        return roles.some(role => user.roles?.map(role => role.name).includes(role));
+      })
+    );
+}
 
   login(email: string, password: string) {
     if (!email || !password) {
       throw new Error('Email or password empty');
     }
 
-    return this.http.post<{token: string}>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password});
+    return this.http.post<{token: string}>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password})
+    .pipe(map(user => {
+      this.isLoggedIn$.next(true);
+      return user;
+    }));
   }
 
   register(registerDto: RegisterDto) {
@@ -48,7 +80,6 @@ export class AuthService {
 
   getRawToken() {
     if (this.isBrowser) {
-      console.log("ready")
       return localStorage.getItem('token');
     }
     return "";
@@ -62,13 +93,12 @@ export class AuthService {
       }
   }
 
-  checkRoles() {
-
-  }
   logout() {
     if (this.isBrowser) {
       localStorage.removeItem('token');
-      this.isAuthenticated$.next(false);
+      this.isLoggedIn$.next(false);
+      this.isAdmin$.next(false);
+      this.router.navigateByUrl('/login');
     }
   }
 }
