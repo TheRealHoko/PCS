@@ -1,4 +1,4 @@
-@if ((isAdmin$ | async) && (isAuthenticated$ | async)) {
+@if ((isAdmin$ | async) && (isLoggedIn$ | async)) {
   <mat-drawer-container class="globalContent" autosize>
       <mat-drawer #drawer class="adminNavBar" mode="side">
         <div class="PCS">
@@ -30,7 +30,7 @@
   <mat-toolbar>
       <div class="flex flex-row">
           <a routerLink="/" class="text-primary">PCS</a>
-          @if (isAuthenticated$ | async) {
+          @if (isLoggedIn$ | async) {
             <button mat-button color="warn">Become a renter</button>
             <button mat-button color="warn" (click)="logout()">Logout</button>
           }

@@ -47,7 +47,7 @@ export class LoginComponent {
         Validators.email
       ]),
       password: new FormControl('', [
-        CustomValidators.passwordPolicy()
+        Validators.required
       ])
     });
 
@@ -87,19 +87,18 @@ export class LoginComponent {
           this.usersService.getUser(+token.sub).subscribe({
             next: (user: User) => {
               console.log(user);
-              this.authService.isAuthenticated$.next(true);
               if (user.roles) {
                 this.authService.isAdmin$.next(!!user.roles.find(role => role.name == Role.ADMIN))
               }
             }
           });
         }
-        this.authService.isAuthenticated$.next(true);
         this.alertService.info('Logged in successfully');
         this.router.navigateByUrl('/home');
       },
-      error: (err: Error) => {
-        this.alertService.info(err.message);
+      error: (err) => {
+        console.error(err);
+        this.alertService.info(err.error.message ?? err.message);
       }
     });
   }
