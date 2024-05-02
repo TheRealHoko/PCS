@@ -3,7 +3,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { RegisterDto } from "@ace/shared";
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Role } from 'apps/frontend/role';
@@ -58,10 +58,15 @@ export class AuthService {
     }
 
     return this.http.post<{token: string}>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password})
-    .pipe(map(user => {
-      this.isLoggedIn$.next(true);
-      return user;
-    }));
+    .pipe(
+      map(user => {
+        this.isLoggedIn$.next(true);
+        return user;
+      }),
+      tap(x =>  console.log(x)),
+      catchError(error => {
+        return throwError(() => error);
+      }));
   }
 
   register(registerDto: RegisterDto) {

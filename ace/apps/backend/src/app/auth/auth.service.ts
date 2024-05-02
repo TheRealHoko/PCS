@@ -20,27 +20,25 @@ export class AuthService {
     async login(signInDto: SignInDto): Promise<any> {
         const {email, password} = signInDto;
 
-        try {
-            const user = await this.usersService.findOne({email});
-            
-            if (!user) {
-                throw new NotFoundException("Invalid credentials");
-            }
-    
-            const isAuthorized = await bcrypt.compare(password, user.hash);
-    
-            if (!isAuthorized) {
-                throw new UnauthorizedException("Invalid credentials");
-            }
-    
-            const payload = {sub: user.id, email: user.email};
-    
-            return { token: await this.jwtService.signAsync(payload) };
-        } catch (error) {
-            if (error.status === 404) {
-                throw new UnauthorizedException("Invalid credentials");
-            }
+        const user = await this.usersService.findOne({email});
+        
+        if (!user) {
+            throw new UnauthorizedException("Invalid credentials");
         }
+        
+        if (!user.status) {
+            throw new BadRequestException("User not verified");
+        }
+
+        const isAuthorized = await bcrypt.compare(password, user.hash);
+
+        if (!isAuthorized) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        const payload = {sub: user.id, email: user.email};
+
+        return { token: await this.jwtService.signAsync(payload) };
     }
 
     async register(registerInfo: RegisterDto) {

@@ -95,10 +95,6 @@ export class LoginComponent {
         }
         this.alertService.info('Logged in successfully');
         this.router.navigateByUrl('/home');
-      },
-      error: (err) => {
-        console.error(err);
-        this.alertService.info(err.error.message ?? err.message);
       }
     });
   }
