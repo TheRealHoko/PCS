@@ -10,6 +10,7 @@ import { RegisterComponent } from './register/register.component';
 import { UploadComponent } from './upload/upload.component';
 import { ProviderComponent } from "./provider/provider.component";
 import { authGuard } from './guard/auth.guard';
+import { ProviderComponent } from "./provider/provider.component";
 
 export const appRoutes: Route[] = [
     { path: 'home', component: HomeComponent },
