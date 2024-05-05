@@ -9,8 +9,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
+import { CreateServiceDto } from '@ace/shared';
+import { UpdateServiceDto } from '@ace/shared';
 
 @Controller('services')
 export class ServicesController {
