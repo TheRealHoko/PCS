@@ -25,6 +25,4 @@ export class Service {
 
     @Column({default: false})
     validated: Boolean;
-
-    
 }
