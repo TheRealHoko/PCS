@@ -22,4 +22,7 @@ export class Service {
 
     @Column({nullable: false})
     service_type: string;
+
+    @Column({default: false})
+    validated: Boolean;
 }

@@ -32,6 +32,7 @@
           <a routerLink="/" class="text-primary">PCS</a>
           @if (isLoggedIn$ | async) {
             <button mat-button color="warn">Become a renter</button>
+            <button routerLink="provider" mat-button color="warn">Become a provider</button>
             <button mat-button color="warn" (click)="logout()">Logout</button>
           }
           @else {

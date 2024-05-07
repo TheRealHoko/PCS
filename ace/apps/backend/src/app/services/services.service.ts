@@ -36,8 +36,18 @@ export class ServicesService {
     return service;
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
+  async update(id: number, updateServiceDto: UpdateServiceDto) {
+    const service = await this.servicesRepository.preload({
+      id: id,
+      ...updateServiceDto,
+    });
+
+    if (!service) {
+      throw new NotFoundException(`Service #${id} introuvable`);
+    }
+
+    await this.servicesRepository.save(service);
+    return service;
   }
 
   async remove(id: number) {
