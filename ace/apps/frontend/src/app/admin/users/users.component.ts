@@ -1,10 +1,11 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { UsersService } from '../../services/users.service';
 import { MatButtonModule } from '@angular/material/button';
-import { TableComponent } from '../../table/table.component';
+import { TableComponent } from '../../components/table/table.component';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'ace-users',
@@ -32,9 +33,18 @@ export class UsersComponent {
   ];
 
   constructor(
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly alertService: AlertService
   ) {}
 
+  editRow(row: {id: number}) {
+    console.log(JSON.stringify(row.id))
+  }
+
+  deleteRow(row: {name: string, id: number}) {
+    this.usersService.deleteUser(row.id).subscribe(console.log);
+    this.alertService.info(`User ${row.name} (${row.id}) was deleted`)
+  }
 }
 
 

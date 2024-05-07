@@ -6,7 +6,7 @@ import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { Role } from 'apps/frontend/role';
+import { RoleEnum } from '@ace/shared';
 import { UsersService } from './users.service';
 
 @Injectable({
@@ -30,6 +30,11 @@ export class AuthService {
 
   isLoggedIn() {
     const token: JwtPayload | void = this.getToken();
+    
+    return this.isTokenExpired(token);
+  }
+
+  isTokenExpired(token: JwtPayload | void) {
     if (token && token.exp) {
       const currentTimeInSeconds = Math.floor(Date.now() / 1000);
       const isTokenExpired = currentTimeInSeconds >= token.exp;
@@ -39,7 +44,7 @@ export class AuthService {
     return false;
   }
 
-  hasRoles(roles: Role[]): Observable<boolean> {
+  hasRoles(roles: RoleEnum[]): Observable<boolean> {
     const token = this.getToken();
     if (!token || !token.sub) {
       return of(false);

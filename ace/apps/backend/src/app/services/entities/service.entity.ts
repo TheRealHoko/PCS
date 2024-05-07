@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { User } from "../../users/entities/user.entity";
 
 @Entity()
 export class Service {
@@ -22,4 +23,10 @@ export class Service {
 
     @Column({nullable: false})
     service_type: string;
+
+    @Column({default: false})
+    validated: boolean;
+
+    @ManyToOne(() => User, (user) => user.services, { eager: true })
+    provider: User;
 }

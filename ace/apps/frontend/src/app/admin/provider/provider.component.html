@@ -1,2 +1,10 @@
-<ace-table [datasource]="services" [columns]="columns">
+<ace-table [datasource]="this.servicesStore.services()" [columns]="columns" [actionTemplate]="actionTemplate">
+    <ng-template #actionTemplate let-row>
+        @if (!row.validated) {
+            <button mat-flat-button color="green" (click)="validateService(row)">Validate</button>
+        }
+        <button mat-flat-button color="primary" (click)="editRow(row)">Edit</button>
+        <button mat-flat-button color="warn" (click)="deleteRow(row)">Delete</button>
+    </ng-template>
+</ace-table>
 

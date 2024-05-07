@@ -17,4 +17,7 @@ export class CreateServiceDto {
     @IsNotEmpty()
     service_type!: string;
 
+    @IsNotEmpty()
+    provider_id!: number
+
 }

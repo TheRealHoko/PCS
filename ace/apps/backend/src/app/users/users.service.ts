@@ -46,7 +46,7 @@ export class UsersService {
     try {
       const hash = await bcrypt.hash(createUserDto.password, this.saltRounds);
       user.hash = hash;
-      this.usersRepository.save(user);
+      return this.usersRepository.save(user);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -71,7 +71,7 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where });
 
     if (!user) {
-      return null;
+      throw new NotFoundException("User not found");
     }
     
     return user;
@@ -106,17 +106,11 @@ export class UsersService {
       Object.assign(user, updateUserDtoWithoutRoles);
       
       if (updateUserDto.password) {
-        bcrypt.hash(updateUserDto.password, this.saltRounds, (err ,hash) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          user.hash = hash;
-          this.usersRepository.save(user);
-        });
-      } else {
-        this.usersRepository.save(user);
+        const hash = await bcrypt.hash(updateUserDto.password, this.saltRounds);
+        user.hash = hash;
       }
+
+      return await this.usersRepository.save(user);
     } catch (error) {
       const err = error as Error;
       throw new BadRequestException("Error : " + err.message);

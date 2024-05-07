@@ -6,12 +6,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
-import { CustomValidators } from '../shared/custom.validators';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../services/users.service';
 import { User } from '@ace/shared';
-import { Role } from 'apps/frontend/role';
+import { RoleEnum } from '@ace/shared';
 
 @Component({
   selector: 'ace-login',
@@ -88,7 +87,7 @@ export class LoginComponent {
             next: (user: User) => {
               console.log(user);
               if (user.roles) {
-                this.authService.isAdmin$.next(!!user.roles.find(role => role.name == Role.ADMIN))
+                this.authService.isAdmin$.next(!!user.roles.find(role => role.name == RoleEnum.ADMIN))
               }
             }
           });

@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges, input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { CdkTableDataSourceInput } from '@angular/cdk/table';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'ace-table',
@@ -12,17 +13,17 @@ import { CdkTableDataSourceInput } from '@angular/cdk/table';
     CommonModule,
     MatTableModule,
     MatExpansionModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
 })
 export class TableComponent implements OnChanges {
-  datasource = input<CdkTableDataSourceInput<any>>([]);
+  @Input() datasource: CdkTableDataSourceInput<any> = [];
   @Input() columns: { key: string, display: string }[] = [];
+  @Input() actionTemplate: TemplateRef<any> | null = null;
   
-  @Input() actions?: MatButton[] = [];
-
   displayedColumns: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -30,17 +31,13 @@ export class TableComponent implements OnChanges {
       this.displayedColumns = this.columns.map(c => c.key).concat('actions');
     }
   }
-  
-  editRow(row: any) {
-    console.log(`Editing ${row}`);
-  }
-
-  deleteRow(row: any) {
-    console.log(`Deleting ${row}`);
-  }
 
   isObjectType(value: any): boolean {
     return typeof value === 'object' && value.length !== 0;
+  }
+  
+  isBooleanType(value: any): boolean {
+    return typeof value === 'boolean';
   }
 
 }
