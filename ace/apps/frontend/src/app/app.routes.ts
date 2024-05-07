@@ -15,9 +15,15 @@ export const appRoutes: Route[] = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent, title: 'Login' },
     { path: 'register', component: RegisterComponent, title: 'Register' },
-    { path: 'admin/users', component: UsersComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN]} },
-    { path: 'admin/review', component: ReviewComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN]} },
-    { path: 'admin/location', component: LocationComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN]} },
-    { path: 'admin/provider', component: ProviderComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN]} },
-    { path: 'admin/tools', component: ToolsComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN]} },
+    { 
+        path: 'admin', 
+        canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN] },
+        children: [
+            { path: 'users', component: UsersComponent,  },
+            { path: 'review', component: ReviewComponent },
+            { path: 'location', component: LocationComponent },
+            { path: 'provider', component: ProviderComponent },
+            { path: 'tools', component: ToolsComponent }
+        ]
+    }
 ];

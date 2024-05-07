@@ -15,14 +15,19 @@ export class ServicesService {
     return this.http.get<Service[]>(`${environment.apiUrl}/api/services`);
   }
 
-  validateService(id: number) {
-    return this.http.patch<Service>(`${environment.apiUrl}/api/services/validate/${id}`, null);
-  }
-  updateService(id: number, updateServiceDTO: UpdateServiceDto) {
-    return this.http.patch<Service>(`${environment.apiUrl}/api/services/${id}`, updateServiceDTO);
+  getService(id: number): Observable<Service> {
+    return this.http.get<Service>(`${environment.apiUrl}/api/services/${id}`);
   }
 
-  deleteService(id: number) {
+  validateService(id: number): Observable<Service> {
+    return this.http.patch<Service>(`${environment.apiUrl}/api/services/validate/${id}`, null);
+  }
+
+  updateService(id: number, body: UpdateServiceDto): Observable<Service> {
+    return this.http.patch<Service>(`${environment.apiUrl}/api/services/${id}`, body);
+  }
+
+  deleteService(id: number): Observable<Service> {
     return this.http.delete<Service>(`${environment.apiUrl}/api/services/${id}`);
   }
 }

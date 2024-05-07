@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { AlertService } from '../../services/alert.service';
 import { ServicesStore } from '../../stores/services.store';
 import { DialogFormComponent } from '../../components/dialogs/dialog-form/dialog-form.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'ace-provider',
@@ -17,7 +19,9 @@ import { DialogFormComponent } from '../../components/dialogs/dialog-form/dialog
     MatTableModule,
     MatButtonModule,
     TableComponent,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './provider.component.html',
   styleUrl: './provider.component.css',
@@ -35,7 +39,6 @@ export class ProviderComponent implements OnInit {
   ];
 
   constructor(
-    private readonly servicesService: ServicesService,
     private readonly alertService: AlertService,
     private readonly dialog: MatDialog
   ) {}

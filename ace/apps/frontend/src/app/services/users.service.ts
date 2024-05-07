@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from '@ace/shared';
+import { UpdateUserDto, User } from '@ace/shared';
 import { Observable, catchError, take } from 'rxjs';
 
 @Injectable({
@@ -16,16 +16,14 @@ export class UsersService {
   }
 
   getUser(id: number) {
-    return this.http.get<User>(`${environment.apiUrl}/api/users/${id}`).pipe(
-      take(1),
-      catchError(error => {
-        console.error('Error fetching user :', error);
-        throw error;
-      })
-    );
+    return this.http.get<User>(`${environment.apiUrl}/api/users/${id}`);
   }
 
+  updateUser(id: number, body: UpdateUserDto) {
+    return this.http.patch<User>(`${environment.apiUrl}/api/users/${id}`, body);
+  }
+  
   deleteUser(id: number) {
-    return this.http.delete(`${environment.apiUrl}/api/users/${id}`);
+    return this.http.delete<User>(`${environment.apiUrl}/api/users/${id}`);
   }
 }

@@ -1,9 +1,9 @@
 import { Service, UpdateServiceDto } from '@ace/shared';
-import { signalStore, withState, withMethods, withComputed, patchState } from '@ngrx/signals';
+import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { ServicesService } from '../services/services.service';
 import { inject } from '@angular/core';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 import { tapResponse } from "@ngrx/operators";
 
 interface RxUpdateService {
@@ -72,7 +72,7 @@ export const ServicesStore = signalStore(
                                     console.error(err);
                                 }
                             })
-                        )
+                        );
                 })
             )
         ),
