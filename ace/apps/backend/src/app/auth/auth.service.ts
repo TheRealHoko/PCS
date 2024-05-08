@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { UsersService } from '../users/users.service';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
-import { AceJwtPayload, RegisterDto, RoleEnum } from '@ace/shared';
+import { AceJwtPayload, LoginResponse, RegisterDto, RoleEnum } from '@ace/shared';
 import { CreateUserDto } from '@ace/shared';
 import { SignInDto } from '@ace/shared';
 import { User } from '../users/entities/user.entity';
@@ -17,7 +17,7 @@ export class AuthService {
         private readonly mailService: MailService
     ) {}
 
-    async login(signInDto: SignInDto): Promise<any> {
+    async login(signInDto: SignInDto): Promise<LoginResponse> {
         const {email, password} = signInDto;
 
         const user = await this.usersService.findOne({email});
