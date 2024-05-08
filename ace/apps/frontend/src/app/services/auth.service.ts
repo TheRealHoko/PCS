@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { RegisterDto } from "@ace/shared";
+import { AceJwtPayload, LoginResponse, RegisterDto } from "@ace/shared";
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import {  Observable, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { RoleEnum } from '@ace/shared';
@@ -13,9 +13,6 @@ import { UsersService } from './users.service';
   providedIn: 'root'
 })
 export class AuthService {
-  isLoggedIn$ = new BehaviorSubject<boolean>(false);
-  isAdmin$ = new BehaviorSubject<boolean>(false);
-
   private isBrowser: boolean;
 
   constructor(
@@ -29,7 +26,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    const token: JwtPayload | void = this.getToken();
+    const token: JwtPayload | void = this.getDecodedToken();
     
     return this.isTokenExpired(token);
   }
@@ -45,7 +42,7 @@ export class AuthService {
   }
 
   hasRoles(roles: RoleEnum[]): Observable<boolean> {
-    const token = this.getToken();
+    const token = this.getDecodedToken();
     if (!token || !token.sub) {
       return of(false);
     }
@@ -57,28 +54,19 @@ export class AuthService {
     );
 }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<LoginResponse> {
     if (!email || !password) {
       throw new Error('Email or password empty');
     }
 
-    return this.http.post<{token: string}>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password})
-    .pipe(
-      map(user => {
-        this.isLoggedIn$.next(true);
-        return user;
-      }),
-      tap(x =>  console.log(x)),
-      catchError(error => {
-        return throwError(() => error);
-      }));
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password});
   }
 
   register(registerDto: RegisterDto) {
     return this.http.post(`${environment.apiUrl}/api/auth/register`, registerDto);
   }
 
-  verify(email: string, token: string) {
+  verifyAccount(email: string, token: string) {
     return this.http.post(`${environment.apiUrl}/api/auth/verify`, { email, token });
   }
 
@@ -95,19 +83,18 @@ export class AuthService {
     return "";
   }
 
-  getToken(): JwtPayload | void {
-      const token = this.getRawToken();
-      if (token) {
-        const jwtToken = jwtDecode(token);
-        return jwtToken;
-      }
+
+  getDecodedToken(): AceJwtPayload | void {
+    const token = this.getRawToken();
+    if (token) {
+      const jwtToken= jwtDecode<AceJwtPayload>(token);
+      return jwtToken;
+    }
   }
 
   logout() {
     if (this.isBrowser) {
       localStorage.removeItem('token');
-      this.isLoggedIn$.next(false);
-      this.isAdmin$.next(false);
       this.router.navigateByUrl('/login');
     }
   }

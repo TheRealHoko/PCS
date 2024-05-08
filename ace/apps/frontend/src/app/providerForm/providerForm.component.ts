@@ -49,7 +49,7 @@ export class ProviderFormComponent {
   onCreateService() {
     if (this.serviceForm.valid) {
       const createServiceDTO: CreateServiceDto = this.serviceForm.value;
-      const token = this.authService.getToken();
+      const token = this.authService.getDecodedToken();
 
       if (token && token.sub) {
         createServiceDTO.provider_id = +token.sub;

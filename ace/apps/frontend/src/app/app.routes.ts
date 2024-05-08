@@ -3,7 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { ReviewComponent } from './admin/review/review.component';
 import { UsersComponent } from './admin/users/users.component';
 import { LocationComponent } from './admin/location/location.component';
-import { ProviderComponent } from './admin/provider/provider.component';
+import { ProviderAdminDashboardComponent } from './admin/provider/provider.component';
 import { ToolsComponent } from './admin/tools/tools.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -24,7 +24,7 @@ export const appRoutes: Route[] = [
             { path: 'users', component: UsersComponent,  },
             { path: 'review', component: ReviewComponent },
             { path: 'location', component: LocationComponent },
-            { path: 'provider', component: ProviderComponent },
+            { path: 'provider', component: ProviderAdminDashboardComponent },
             { path: 'tools', component: ToolsComponent }
         ]
     },

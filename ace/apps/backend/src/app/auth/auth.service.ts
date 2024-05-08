@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { UsersService } from '../users/users.service';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
-import { RegisterDto } from '@ace/shared';
+import { AceJwtPayload, RegisterDto, RoleEnum } from '@ace/shared';
 import { CreateUserDto } from '@ace/shared';
 import { SignInDto } from '@ace/shared';
 import { User } from '../users/entities/user.entity';
@@ -36,7 +36,11 @@ export class AuthService {
             throw new UnauthorizedException("Invalid credentials");
         }
 
-        const payload = {sub: user.id, email: user.email};
+        const payload: AceJwtPayload = {
+            sub: user.id.toString(), 
+            email: user.email, 
+            roles: user.roles.map(role => role.name) as RoleEnum[]
+        };
 
         return { token: await this.jwtService.signAsync(payload) };
     }

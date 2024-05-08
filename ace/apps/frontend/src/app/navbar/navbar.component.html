@@ -1,5 +1,5 @@
-@if (isLoggedIn$ | async) {
-  @if (isAdmin$ | async) {
+@if (authStore.isAuthenticated()) {
+  @if (authStore.isAdmin()) {
     <mat-drawer-container class="globalContent" autosize>
         <mat-drawer #drawer class="adminNavBar" mode="side">
           <div class="PCS">

@@ -7,11 +7,13 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './auth.interceptor';
 import { ServicesStore } from './stores/services.store';
 import { UsersStore } from './stores/users.store';
+import { AuthStore } from './stores/auth.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     ServicesStore,
     UsersStore,
+    AuthStore,
     provideClientHydration(),
     provideRouter(appRoutes),
     provideAnimationsAsync(),

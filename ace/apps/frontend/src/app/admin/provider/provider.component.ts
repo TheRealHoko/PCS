@@ -26,7 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './provider.component.html',
   styleUrl: './provider.component.css',
 })
-export class ProviderComponent implements OnInit {
+export class ProviderAdminDashboardComponent implements OnInit {
   readonly servicesStore = inject(ServicesStore);
   columns = [
     { key: 'id', display: 'ID' },
