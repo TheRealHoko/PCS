@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Service, UpdateServiceDto } from '@ace/shared';
+import { Service, UpdateServiceDto, CreateServiceDto } from '@ace/shared';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,8 +11,12 @@ export class ServicesService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getServices(): Observable<Service[]> {
-    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`);
+  getServices() {
+    return this.http.get(`${environment.apiUrl}/api/services`) 
+  }
+
+  createServices(createServiceDto: CreateServiceDto) {
+    return this.http.post(`${environment.apiUrl}/api/services`,createServiceDto)
   }
 
   getService(id: number): Observable<Service> {
