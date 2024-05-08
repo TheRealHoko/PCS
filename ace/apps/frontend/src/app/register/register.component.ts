@@ -30,6 +30,8 @@ import { AlertService } from '../services/alert.service';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  hidePassword: boolean = true;
+  hidePasswordConfirmation: boolean = true;
 
   constructor(
     private readonly fb: FormBuilder,

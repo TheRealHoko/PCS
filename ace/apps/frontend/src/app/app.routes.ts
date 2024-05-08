@@ -10,16 +10,24 @@ import { RegisterComponent } from './register/register.component';
 import { UploadComponent } from './upload/upload.component';
 // import { ProviderComponent } from "./provider/provider.component";
 import { authGuard } from './guard/auth.guard';
+import { RoleEnum } from '@ace/shared';
+import { rolesGuard } from './guard/roles.guard';
 import { ProviderComponent } from "./provider/provider.component";
 
 export const appRoutes: Route[] = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent, title: 'Login' },
     { path: 'register', component: RegisterComponent, title: 'Register' },
-    { path: 'admin/users', component: UsersComponent, canActivate: [authGuard] },
-    { path: 'admin/review', component: ReviewComponent, canActivate: [authGuard] },
-    { path: 'admin/location', component: LocationComponent, canActivate: [authGuard] },
-    { path: 'admin/provider', component: ProviderComponent, canActivate: [authGuard] },
-    { path: 'admin/tools', component: ToolsComponent, canActivate: [authGuard] },
+    { 
+        path: 'admin', 
+        canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.ADMIN] },
+        children: [
+            { path: 'users', component: UsersComponent,  },
+            { path: 'review', component: ReviewComponent },
+            { path: 'location', component: LocationComponent },
+            { path: 'provider', component: ProviderComponent },
+            { path: 'tools', component: ToolsComponent }
+        ]
+    },
     { path: 'provider', component: ProviderComponent }
 ];

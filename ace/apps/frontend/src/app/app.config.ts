@@ -5,9 +5,13 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth.interceptor';
+import { ServicesStore } from './stores/services.store';
+import { UsersStore } from './stores/users.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    ServicesStore,
+    UsersStore,
     provideClientHydration(),
     provideRouter(appRoutes),
     provideAnimationsAsync(),

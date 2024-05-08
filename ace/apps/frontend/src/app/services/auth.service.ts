@@ -3,10 +3,10 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { RegisterDto } from "@ace/shared";
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { Role } from 'apps/frontend/role';
+import { RoleEnum } from '@ace/shared';
 import { UsersService } from './users.service';
 
 @Injectable({
@@ -30,6 +30,11 @@ export class AuthService {
 
   isLoggedIn() {
     const token: JwtPayload | void = this.getToken();
+    
+    return this.isTokenExpired(token);
+  }
+
+  isTokenExpired(token: JwtPayload | void) {
     if (token && token.exp) {
       const currentTimeInSeconds = Math.floor(Date.now() / 1000);
       const isTokenExpired = currentTimeInSeconds >= token.exp;
@@ -39,7 +44,7 @@ export class AuthService {
     return false;
   }
 
-  hasRoles(roles: Role[]): Observable<boolean> {
+  hasRoles(roles: RoleEnum[]): Observable<boolean> {
     const token = this.getToken();
     if (!token || !token.sub) {
       return of(false);
@@ -58,10 +63,15 @@ export class AuthService {
     }
 
     return this.http.post<{token: string}>(`${environment.apiUrl}/api/auth/login`, {email: email, password: password})
-    .pipe(map(user => {
-      this.isLoggedIn$.next(true);
-      return user;
-    }));
+    .pipe(
+      map(user => {
+        this.isLoggedIn$.next(true);
+        return user;
+      }),
+      tap(x =>  console.log(x)),
+      catchError(error => {
+        return throwError(() => error);
+      }));
   }
 
   register(registerDto: RegisterDto) {

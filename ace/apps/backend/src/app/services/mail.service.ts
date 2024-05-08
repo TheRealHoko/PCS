@@ -4,8 +4,8 @@ import { Transporter, createTransport } from "nodemailer";
 
 @Injectable()
 export class MailService {
-    transporter: Transporter;
-    logger: Logger = new Logger(MailService.name);
+    private readonly transporter: Transporter;
+    private readonly logger: Logger = new Logger(MailService.name);
 
     constructor(
         private configService: ConfigService
@@ -25,7 +25,7 @@ export class MailService {
         try {
             const domain = this.configService.get<string>('FRONT_URL');
             const url = `${domain}/login?token=${token}`;
-            this.transporter.sendMail({
+            await this.transporter.sendMail({
                 to: to,
                 subject: 'Verify your email please',
                 html: `
@@ -35,6 +35,19 @@ export class MailService {
                 `
             });
             this.logger.log(`Verification mail sent to ${to}`);
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    async sendMail(to: string, subject: string, body: string) {
+        try {
+            await this.transporter.sendMail({
+                to: to,
+                subject: subject,
+                html: body
+            });
+            this.logger.log(`Mail sent to ${to}`);
         } catch (error) {
             throw new Error(error);
         }

@@ -12,7 +12,6 @@ import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
 import { UploadController } from './upload/upload.controller';
 import { MulterModule } from '@nestjs/platform-express';
-import { PropertiesModule } from './properties/properties.module';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { PropertiesModule } from './properties/properties.module';
     AuthModule,
     PropertiesModule,
     ServicesModule,
-    PropertiesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

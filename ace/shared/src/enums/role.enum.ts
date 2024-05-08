@@ -1,6 +1,5 @@
-export enum Role {
+export enum RoleEnum {
     ADMIN = 'ADMIN',
     TRAVELER = 'TRAVELER',
-    USER = 'USER',
     PROVIDER = 'PROVIDER'
 }

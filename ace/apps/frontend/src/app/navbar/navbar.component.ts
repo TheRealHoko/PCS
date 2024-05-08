@@ -8,7 +8,7 @@ import { ReviewComponent } from '../admin/review/review.component';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
-import { Role } from 'apps/frontend/role';
+import { RoleEnum } from '@ace/shared';
 
 @Component({
   selector: 'ace-navbar',
@@ -34,7 +34,7 @@ export class NavbarComponent {
     private readonly alertService: AlertService,
   ) {
     this.authService.isLoggedIn$.next(this.authService.isLoggedIn());
-    this.authService.hasRoles([Role.ADMIN]).subscribe(hasRole => {
+    this.authService.hasRoles([RoleEnum.ADMIN]).subscribe(hasRole => {
       if (hasRole) {
         this.isAdmin$.next(true);
       }

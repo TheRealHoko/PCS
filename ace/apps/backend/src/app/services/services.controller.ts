@@ -9,18 +9,25 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { CreateServiceDto } from '@ace/shared';
+import { CreateServiceDto, RoleEnum } from '@ace/shared';
 import { UpdateServiceDto } from '@ace/shared';
+import { MailService } from './mail.service';
+import { UsersService } from '../users/users.service';
 
 @Controller('services')
 export class ServicesController {
-  constructor(private readonly servicesService: ServicesService) {}
+  constructor(
+    private readonly servicesService: ServicesService,
+    private readonly usersService: UsersService,
+    private readonly mailService: MailService
+  ) {}
 
-  logger = new Logger(ServicesController.name);
+  private readonly logger = new Logger(ServicesController.name);
 
   @Post()
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  async create(@Body() createServiceDto: CreateServiceDto) {
+    const provider = await this.usersService.findOne({id: createServiceDto.provider_id})
+    return this.servicesService.create(createServiceDto, provider);
   }
 
   @Get()
@@ -35,7 +42,26 @@ export class ServicesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-    return this.servicesService.update(+id, updateServiceDto);
+    const updatedService = this.servicesService.update(+id, updateServiceDto);
+    return updatedService;
+  }
+
+  @Patch('validate/:id')
+  async validate(@Param('id') id: string) {
+    const updatedService = await this.servicesService.update(+id, {validated: true});
+    this.usersService.update(updatedService.provider.id, {roles: [...updatedService.provider.roles.map(role => role.name), RoleEnum.PROVIDER]});
+    this.logger.log(`Added PROVIDER role to user #${updatedService.provider.id}`);
+
+    await this.mailService.sendMail(
+      updatedService.provider.email, 
+      `Service creation request for #${updatedService.id}`,
+    `
+      <h1>Your service has been validated ${updatedService.provider.firstname} !</h1>
+      <p>After a thourough review your service creation request has been validated by an admin</p>
+    `);
+    
+    this.logger.log(`Service validation email has been sent to ${updatedService.provider.email}`);
+    return updatedService;
   }
 
   @Delete(':id')
