@@ -1,7 +1,12 @@
 <ace-table [datasource]="this.servicesStore.services()" [columns]="columns" [actionTemplate]="actionTemplate">
     <ng-template #actionTemplate let-row>
-        @if (!row.validated) {
-            <button mat-flat-button (click)="validateService(row)">Validate</button>
+        @if (row.status === "WAITING") {
+            <button mat-flat-button (click)="validateService(row)" matTooltip="Validate">
+                <mat-icon>thumb_up</mat-icon>
+            </button>
+            <button mat-flat-button (click)="invalidateService(row)" matTooltip="Refuse">
+                <mat-icon>thumb_down</mat-icon>
+            </button>
         }
         <button mat-flat-button (click)="editRow(row)" matTooltip="Edit">
             <mat-icon>edit</mat-icon>

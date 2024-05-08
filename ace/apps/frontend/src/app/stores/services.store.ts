@@ -76,6 +76,25 @@ export const ServicesStore = signalStore(
                 })
             )
         ),
+        invalidateService: rxMethod<number>(
+            pipe(
+                debounceTime(500),
+                switchMap((id: number) => {
+                    return service.invalidateService(id)
+                        .pipe(
+                            tapResponse({
+                                next: (updatedService) => {
+                                    patchState(store, { services: store.services().map(service => 
+                                        service.id === updatedService.id ? updatedService : service) });
+                                },
+                                error: err => {
+                                    console.error(err);
+                                }
+                            })
+                        );
+                })
+            )
+        ),
         updateService: rxMethod<RxUpdateService>(
             pipe(
                 debounceTime(500),

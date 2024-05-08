@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { ServicesService } from '../services/services.service'; // Assurez-vous d'avoir ce service
+import { ServicesService } from '../services/services.service';
 import { AlertService } from '../services/alert.service';
 import { Router } from '@angular/router';
+import { CreateServiceDto } from '@ace/shared';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'ace-service',
@@ -20,17 +22,18 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatCheckboxModule
   ],
-  templateUrl: './provider.component.html',
-  styleUrls: ['./provider.component.css'],
+  templateUrl: './providerForm.component.html',
+  styleUrls: ['./providerForm.component.css'],
 })
-export class ProviderComponent {
+export class ProviderFormComponent {
   serviceForm: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly servicesService: ServicesService,
     private readonly alertService: AlertService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {
     this.serviceForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,10 +48,21 @@ export class ProviderComponent {
 
   onCreateService() {
     if (this.serviceForm.valid) {
-      this.servicesService.createServices(this.serviceForm.value).subscribe({
+      const createServiceDTO: CreateServiceDto = this.serviceForm.value;
+      const token = this.authService.getToken();
+
+      if (token && token.sub) {
+        createServiceDTO.provider_id = +token.sub;
+      }
+      else {
+        this.alertService.info("Couldn't fetch the provider id");
+        throw new Error("Couldn't fetch the provider id");
+      }
+
+      this.servicesService.createServices(createServiceDTO).subscribe({
         next: () => {
-          this.alertService.info('Service créé avec succès');
-          this.router.navigateByUrl('/dashboard'); // Assurez-vous que cette route existe
+          this.alertService.info('Demande de création de service envoyé');
+          this.router.navigateByUrl('/home');
         },
         error: (err: Error) => {
           this.alertService.info('Erreur lors de la création du service : ' + err.message);

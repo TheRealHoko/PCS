@@ -10,11 +10,10 @@ import {
   Logger
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from "@ace/shared";
+import { CreateUserDto, RoleEnum } from "@ace/shared";
 import { UpdateUserDto } from "@ace/shared";
 import { RolesGuard } from '../roles/roles.guard';
 import { Roles } from '../roles/roles.decorator';
-import { Role } from '../roles/enums/role.enum';
 
 @Controller('users')
 @UseGuards(RolesGuard)
@@ -26,19 +25,19 @@ export class UsersController {
   logger = new Logger(UsersController.name);
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Roles(RoleEnum.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @Roles(RoleEnum.ADMIN)
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  // @Roles(Role.ADMIN)
+  // @Roles(RoleEnum.ADMIN)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne({
       id :+id
@@ -46,13 +45,13 @@ export class UsersController {
   }
 
   @Patch(':id')
-  // @Roles(Role.ADMIN)
+  // @Roles(RoleEnum.ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles(RoleEnum.ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

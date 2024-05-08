@@ -11,12 +11,12 @@ export class ServicesService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getServices() {
-    return this.http.get(`${environment.apiUrl}/api/services`) 
+  getServices(): Observable<Service[]> {
+    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`) 
   }
 
-  createServices(createServiceDto: CreateServiceDto) {
-    return this.http.post(`${environment.apiUrl}/api/services`,createServiceDto)
+  createServices(createServiceDto: CreateServiceDto): Observable<Service> {
+    return this.http.post<Service>(`${environment.apiUrl}/api/services`,createServiceDto)
   }
 
   getService(id: number): Observable<Service> {
@@ -25,6 +25,10 @@ export class ServicesService {
 
   validateService(id: number): Observable<Service> {
     return this.http.patch<Service>(`${environment.apiUrl}/api/services/validate/${id}`, null);
+  }
+
+  invalidateService(id: number): Observable<Service> {
+    return this.http.patch<Service>(`${environment.apiUrl}/api/services/invalidate/${id}`, null);
   }
 
   updateService(id: number, body: UpdateServiceDto): Observable<Service> {

@@ -24,8 +24,8 @@ export class Service {
     @Column({nullable: false})
     service_type: string;
 
-    @Column({default: false})
-    validated: boolean;
+    @Column({default: "WAITING"})
+    status: "OFFLINE" | "WAITING" | "ONLINE";
 
     @ManyToOne(() => User, (user) => user.services, { eager: true })
     provider: User;

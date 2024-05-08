@@ -53,6 +53,13 @@ export class ProviderComponent implements OnInit {
     this.alertService.info(`Service ${row.name} (${row.id}) was validated, an email was sent to the user`);
   }
 
+  invalidateService(row: {name: string, id: number}) {
+    const invalidatedService = this.servicesStore.invalidateService(row.id);
+    console.log(invalidatedService);
+    // Put user mail in snackbar
+    this.alertService.info(`Service ${row.name} (${row.id}) was refused, an email was sent to the user`);
+  }
+
   editRow(row: {id: number}) {
     this.dialog.open(DialogFormComponent, {
       data: {name: "hello"}
