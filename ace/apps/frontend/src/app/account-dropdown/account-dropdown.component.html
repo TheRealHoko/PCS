@@ -1,0 +1,19 @@
+<button mat-icon-button [mat-menu-trigger-for]="menu">
+    <mat-icon>account_circle</mat-icon>
+</button>
+<mat-menu #menu="matMenu" class="flex flex-col">
+    @if (authStore.isRenter()) {
+        <button mat-menu-item>My properties</button>
+    }
+    @else {
+        <button mat-menu-item routerLink="propertyCreation">Become a renter</button>
+    }
+    @if (authStore.isProvider()) {
+        <button mat-menu-item routerLink="provider/my-services">My services</button>
+    }
+    @else {
+        <button mat-menu-item routerLink="providerCreation">Become a provider</button>
+    }
+    <button mat-menu-item>My preferences</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+</mat-menu>

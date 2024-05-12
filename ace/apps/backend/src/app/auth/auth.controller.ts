@@ -5,21 +5,21 @@ import { RegisterDto } from '@ace/shared';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @HttpCode(200)
-    @Post('login')
-    async login(@Body() signInDto: SignInDto) {
-        return await this.authService.login(signInDto);
-    }
+  @HttpCode(200)
+  @Post('login')
+  async login(@Body() signInDto: SignInDto) {
+    return await this.authService.login(signInDto);
+  }
 
-    @Post('register')
-    async register(@Body() registerDto: RegisterDto) {
-        return await this.authService.register(registerDto);
-    }
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto) {
+    return await this.authService.register(registerDto);
+  }
 
-    @Post('verify')
-    async verify(@Body('email') email: string, @Body('token') token: string) {
-        this.authService.verify(email, token);
-    }
+  @Post('verify')
+  async verify(@Body('email') email: string, @Body('token') token: string) {
+    this.authService.verify(email, token);
+  }
 }

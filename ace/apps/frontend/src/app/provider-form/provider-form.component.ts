@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatCheckboxModule } from "@angular/material/checkbox";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ServicesService } from '../services/services.service';
 import { AlertService } from '../services/alert.service';
 import { Router } from '@angular/router';
@@ -20,10 +25,10 @@ import { AuthService } from '../services/auth.service';
     MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
-  templateUrl: './providerForm.component.html',
-  styleUrls: ['./providerForm.component.css'],
+  templateUrl: './provider-form.component.html',
+  styleUrls: ['./provider-form.component.css'],
 })
 export class ProviderFormComponent {
   serviceForm: FormGroup;
@@ -42,19 +47,18 @@ export class ProviderFormComponent {
       price: ['', [Validators.required, Validators.min(0)]],
       effectif: ['', [Validators.required, Validators.min(1)]],
       available: [true],
-      validated: [false]
+      validated: [false],
     });
   }
 
-  onCreateService() {
+  onSubmit() {
     if (this.serviceForm.valid) {
       const createServiceDTO: CreateServiceDto = this.serviceForm.value;
       const token = this.authService.getDecodedToken();
 
       if (token && token.sub) {
         createServiceDTO.provider_id = +token.sub;
-      }
-      else {
+      } else {
         this.alertService.info("Couldn't fetch the provider id");
         throw new Error("Couldn't fetch the provider id");
       }
@@ -62,11 +66,13 @@ export class ProviderFormComponent {
       this.servicesService.createServices(createServiceDTO).subscribe({
         next: () => {
           this.alertService.info('Demande de création de service envoyé');
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/');
         },
         error: (err: Error) => {
-          this.alertService.info('Erreur lors de la création du service : ' + err.message);
-        }
+          this.alertService.info(
+            'Erreur lors de la création du service : ' + err.message
+          );
+        },
       });
     } else {
       this.alertService.info('Veuillez remplir tous les champs requis');

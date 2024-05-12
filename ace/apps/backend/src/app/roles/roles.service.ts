@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateRoleDto } from "@ace/shared";
-import { UpdateRoleDto } from "@ace/shared";
+import { CreateRoleDto } from '@ace/shared';
+import { UpdateRoleDto } from '@ace/shared';
 import { Repository } from 'typeorm';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,7 +15,7 @@ export class RolesService {
   async create(createRoleDto: CreateRoleDto) {
     const role = new Role();
     role.name = createRoleDto.name;
-    
+
     await this.rolesRepository.save(role);
   }
 
@@ -27,7 +27,7 @@ export class RolesService {
     const role = await this.rolesRepository.findOneBy({ id });
 
     if (!role) {
-      throw new NotFoundException("Role not found");
+      throw new NotFoundException('Role not found');
     }
 
     return role;

@@ -1,8 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
-import { ServicesService } from '../../services/services.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TableComponent } from '../../components/table/table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AlertService } from '../../services/alert.service';
@@ -16,12 +15,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   standalone: true,
   imports: [
     CommonModule,
-    MatTableModule,
     MatButtonModule,
     TableComponent,
     MatDialogModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './provider.component.html',
   styleUrl: './provider.component.css',
@@ -35,7 +33,7 @@ export class ProviderAdminDashboardComponent implements OnInit {
     { key: 'available', display: 'Available' },
     { key: 'effectif', display: 'Effectif' },
     { key: 'price', display: 'Price' },
-    { key: 'service_type', display: 'Type of the service' }
+    { key: 'service_type', display: 'Type of the service' },
   ];
 
   constructor(
@@ -44,33 +42,36 @@ export class ProviderAdminDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.servicesStore.refreshServices()
+    this.servicesStore.refreshServices();
   }
 
-  validateService(row: {name: string, id: number}) {
+  validateService(row: { name: string; id: number }) {
     this.servicesStore.validateService(row.id);
     // Put user mail in snackbar
-    this.alertService.info(`Service ${row.name} (${row.id}) was validated, an email was sent to the user`);
+    this.alertService.info(
+      `Service ${row.name} (${row.id}) was validated, an email was sent to the user`
+    );
   }
 
-  invalidateService(row: {name: string, id: number}) {
+  invalidateService(row: { name: string; id: number }) {
     const invalidatedService = this.servicesStore.invalidateService(row.id);
     console.log(invalidatedService);
     // Put user mail in snackbar
-    this.alertService.info(`Service ${row.name} (${row.id}) was refused, an email was sent to the user`);
+    this.alertService.info(
+      `Service ${row.name} (${row.id}) was refused, an email was sent to the user`
+    );
   }
 
-  editRow(row: {id: number}) {
+  editRow(row: { id: number }) {
     this.dialog.open(DialogFormComponent, {
-      data: {name: "hello"}
+      data: { name: 'hello' },
     });
-    
-    console.log(JSON.stringify(row.id))
+
+    console.log(JSON.stringify(row.id));
   }
 
-  deleteRow(row: {name: string, id: number}) {
+  deleteRow(row: { name: string; id: number }) {
     this.servicesStore.deleteService(row.id);
     this.alertService.info(`Service ${row.name} (${row.id}) was deleted`);
   }
-
 }

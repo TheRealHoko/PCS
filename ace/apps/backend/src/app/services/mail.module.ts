@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { MailService } from './mail.service';
+import { MockMailService } from './mockMail.service';
+
+
+const MailProvider = {
+  provide: MailService,
+  useClass: false ? MailService : MockMailService
+};
 
 @Module({
-    providers: [
-        MailService
-    ],
-    exports: [
-        MailService,
-    ]
+  providers: [MailProvider],
+  exports: [MailProvider],
 })
 export class MailModule {}

@@ -1,56 +1,74 @@
 <section class="flex justify-center items-start mt-16">
-    <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
-        <h1 class="text-secondary text-center text-2xl mb-5">Login</h1>
-        <form 
-            class="flex flex-col justify-center"
-            [formGroup]="loginForm" 
-            (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="fill">
-                <mat-label>Email</mat-label>
-                <input 
-                    matInput 
-                    formControlName="email" 
-                    name="email" 
-                    placeholder="Enter your email" 
-                    type="email">
-                <ul>
-                    <li>
-                        <mat-error *ngIf="email.touched && email.errors?.['required']">Email is required</mat-error>
-                    </li>
-                    <li>
-                        <mat-error *ngIf="email.touched && email.errors?.['email']">Email needs to be in email format</mat-error>    
-                    </li>
-                </ul>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Password</mat-label>
-                <input 
-                    matInput 
-                    formControlName="password" 
-                    name="password" 
-                    placeholder="Enter your password" 
-                    [type]="hide ? 'password' : 'text'">
-                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{ hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-                <ol>
-                    <li>
-                        @if (password.touched && password.errors?.['required']) {
-                            <mat-error>
-                                Password is required
-                            </mat-error>
-                        }
-                    </li>
-                </ol>
-            </mat-form-field>
+  <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
+    <h1 class="text-secondary text-center text-2xl mb-5">Login</h1>
+    <form
+      class="flex flex-col justify-center"
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          name="email"
+          placeholder="Enter your email"
+          type="email"
+        />
+        <ul>
+          <li>
+            <mat-error *ngIf="email.touched && email.errors?.['required']"
+              >Email is required</mat-error
+            >
+          </li>
+          <li>
+            <mat-error *ngIf="email.touched && email.errors?.['email']"
+              >Email needs to be in email format</mat-error
+            >
+          </li>
+        </ul>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          name="password"
+          placeholder="Enter your password"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <ol>
+          <li>
+            @if (password.touched && password.errors?.['required']) {
+            <mat-error> Password is required </mat-error>
+            }
+          </li>
+        </ol>
+      </mat-form-field>
 
-            <button 
-                class="bg-tertiary"
-                mat-raised-button 
-                [disabled]="loginForm.invalid" 
-                type="submit">
-                Sign in
-            </button>
-        </form>
+      <button
+        class="bg-tertiary"
+        mat-raised-button
+        [disabled]="loginForm.invalid"
+        type="submit"
+      >
+        Sign in
+      </button>
+    </form>
+    @if (authStore.isLoading()) {
+    <div class="flex justify-center items-center">
+      <mat-spinner color="warn"></mat-spinner>
     </div>
+    }
+  </div>
 </section>

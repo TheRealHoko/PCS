@@ -5,18 +5,20 @@ import { Service, UpdateServiceDto, CreateServiceDto } from '@ace/shared';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServicesService {
-
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   getServices(): Observable<Service[]> {
-    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`) 
+    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`);
   }
 
   createServices(createServiceDto: CreateServiceDto): Observable<Service> {
-    return this.http.post<Service>(`${environment.apiUrl}/api/services`,createServiceDto)
+    return this.http.post<Service>(
+      `${environment.apiUrl}/api/services`,
+      createServiceDto
+    );
   }
 
   getService(id: number): Observable<Service> {
@@ -24,18 +26,29 @@ export class ServicesService {
   }
 
   validateService(id: number): Observable<Service> {
-    return this.http.patch<Service>(`${environment.apiUrl}/api/services/validate/${id}`, null);
+    return this.http.patch<Service>(
+      `${environment.apiUrl}/api/services/validate/${id}`,
+      null
+    );
   }
 
   invalidateService(id: number): Observable<Service> {
-    return this.http.patch<Service>(`${environment.apiUrl}/api/services/invalidate/${id}`, null);
+    return this.http.patch<Service>(
+      `${environment.apiUrl}/api/services/invalidate/${id}`,
+      null
+    );
   }
 
   updateService(id: number, body: UpdateServiceDto): Observable<Service> {
-    return this.http.patch<Service>(`${environment.apiUrl}/api/services/${id}`, body);
+    return this.http.patch<Service>(
+      `${environment.apiUrl}/api/services/${id}`,
+      body
+    );
   }
 
   deleteService(id: number): Observable<Service> {
-    return this.http.delete<Service>(`${environment.apiUrl}/api/services/${id}`);
+    return this.http.delete<Service>(
+      `${environment.apiUrl}/api/services/${id}`
+    );
   }
 }

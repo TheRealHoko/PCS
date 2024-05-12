@@ -1,27 +1,27 @@
-import { IsNotEmpty } from "class-validator";
-import { CreateAddressDto } from "./create-address.dto";
+import { IsNotEmpty } from 'class-validator';
+import { CreateAddressDto } from './create-address.dto';
 
 export class CreateUserDto {
-    @IsNotEmpty()
-    email!: string;
-    
-    @IsNotEmpty()
-    password!: string;
-    
-    @IsNotEmpty()
-    firstname!: string;
-    
-    @IsNotEmpty()
-    lastname!: string;
-    
-    @IsNotEmpty()
-    phone!: string;
+  @IsNotEmpty()
+  email!: string;
 
-    roles?: string[];
+  @IsNotEmpty()
+  password!: string;
 
-    address!: CreateAddressDto;
+  @IsNotEmpty()
+  firstname!: string;
 
-    status?: boolean;
+  @IsNotEmpty()
+  lastname!: string;
 
-    email_verification_token?: string;
+  @IsNotEmpty()
+  phone!: string;
+
+  roles?: string[];
+
+  address!: CreateAddressDto;
+
+  status?: boolean;
+
+  email_verification_token?: string;
 }

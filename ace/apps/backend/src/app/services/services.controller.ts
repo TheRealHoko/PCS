@@ -26,7 +26,9 @@ export class ServicesController {
 
   @Post()
   async create(@Body() createServiceDto: CreateServiceDto) {
-    const provider = await this.usersService.findOne({id: createServiceDto.provider_id})
+    const provider = await this.usersService.findOne({
+      id: createServiceDto.provider_id,
+    });
     return this.servicesService.create(createServiceDto, provider);
   }
 
@@ -48,43 +50,62 @@ export class ServicesController {
 
   @Patch('validate/:id')
   async validate(@Param('id') id: string) {
-    const updatedService = await this.servicesService.update(+id, {status: "ONLINE"});
-    this.usersService.update(updatedService.provider.id, {roles: [...updatedService.provider.roles.map(role => role.name), RoleEnum.PROVIDER]});
-    this.logger.log(`Added PROVIDER role to user #${updatedService.provider.id}`);
+    const updatedService = await this.servicesService.update(+id, {
+      status: 'ONLINE',
+    });
+    this.usersService.update(updatedService.provider.id, {
+      roles: [
+        ...updatedService.provider.roles.map((role) => role.name),
+        RoleEnum.PROVIDER,
+      ],
+    });
+    this.logger.log(
+      `Added PROVIDER role to user #${updatedService.provider.id}`
+    );
 
     await this.mailService.sendMail(
-      updatedService.provider.email, 
+      updatedService.provider.email,
       `Service creation request for #${updatedService.id}`,
-    `
+      `
       <h1>Your service has been validated ${updatedService.provider.firstname} !</h1>
       <p>After a thourough review your service creation request has been validated by an admin</p>
-    `);
-    
-    this.logger.log(`Service validation email has been sent to ${updatedService.provider.email}`);
+    `
+    );
+
+    this.logger.log(
+      `Service validation email has been sent to ${updatedService.provider.email}`
+    );
     return updatedService;
   }
 
   @Patch('invalidate/:id')
   async invalidate(@Param('id') id: string) {
-    const updatedService = await this.servicesService.update(+id, {status: "OFFLINE"});
-    this.usersService.update(
-      updatedService.provider.id, 
-      {
-        roles: [...updatedService.provider.roles
-          .map(role => role.name)
-          .filter(roleName => roleName != RoleEnum.PROVIDER)]
-      });
-    this.logger.log(`Removed PROVIDER role from user #${updatedService.provider.id}`);
+    const updatedService = await this.servicesService.update(+id, {
+      status: 'OFFLINE',
+    });
+    this.usersService.update(updatedService.provider.id, {
+      roles: [
+        ...updatedService.provider.roles
+          .map((role) => role.name)
+          .filter((roleName) => roleName != RoleEnum.PROVIDER),
+      ],
+    });
+    this.logger.log(
+      `Removed PROVIDER role from user #${updatedService.provider.id}`
+    );
 
     await this.mailService.sendMail(
-      updatedService.provider.email, 
+      updatedService.provider.email,
       `Service creation request for #${updatedService.id}`,
-    `
+      `
       <h1>Your service has been refused ${updatedService.provider.firstname} :(</h1>
       <p>After a thourough review your service creation request has been invalidated by an admin</p>
-    `);
-    
-    this.logger.log(`Service refusal email has been sent to ${updatedService.provider.email}`);
+    `
+    );
+
+    this.logger.log(
+      `Service refusal email has been sent to ${updatedService.provider.email}`
+    );
     return updatedService;
   }
 

@@ -1,14 +1,25 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from "@angular/material/input";
-import { MatButtonModule } from "@angular/material/button";
-import { MatFormFieldModule } from "@angular/material/form-field";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../services/auth.service';
 import { AlertService } from '../services/alert.service';
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  RouterOutlet,
+} from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthStore } from '../stores/auth.store';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'ace-login',
@@ -20,7 +31,8 @@ import { AuthStore } from '../stores/auth.store';
     MatFormFieldModule,
     ReactiveFormsModule,
     RouterOutlet,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -38,13 +50,8 @@ export class LoginComponent {
     private readonly activatedRoute: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
-      password: new FormControl('', [
-        Validators.required
-      ])
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
     });
 
     this.snapshot = this.activatedRoute.snapshot;
@@ -71,7 +78,7 @@ export class LoginComponent {
         error: (err: Error) => {
           this.alertService.info(err.message);
           throw new Error(err.message);
-        }
+        },
       });
     }
 

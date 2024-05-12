@@ -5,10 +5,9 @@ import { UpdateUserDto, User } from '@ace/shared';
 import { Observable, catchError, take } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsersService {
-
   constructor(private readonly http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
@@ -22,7 +21,7 @@ export class UsersService {
   updateUser(id: number, body: UpdateUserDto) {
     return this.http.patch<User>(`${environment.apiUrl}/api/users/${id}`, body);
   }
-  
+
   deleteUser(id: number) {
     return this.http.delete<User>(`${environment.apiUrl}/api/users/${id}`);
   }

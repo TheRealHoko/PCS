@@ -1,35 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UploadComponent } from '../upload/upload.component';
-import { FileUpload } from '../upload.directive';
+import { MatCardModule } from "@angular/material/card";
+import { PropertiesService } from '../services/properties.service';
+import { PropertiesStore } from '../stores/properties.store';
+import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
-import { UploadService } from '../services/upload.service';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'ace-home',
   standalone: true,
   imports: [
     CommonModule,
-    UploadComponent,
-    MatButtonModule
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.sass',
 })
-export class HomeComponent {
-  // files: FileUpload[] = [];
+export class HomeComponent implements OnInit {
+  propertiesStore = inject(PropertiesStore);
+  cdnUrl = environment.apiUrl;
 
-  // constructor(private readonly uploadService: UploadService) {}
+  constructor(
+  ) {}
 
-  // getFiles(files: FileUpload[]) {
-  //   this.files = [...this.files, ...files];
-  //   console.log(this.files);
-  // }
-
-  // onSubmit() {
-  //   const form = new FormData();
-
-  //   form.append('files', this.files[0].file);
-  //   this.uploadService.upload(form).subscribe(console.log);
-  // }
+  ngOnInit(): void {
+    this.propertiesStore.refreshProperties();
+  }
+  
 }

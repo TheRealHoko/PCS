@@ -17,23 +17,22 @@ export class ServicesService {
     const service = this.servicesRepository.create(createServiceDto);
     service.provider = provider;
     return await this.servicesRepository.save(service);
-  
   }
 
   async findAll() {
     const services = await this.servicesRepository.find();
 
-    if (!services){
-      throw new NotFoundException("No services")
+    if (!services) {
+      throw new NotFoundException('No services');
     }
     return services;
   }
 
   async findOne(id: number) {
-    const service = await this.servicesRepository.findOne({where: {id}});
+    const service = await this.servicesRepository.findOne({ where: { id } });
 
-    if (!service){
-      throw new NotFoundException(`Service #${id} not found`)
+    if (!service) {
+      throw new NotFoundException(`Service #${id} not found`);
     }
     return service;
   }
@@ -49,8 +48,8 @@ export class ServicesService {
   }
 
   async remove(id: number) {
-    if (! await this.servicesRepository.exists({where: {id}})) {
-      throw new NotFoundException(`Service #${id} not found`) 
+    if (!(await this.servicesRepository.exists({ where: { id } }))) {
+      throw new NotFoundException(`Service #${id} not found`);
     }
     this.servicesRepository.delete(id);
   }

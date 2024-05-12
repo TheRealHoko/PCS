@@ -9,22 +9,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class AddressService {
   constructor(
     @InjectRepository(Address)
-    private readonly addressRepository: Repository<Address>) {}
+    private readonly addressRepository: Repository<Address>
+  ) {}
 
   async create(createAddressDto: CreateAddressDto) {
     return await this.addressRepository.save(createAddressDto);
   }
 
   async findAll(): Promise<Address[]> {
-    const addresses = await this.addressRepository.find(); 
+    const addresses = await this.addressRepository.find();
     return addresses;
   }
 
   async findOne(id: number): Promise<Address | null> {
-    const address = await this.addressRepository.findOne({where: { id }});
+    const address = await this.addressRepository.findOne({ where: { id } });
 
     if (!address) {
-      throw new NotFoundException("This address has not been attributed to any user or property");
+      throw new NotFoundException(
+        'This address has not been attributed to any user or property'
+      );
     }
 
     return address;
