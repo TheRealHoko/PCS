@@ -1,12 +1,10 @@
-<table mat-table [dataSource]="dataSource">
-
-    <ng-container *ngFor="let col of tableContenu" [matColumnDef]="col">
-        <th mat-header-cell *matHeaderCellDef> {{ col }} </th>
-        <td mat-cell *matCellDef="let element"> {{ element[col] }} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="tableContenu; sticky: true"></tr>
-
-    <tr mat-row *matRowDef="let row; columns: tableContenu;"></tr>
-    
-</table>
+<ace-table [datasource]="this.usersStore.users()" [columns]="columns" [actionTemplate]="actionTemplate">
+    <ng-template #actionTemplate let-row>
+        <button mat-flat-button (click)="editRow(row)" matTooltip="Edit">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-flat-button (click)="deleteRow(row)" matTooltip="Delete">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </ng-template>
+</ace-table>

@@ -30,6 +30,8 @@ import { AlertService } from '../services/alert.service';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  hidePassword: boolean = true;
+  hidePasswordConfirmation: boolean = true;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -69,6 +71,10 @@ export class RegisterComponent {
     });
   }
 
+  get password() {
+    return this.registerForm.get('password') as FormControl;
+  }
+  
   onRegister() {
     const registerInfo = this.registerForm.getRawValue();
 
