@@ -6,9 +6,7 @@ import { Role } from './entities/role.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Role]),
-  ],
+  imports: [TypeOrmModule.forFeature([Role])],
   controllers: [RolesController],
   providers: [RolesService, ConfigService],
 })

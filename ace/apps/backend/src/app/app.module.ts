@@ -11,8 +11,9 @@ import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
 import { FormModule } from './form/form.module';
-import { UploadController } from './upload/upload.controller';
-import { MulterModule } from '@nestjs/platform-express';
+import { UploadsModule } from './uploads/uploads.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -22,7 +23,6 @@ import { MulterModule } from '@nestjs/platform-express';
     AuthModule,
     PropertiesModule,
     FormModule,
-    ServicesModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -35,13 +35,21 @@ import { MulterModule } from '@nestjs/platform-express';
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
+    DatabaseModule,
+    RolesModule,
+    AuthModule,
+    PropertiesModule,
+    ServicesModule,
     AddressModule,
     MailModule,
-    MulterModule.register({
-      dest: './uploads'
+    UploadsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '../../public'),
+      serveRoot: '/public/'
     })
   ],
-  controllers: [UploadController],
+  controllers: [],
   providers: [Logger],
 })
 export class AppModule implements NestModule {

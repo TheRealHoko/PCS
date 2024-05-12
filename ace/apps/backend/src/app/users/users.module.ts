@@ -7,12 +7,9 @@ import { Role } from '../roles/entities/role.entity';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ConfigModule,
-    TypeOrmModule.forFeature([User, Role])
-  ],
+  imports: [ConfigModule, TypeOrmModule.forFeature([User, Role])],
   controllers: [UsersController],
   providers: [UsersService, Logger],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}

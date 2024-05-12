@@ -1,15 +1,15 @@
 export class Service {
-    id!: number;
+  id!: number;
 
-    name!: string;
+  name!: string;
 
-    description!: string;
+  description!: string;
 
-    available!: Boolean;
+  available!: Boolean;
 
-    effectif!: Number;
+  effectif!: Number;
 
-    price!: Number;
+  price!: Number;
 
-    service_type!: string;
+  service_type!: string;
 }

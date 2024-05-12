@@ -1,26 +1,26 @@
-import { Address } from "./address.dto";
-import { Role } from "./roles.dto";
+import { Address } from './address.dto';
+import { Role } from './roles.dto';
 
 export class User {
-    id!: number;
+  id!: number;
 
-    firstname!: string;
+  firstname!: string;
 
-    lastname!: string;
+  lastname!: string;
 
-    email!: string;
+  email!: string;
 
-    hash?: string;
+  hash?: string;
 
-    access_token?: string;
+  access_token?: string;
 
-    phone!: string;
+  phone!: string;
 
-    roles?: Role[];
+  roles?: Role[];
 
-    addresses?: Address[];
+  addresses?: Address[];
 
-    email_verification_token?: string;
+  email_verification_token?: string;
 
-    status!: boolean
+  status!: boolean;
 }

@@ -1,23 +1,23 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateServiceDto {
-    
-    @IsNotEmpty()
-    name!: string;
+  @IsNotEmpty()
+  name!: string;
 
-    @IsNotEmpty()
-    description!: string;
+  @IsNotEmpty()
+  description!: string;
 
-    @IsNotEmpty()
-    effectif!: Number;
+  @IsNotEmpty()
+  effectif!: Number;
 
-    @IsNotEmpty()
-    price!: Number;
+  @IsNotEmpty()
+  price!: Number;
 
-    @IsNotEmpty()
-    service_type!: string;
+  @IsNotEmpty()
+  service_type!: string;
 
-    @IsNotEmpty()
-    provider_id!: number
+  status?: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
+  @IsNotEmpty()
+  provider_id!: number;
 }

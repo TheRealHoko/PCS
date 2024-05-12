@@ -1,5 +1,6 @@
 export enum RoleEnum {
-    ADMIN = 'ADMIN',
-    TRAVELER = 'TRAVELER',
-    PROVIDER = 'PROVIDER'
+  ADMIN = 'ADMIN',
+  TRAVELER = 'TRAVELER',
+  PROVIDER = 'PROVIDER',
+  RENTER = 'RENTER'
 }

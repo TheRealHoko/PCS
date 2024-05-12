@@ -1,4 +1,9 @@
-import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 
 export class CustomValidators {
   static passwordPolicy(): ValidatorFn {
@@ -20,7 +25,6 @@ export class CustomValidators {
       if (maxLength) {
         errors['maxLength'] = true;
       }
-
 
       const hasUpperCase = /[A-Z]+/.test(value);
       if (!hasUpperCase) {
