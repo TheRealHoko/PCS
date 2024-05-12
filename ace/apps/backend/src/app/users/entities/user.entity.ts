@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColum
 import { IsEmail } from "class-validator";
 import { Role } from "../../roles/entities/role.entity";
 import { Address } from "../../address/entities/address.entity";
+import { Service } from "../../services/entities/service.entity";
 
 @Entity()
 export class User {
@@ -39,6 +40,9 @@ export class User {
         onDelete: 'CASCADE',
     })
     addresses: Address[];
+
+    @OneToMany(() => Service, (service) => service.provider)
+    services: Service[];
 
     @Column({nullable: true})
     email_verification_token?: string;

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
@@ -17,30 +17,28 @@ export class AuthService {
         private readonly mailService: MailService
     ) {}
 
-    async signIn(signInDto: SignInDto): Promise<any> {
+    async login(signInDto: SignInDto): Promise<any> {
         const {email, password} = signInDto;
 
-        try {
-            const user = await this.usersService.findOne({email});
-            
-            if (!user) {
-                throw new UnauthorizedException("Invalid credentials");
-            }
-    
-            const isAuthorized = await bcrypt.compare(password, user.hash);
-    
-            if (!isAuthorized) {
-                throw new UnauthorizedException("Invalid credentials");
-            }
-    
-            const payload = {sub: user.id, email: user.email, roles: user.roles.map(x => x.name)};
-    
-            return { token: await this.jwtService.signAsync(payload) };
-        } catch (error) {
-            if (error.status === 404) {
-                throw new UnauthorizedException("Invalid credentials");
-            }
+        const user = await this.usersService.findOne({email});
+        
+        if (!user) {
+            throw new UnauthorizedException("Invalid credentials");
         }
+        
+        if (!user.status) {
+            throw new BadRequestException("User not verified");
+        }
+
+        const isAuthorized = await bcrypt.compare(password, user.hash);
+
+        if (!isAuthorized) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        const payload = {sub: user.id, email: user.email};
+
+        return { token: await this.jwtService.signAsync(payload) };
     }
 
     async register(registerInfo: RegisterDto) {
