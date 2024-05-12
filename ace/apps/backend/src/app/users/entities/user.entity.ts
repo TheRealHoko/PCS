@@ -1,6 +1,8 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { IsEmail } from "class-validator";
 import { Role } from "../../roles/entities/role.entity";
+import { Address } from "../../address/entities/address.entity";
+import { Service } from "../../services/entities/service.entity";
 
 @Entity()
 export class User {
@@ -24,11 +26,27 @@ export class User {
     access_token?: string;
 
     @Column()
-    tel: string;
+    phone: string;
 
     @ManyToMany(() => Role, {
         eager: true
     })
     @JoinTable()
-    roles: Role[]
+    roles: Role[];
+
+    @OneToMany(() => Address, (address) => address.user, {
+        cascade: ['insert', 'update'], 
+        eager: true,
+        onDelete: 'CASCADE',
+    })
+    addresses: Address[];
+
+    @OneToMany(() => Service, (service) => service.provider)
+    services: Service[];
+
+    @Column({nullable: true})
+    email_verification_token?: string;
+
+    @Column({default: false})
+    status: boolean
 }

@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nx/angular/tailwind');
 const { join } = require('path');
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -20,6 +21,9 @@ module.exports = {
       tertiary: {
         light: '#FF8383',
         DEFAULT: '#FF8383'
+      },
+      error: {
+        DEFAULT: colors.red[800]
       }
     },
     extend: {},

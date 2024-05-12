@@ -10,8 +10,8 @@ import {
   Logger
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from "@ace/shared";
+import { UpdateUserDto } from "@ace/shared";
 import { RolesGuard } from '../roles/roles.guard';
 import { Roles } from '../roles/roles.decorator';
 import { Role } from '../roles/enums/role.enum';
@@ -19,7 +19,9 @@ import { Role } from '../roles/enums/role.enum';
 @Controller('users')
 @UseGuards(RolesGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService
+    ) {}
 
   logger = new Logger(UsersController.name);
 
@@ -36,6 +38,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  // @Roles(Role.ADMIN)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne({
       id :+id
@@ -43,11 +46,13 @@ export class UsersController {
   }
 
   @Patch(':id')
+  // @Roles(Role.ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

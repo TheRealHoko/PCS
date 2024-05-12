@@ -11,7 +11,7 @@ CREATE TABLE user (
     email VARCHAR(255),
     password VARCHAR(255),
     access_token VARCHAR(255),
-    tel VARCHAR(255)
+    phone VARCHAR(255)
 );
 
 CREATE TABLE preference (

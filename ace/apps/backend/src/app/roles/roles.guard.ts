@@ -5,11 +5,14 @@ import { Request } from "express";
 import { Role } from './enums/role.enum';
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from '@nestjs/config';
+import { UsersService } from '../users/users.service';
+import { User } from '@ace/shared';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
+    private readonly usersSerive: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
   ) {}
@@ -33,9 +36,9 @@ export class RolesGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("No token provided");
     }
-
+    
     try {
       const payload = await this.jwtService.verifyAsync(
         token,
@@ -43,14 +46,16 @@ export class RolesGuard implements CanActivate {
           secret: this.configService.get<string>('SECRET')
         }
       );
-
+      
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Wrong token");
     }
-
-    this.logger.debug(request.user);
-    return requiredRoles.some((role) => request.user.roles?.includes(role));
+    
+    const user = await this.usersSerive.findOne({ email: request.user.email });
+    const userRoles = user.roles.map((role) => role.name)
+    
+    return requiredRoles.some((role) => userRoles?.includes(role));
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
