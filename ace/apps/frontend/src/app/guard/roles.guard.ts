@@ -10,17 +10,18 @@ export const rolesGuard: CanActivateFn = (route, state) => {
 
   const requiredRoles = route.data['roles'] as RoleEnum[];
 
+  // change to fetch from localstorage
   return authService.hasRoles(requiredRoles).pipe(
-    map(hasRole => {
+    map((hasRole) => {
       if (hasRole) {
         return true;
       } else {
-        return router.parseUrl('/home');
+        return router.parseUrl('/');
       }
     }),
-    catchError(err => {
+    catchError((err) => {
       console.error('Error in roles checking', err);
-      return of(router.parseUrl('/home'));
+      return of(router.parseUrl('/'));
     })
   );
 };

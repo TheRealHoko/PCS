@@ -1,4 +1,10 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Output,
+} from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 export interface FileUpload {
@@ -8,7 +14,7 @@ export interface FileUpload {
 
 export enum DropColor {
   Default = '#C18428',
-  Over = '#FF8383'
+  Over = '#FF8383',
 }
 
 @Directive({
@@ -16,7 +22,6 @@ export enum DropColor {
   standalone: true,
 })
 export class UploadDirective {
-
   constructor(private readonly sanitizer: DomSanitizer) {}
 
   @Output() dropFiles: EventEmitter<FileUpload[]> = new EventEmitter();
@@ -30,13 +35,13 @@ export class UploadDirective {
 
   @HostListener('dragleave', ['$event']) public dragLeave(event: DragEvent) {
     event.preventDefault();
-    event.stopPropagation()
+    event.stopPropagation();
     this.backgroundColor = DropColor.Default;
   }
 
   @HostListener('drop', ['$event']) public drop(event: DragEvent) {
     event.preventDefault();
-    event.stopPropagation()
+    event.stopPropagation();
     this.backgroundColor = DropColor.Default;
 
     let fileList = event.dataTransfer?.files;
@@ -51,11 +56,10 @@ export class UploadDirective {
         );
         files.push({ file, url });
       }
-  
+
       if (files.length > 0) {
         this.dropFiles.emit(files);
       }
-
     }
   }
 }

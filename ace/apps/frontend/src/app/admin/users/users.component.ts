@@ -20,12 +20,12 @@ import { UsersStore } from '../../stores/users.store';
     MatButtonModule,
     TableComponent,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
-export class UsersComponent implements OnInit{
+export class UsersComponent implements OnInit {
   readonly usersStore = inject(UsersStore);
 
   columns = [
@@ -35,25 +35,21 @@ export class UsersComponent implements OnInit{
     { key: 'email', display: 'Email' },
     { key: 'phone', display: 'Phone' },
     { key: 'roles', display: 'Roles' },
-    { key: 'addresses', display: 'Addresses' }
+    { key: 'addresses', display: 'Addresses' },
   ];
 
-  constructor(
-    private readonly alertService: AlertService
-  ) {}
-  
+  constructor(private readonly alertService: AlertService) {}
+
   ngOnInit(): void {
     this.usersStore.refreshUsers();
   }
 
-  editRow(row: {id: number}) {
-    console.log(JSON.stringify(row.id))
+  editRow(row: { id: number }) {
+    console.log(JSON.stringify(row.id));
   }
 
-  deleteRow(row: {name: string, id: number}) {
+  deleteRow(row: { name: string; id: number }) {
     this.usersStore.deleteUser(row.id);
-    this.alertService.info(`User ${row.name} (${row.id}) was deleted`)
+    this.alertService.info(`User ${row.name} (${row.id}) was deleted`);
   }
 }
-
-

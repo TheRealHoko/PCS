@@ -7,11 +7,7 @@ import { MailModule } from './mail.module';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Service]),
-    MailModule,
-    UsersModule
-  ],
+  imports: [TypeOrmModule.forFeature([Service]), MailModule, UsersModule],
   controllers: [ServicesController],
   providers: [ServicesService],
 })

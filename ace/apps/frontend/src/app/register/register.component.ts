@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +14,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomValidators } from '../shared/custom.validators';
 import { AuthService } from '../services/auth.service';
-import { MatStepperModule } from "@angular/material/stepper";
+import { MatStepperModule } from '@angular/material/stepper';
 import { RegisterDto } from '@ace/shared';
 import { AlertService } from '../services/alert.service';
 
@@ -23,7 +29,7 @@ import { AlertService } from '../services/alert.service';
     ReactiveFormsModule,
     RouterOutlet,
     MatIconModule,
-    MatStepperModule
+    MatStepperModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -40,24 +46,18 @@ export class RegisterComponent {
     private readonly alertService: AlertService
   ) {
     this.registerForm = this.fb.group({
-      firstname: new FormControl('John', [
-        Validators.required
-      ]),
-      lastname: new FormControl('Smith', [
-        Validators.required
-      ]),
+      firstname: new FormControl('John', [Validators.required]),
+      lastname: new FormControl('Smith', [Validators.required]),
       email: new FormControl('john.smith@email.com', [
         Validators.required,
-        Validators.email
+        Validators.email,
       ]),
-      phone: new FormControl('0101010101', [
-        Validators.required
-      ]),
+      phone: new FormControl('0101010101', [Validators.required]),
       password: new FormControl('QQQQqqqq1*', [
-        CustomValidators.passwordPolicy()
+        CustomValidators.passwordPolicy(),
       ]),
       confirmPassword: new FormControl('QQQQqqqq1*', [
-        CustomValidators.passwordPolicy()
+        CustomValidators.passwordPolicy(),
       ]),
       address: this.fb.group({
         street_number: new FormControl('1'),
@@ -67,20 +67,20 @@ export class RegisterComponent {
         state: new FormControl('Ile de france'),
         postal_code: new FormControl('75012'),
         country: new FormControl('France'),
-      })
+      }),
     });
   }
 
   get password() {
     return this.registerForm.get('password') as FormControl;
   }
-  
+
   onRegister() {
     const registerInfo = this.registerForm.getRawValue();
 
     // TODO: Change this to validator (if you review please tell me to fix or you fix it idk)
     if (registerInfo.password !== registerInfo.confirmPassword) {
-      this.alertService.info("Password confirmation doesn't match password")
+      this.alertService.info("Password confirmation doesn't match password");
       throw new Error("Password confirmation doesn't match password");
     }
 
@@ -88,18 +88,18 @@ export class RegisterComponent {
     // Check mail if exists
     // Maybe integrate address trueness check ?
     this.authService.register(registerData).subscribe({
-      next:() => {
-
-      },
+      next: () => {},
       complete: () => {
         this.router.navigateByUrl('/login');
-        this.alertService.info(`A confirmation mail was sent to ${registerData.email}`);
+        this.alertService.info(
+          `A confirmation mail was sent to ${registerData.email}`
+        );
       },
       error: (error) => {
         // Show error msg to user in snackbar ?
         console.error(error);
         this.alertService.info(error.error.message);
-      }
+      },
     });
   }
 }

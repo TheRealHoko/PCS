@@ -4,10 +4,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   standalone: true,
-  imports: [
-    RouterModule,
-    NavbarComponent
-  ],
+  imports: [RouterModule, NavbarComponent],
   selector: 'ace-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass',

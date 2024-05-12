@@ -1,6 +1,11 @@
-import { BadRequestException, Injectable, Logger, NotFoundException} from '@nestjs/common';
-import { CreateUserDto } from "@ace/shared";
-import { UpdateUserDto } from "@ace/shared";
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateUserDto } from '@ace/shared';
+import { UpdateUserDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
@@ -11,7 +16,7 @@ import { Address } from '../address/entities/address.entity';
 @Injectable()
 export class UsersService {
   private saltRounds = 10;
-  
+
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
@@ -33,14 +38,16 @@ export class UsersService {
     Object.assign(address, createUserDto.address);
 
     user.addresses = [address];
-    
+
     if (createUserDto.roles) {
       this.loggerService.log(createUserDto);
-      const roles = await Promise.all(createUserDto.roles.map(async role_name => {
-        return this.rolesRepository.findOne({ where: { name: role_name } });
-      }));
-  
-      user.roles = roles.filter(role => role !== undefined);
+      const roles = await Promise.all(
+        createUserDto.roles.map(async (role_name) => {
+          return this.rolesRepository.findOne({ where: { name: role_name } });
+        })
+      );
+
+      user.roles = roles.filter((role) => role !== undefined);
     }
 
     try {
@@ -54,12 +61,12 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     const users = await this.usersRepository.find();
-    
+
     if (!users) {
-      throw new NotFoundException("No users");
+      throw new NotFoundException('No users');
     }
 
-    const usersWithoutHash = users.map(user => {
+    const usersWithoutHash = users.map((user) => {
       const { hash, ...userWithoutHash } = user;
       return userWithoutHash;
     });
@@ -71,18 +78,18 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ where });
 
     if (!user) {
-      throw new NotFoundException("User not found");
+      throw new NotFoundException('User not found');
     }
-    
+
     return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.usersRepository.findOne({where: { id }});
+      const user = await this.usersRepository.findOne({ where: { id } });
 
       if (!user) {
-        throw new NotFoundException("User not found");
+        throw new NotFoundException('User not found');
       }
 
       // Apply this when we do user profile logic
@@ -91,20 +98,24 @@ export class UsersService {
       // if (!isOldPasswordCorrect) {
       //   throw new BadRequestException("Old password is wrong");
       // }
-      
+
       if (updateUserDto.roles) {
-        const roles = await Promise.all(updateUserDto.roles.map(async role_name => {
-          return this.rolesRepository.findOne({ where: { name: role_name } });
-        }));
-    
-        user.roles = roles.filter(role => role !== undefined);
-        this.loggerService.log(`Updating user ${user.id} with ${JSON.stringify(updateUserDto)}`);
+        const roles = await Promise.all(
+          updateUserDto.roles.map(async (role_name) => {
+            return this.rolesRepository.findOne({ where: { name: role_name } });
+          })
+        );
+
+        user.roles = roles.filter((role) => role !== undefined);
+        this.loggerService.log(
+          `Updating user ${user.id} with ${JSON.stringify(updateUserDto)}`
+        );
       }
 
-      const {roles, ...updateUserDtoWithoutRoles} = updateUserDto;
+      const { roles, ...updateUserDtoWithoutRoles } = updateUserDto;
 
       Object.assign(user, updateUserDtoWithoutRoles);
-      
+
       if (updateUserDto.password) {
         const hash = await bcrypt.hash(updateUserDto.password, this.saltRounds);
         user.hash = hash;
@@ -113,7 +124,7 @@ export class UsersService {
       return await this.usersRepository.save(user);
     } catch (error) {
       const err = error as Error;
-      throw new BadRequestException("Error : " + err.message);
+      throw new BadRequestException('Error : ' + err.message);
     }
   }
 

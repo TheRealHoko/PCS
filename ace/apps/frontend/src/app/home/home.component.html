@@ -1,5 +1,21 @@
-<!-- Upload example -->
-<!-- <div class="flex flex-col justify-center w-full">
-    <ace-upload (uploadFiles)="getFiles($event)"></ace-upload>
-    <button (click)="onSubmit()" mat-fab color="primary" >Submit</button>
-</div> -->
+@for (property of propertiesStore.properties(); track $index) {
+    <mat-card class="container max-w-md">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{ property.name}}</mat-card-title>
+          <mat-card-subtitle>{{ property.capacity }}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="{{cdnUrl}}/{{property.images[0].path }}" alt="Preview">
+        <mat-card-content>
+          <p>
+            {{ property.description }}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button [routerLink]="['/property', property.id]">View</button>
+            <button mat-flat-button>
+                <mat-icon>favorite</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+}
