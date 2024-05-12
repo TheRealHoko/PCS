@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
+import { FormModule } from './form/form.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PropertiesModule } from './properties/properties.module';
     RolesModule,
     AuthModule,
     PropertiesModule,
+    FormModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),
