@@ -10,12 +10,19 @@ import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
+import { FormModule } from './form/form.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from 'path';
 
 @Module({
   imports: [
+    UsersModule,
+    DatabaseModule,
+    RolesModule,
+    AuthModule,
+    PropertiesModule,
+    FormModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
