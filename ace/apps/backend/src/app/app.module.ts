@@ -10,6 +10,7 @@ import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
+import { FormModule } from './form/form.module';
 import { UploadController } from './upload/upload.controller';
 import { MulterModule } from '@nestjs/platform-express';
 
@@ -20,6 +21,7 @@ import { MulterModule } from '@nestjs/platform-express';
     RolesModule,
     AuthModule,
     PropertiesModule,
+    FormModule,
     ServicesModule,
     ConfigModule.forRoot({
       isGlobal: true,
