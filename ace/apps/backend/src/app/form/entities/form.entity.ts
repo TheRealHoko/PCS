@@ -5,12 +5,12 @@ export class Form {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({nullable: false})
+    @Column()
     applicable: string;
 
-    @Column({nullable: false})
+    @Column()
     message: string;
 
-    @Column({nullable: false})
+    @Column()
     isSolved: boolean;
 }
