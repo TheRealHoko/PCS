@@ -1,7 +1,8 @@
+import { IAddress, IUser } from '../interfaces';
 import { Address } from './address.dto';
-import { Role } from './roles.dto';
+import { Role } from './role.dto';
 
-export class User {
+export class User implements IUser {
   id!: number;
 
   firstname!: string;
@@ -18,7 +19,7 @@ export class User {
 
   roles?: Role[];
 
-  addresses?: Address[];
+  addresses?: IAddress[];
 
   email_verification_token?: string;
 

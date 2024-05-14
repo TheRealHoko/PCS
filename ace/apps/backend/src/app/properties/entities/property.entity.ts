@@ -34,7 +34,9 @@ export class Property {
   @Column({default: false})
   isActive: boolean;
 
-  @ManyToOne(() => User, lessor => lessor.properties)
+  @ManyToOne(() => User, lessor => lessor.properties, {
+    eager: true
+  })
   lessor: User;
 
   @OneToMany(() => Upload, upload => upload.property, {

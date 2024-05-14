@@ -1,6 +1,7 @@
+import { IUpload } from "../interfaces";
 import { Property } from "./property.dto";
 
-export class Upload {
+export class Upload implements IUpload {
     id!: number;
 
     path!: string;

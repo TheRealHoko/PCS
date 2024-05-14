@@ -53,15 +53,19 @@ export class ServicesController {
     const updatedService = await this.servicesService.update(+id, {
       status: 'ONLINE',
     });
-    this.usersService.update(updatedService.provider.id, {
-      roles: [
-        ...updatedService.provider.roles.map((role) => role.name),
-        RoleEnum.PROVIDER,
-      ],
-    });
-    this.logger.log(
-      `Added PROVIDER role to user #${updatedService.provider.id}`
-    );
+
+    const provider = await this.usersService.findOne({ id: updatedService.provider.id });
+    if (!provider.roles.map(role => role.name).includes(RoleEnum.PROVIDER)) {
+      this.usersService.update(updatedService.provider.id, {
+        roles: [
+          ...updatedService.provider.roles.map((role) => role.name),
+          RoleEnum.PROVIDER,
+        ],
+      });
+      this.logger.log(
+        `Added PROVIDER role to user #${updatedService.provider.id}`
+      );
+    }
 
     await this.mailService.sendMail(
       updatedService.provider.email,
@@ -83,16 +87,20 @@ export class ServicesController {
     const updatedService = await this.servicesService.update(+id, {
       status: 'OFFLINE',
     });
-    this.usersService.update(updatedService.provider.id, {
-      roles: [
-        ...updatedService.provider.roles
-          .map((role) => role.name)
-          .filter((roleName) => roleName != RoleEnum.PROVIDER),
-      ],
-    });
-    this.logger.log(
-      `Removed PROVIDER role from user #${updatedService.provider.id}`
-    );
+
+    const provider = await this.usersService.findOne({ id: updatedService.provider.id });
+    if (provider.services.length === 1) {
+      this.usersService.update(updatedService.provider.id, {
+        roles: [
+          ...updatedService.provider.roles
+            .map((role) => role.name)
+            .filter((roleName) => roleName != RoleEnum.PROVIDER),
+        ],
+      });
+      this.logger.log(
+        `Removed PROVIDER role from user #${updatedService.provider.id}`
+      );
+    }
 
     await this.mailService.sendMail(
       updatedService.provider.email,

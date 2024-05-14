@@ -2,13 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicesStore } from '../stores/services.store';
 import { TableComponent } from '../components/table/table.component';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'ace-service',
   standalone: true,
   imports: [
     CommonModule,
-    TableComponent
+    TableComponent,
+    MatButtonModule,
+    RouterModule
   ],
   templateUrl: './service.component.html',
   styleUrl: './service.component.css',

@@ -1,4 +1,4 @@
-import { Property } from '@ace/shared';
+import { IProperty } from '@ace/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -13,11 +13,11 @@ export class PropertiesService {
     private readonly http: HttpClient
   ) { }
 
-  getProperties(): Observable<Property[]> {
-    return this.http.get<Property[]>(`${environment.apiUrl}/api/properties`);
+  getProperties(): Observable<IProperty[]> {
+    return this.http.get<IProperty[]>(`${environment.apiUrl}/api/properties`);
   }
 
-  getProperty(id: number): Observable<Property> {
-    return this.http.get<Property>(`${environment.apiUrl}/api/properties/${id}`);
+  getProperty(id: number): Observable<IProperty> {
+    return this.http.get<IProperty>(`${environment.apiUrl}/api/properties/${id}`);
   }
 }

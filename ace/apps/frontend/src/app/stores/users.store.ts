@@ -1,4 +1,4 @@
-import { UpdateUserDto, User } from '@ace/shared';
+import { UpdateUserDto, IUser } from '@ace/shared';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, inject } from '@angular/core';
@@ -12,7 +12,7 @@ interface RxUpdateUser {
 }
 
 export interface UsersState {
-  users: User[];
+  users: IUser[];
 }
 
 export const UsersStore = signalStore(

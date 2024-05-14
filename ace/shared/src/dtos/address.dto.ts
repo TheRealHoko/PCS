@@ -1,6 +1,7 @@
-import { User } from './users.dto';
+import { IAddress } from '../interfaces';
+import { User } from './user.dto';
 
-export class Address {
+export class Address implements IAddress {
   id!: number;
 
   street_number!: number;

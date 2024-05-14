@@ -63,7 +63,7 @@ export class PropertyCreationComponent {
 
       const form = new FormData();
       this.files.forEach(file => form.append('files', file.file));
-      this.uploadService.upload(form).subscribe(console.log);
+      this.uploadService.uploadPropertyImages(form).subscribe(console.log);
 
       if (token && token.sub) {
         createPropertyDTO.lessor_id = +token.sub;

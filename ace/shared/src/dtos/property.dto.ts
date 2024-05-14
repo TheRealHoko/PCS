@@ -1,7 +1,8 @@
+import { IProperty } from "../interfaces";
 import { Upload } from "./upload.dto";
-import { User } from "./users.dto";
+import { User } from "./user.dto";
 
-export class Property {
+export class Property implements IProperty {
   id!: number;
 
   name!: string;

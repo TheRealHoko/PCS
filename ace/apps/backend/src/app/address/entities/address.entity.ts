@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { IAddress, IUser } from '@ace/shared';
 
 @Entity()
-export class Address {
+export class Address implements IAddress {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,5 +31,5 @@ export class Address {
   @ManyToOne(() => User, (user) => user.addresses, {
     onDelete: 'CASCADE',
   })
-  user: User;
+  user: IUser;
 }

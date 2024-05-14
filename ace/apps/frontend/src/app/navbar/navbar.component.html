@@ -41,21 +41,24 @@
   </mat-drawer-container>
   }
   @else {
-  <mat-toolbar>
+  <mat-toolbar color="primary">
     <div class="flex flex-row">
-      <a routerLink="/" class="text-primary">PCS</a>
+      <a routerLink="/">PCS</a>
     </div>
     <ace-account-dropdown class="ml-auto scale-150"></ace-account-dropdown>
   </mat-toolbar>
-  <router-outlet></router-outlet>
+  <div class="m-5 h-screen">
+      <router-outlet>
+      </router-outlet>
+    </div>
   }
 }
 @else {
-  <mat-toolbar>
+  <mat-toolbar color="primary">
     <div class="flex flex-row">
-      <a routerLink="/" class="text-primary">PCS</a>
-      <button routerLink="login" mat-button color="warn">Login</button>
-      <button routerLink="register" mat-button color="warn">Register</button>
+      <a routerLink="/">PCS</a>
+      <button routerLink="login" mat-button>Login</button>
+      <button routerLink="register" mat-button>Register</button>
     </div>
   </mat-toolbar>
   <router-outlet></router-outlet>

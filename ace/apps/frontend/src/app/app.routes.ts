@@ -11,7 +11,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { authGuard } from './guard/auth.guard';
 import { RoleEnum } from '@ace/shared';
 import { rolesGuard } from './guard/roles.guard';
-import { ProviderFormComponent } from './provider-form/provider-form.component';
+import { ServiceCreationFormComponent } from './provider-form/provider-form.component';
 import { publicGuard } from './guard/public.guard';
 import { ServiceComponent } from './service/service.component';
 import { PropertyCreationComponent } from './property-creation/property-creation.component';
@@ -43,7 +43,7 @@ export const appRoutes: Route[] = [
       { path: 'tools', component: ToolsComponent },
     ],
   },
-  { path: 'providerCreation', component: ProviderFormComponent },
+  { path: 'serviceCreation', component: ServiceCreationFormComponent },
   { 
     path: 'provider',
     canActivate: [authGuard, rolesGuard],
@@ -53,7 +53,8 @@ export const appRoutes: Route[] = [
     ]
   },
   { path: 'propertyCreation', component: PropertyCreationComponent},
-  { path: 'property/:id', component: PropertyComponent }
+  { path: 'property/:id', component: PropertyComponent },
+  { path: '**', redirectTo: '' },
   // {
   //   path: 'renter',
   //   canActivate: [authGuard, rolesGuard],

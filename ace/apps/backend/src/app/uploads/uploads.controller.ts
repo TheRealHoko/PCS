@@ -30,6 +30,13 @@ export class UploadsController {
     return await this.uploadsService.create(files, property);
   }
 
+  @Post('property-images')
+  @UseInterceptors(FilesInterceptor('files', 5))
+  async uploadPropertyImages(@UploadedFiles() files: Express.Multer.File[], @Body() createUploadDto: CreateUploadDto) {
+    const property = await this.propertiesService.findOne({id: createUploadDto.property_id});
+    return await this.uploadsService.create(files, property);
+  }
+
   @Get()
   findAll() {
     return this.uploadsService.findAll();

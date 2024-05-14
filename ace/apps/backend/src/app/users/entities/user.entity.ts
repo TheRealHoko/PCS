@@ -11,23 +11,24 @@ import { Role } from '../../roles/entities/role.entity';
 import { Address } from '../../address/entities/address.entity';
 import { Service } from '../../services/entities/service.entity';
 import { Property } from '../../properties/entities/property.entity';
+import { IUser } from '@ace/shared';
 
 @Entity()
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column()
   firstname: string;
 
-  @Column({ nullable: false })
+  @Column()
   lastname: string;
 
-  @Column({ nullable: false })
+  @Column()
   @IsEmail()
   email: string;
 
-  @Column({ nullable: false })
+  @Column()
   hash?: string;
 
   @Column({ default: null })
@@ -61,4 +62,8 @@ export class User {
 
   @OneToMany(() => Property, property => property.lessor)
   properties: Property[];
+
+  @Column({nullable: true})
+  review?: 0 | 1 | 2 | 3 | 4 | 5;
+
 }

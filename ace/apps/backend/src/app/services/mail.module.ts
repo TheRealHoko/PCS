@@ -1,11 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MockMailService } from './mockMail.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
-const MailProvider = {
+const MailProvider: Provider = {
   provide: MailService,
-  useClass: false ? MailService : MockMailService
+  useFactory: (configService: ConfigService) => {
+    const isLocal = configService.get('NODE_ENV') === 'local';
+    console.log('isLocal', isLocal);
+    return isLocal ? MockMailService : new MailService(configService);
+  },
+  inject: [ConfigService]
 };
 
 @Module({

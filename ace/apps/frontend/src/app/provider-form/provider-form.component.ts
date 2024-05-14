@@ -30,7 +30,7 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './provider-form.component.html',
   styleUrls: ['./provider-form.component.css'],
 })
-export class ProviderFormComponent {
+export class ServiceCreationFormComponent {
   serviceForm: FormGroup;
 
   constructor(
