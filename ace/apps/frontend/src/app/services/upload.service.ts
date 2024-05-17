@@ -10,11 +10,11 @@ export class UploadService {
   constructor(private readonly http: HttpClient) {}
 
   upload(files: FormData): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/upload`, files);
+    return this.http.post(`${environment.apiUrl}/api/uploads`, files);
   }
 
   uploadPropertyImages(files: FormData): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/upload/property-images`, files);
+    return this.http.post(`${environment.apiUrl}/api/uploads/property-images`, files);
   }
 
 }

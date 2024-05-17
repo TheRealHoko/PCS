@@ -57,7 +57,7 @@ export class ServiceCreationFormComponent {
       const token = this.authService.getDecodedToken();
 
       if (token && token.sub) {
-        createServiceDTO.provider_id = +token.sub;
+        createServiceDTO.providerId = +token.sub;
       } else {
         this.alertService.info("Couldn't fetch the provider id");
         throw new Error("Couldn't fetch the provider id");

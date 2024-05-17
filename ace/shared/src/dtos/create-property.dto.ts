@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { IAvailability } from '../interfaces';
 
 export class CreatePropertyDto {
   @IsNotEmpty()
@@ -17,8 +18,14 @@ export class CreatePropertyDto {
   surface!: number;
 
   @IsNotEmpty()
-  room_count!: number;
+  roomCount!: number;
 
   @IsNotEmpty()
-  lessor_id!: number;
+  propertyType!: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
+
+  @IsNotEmpty()
+  lessorId!: number;
+
+  @IsNotEmpty()
+  availabilities!: IAvailability[];
 }

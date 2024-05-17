@@ -5,3 +5,4 @@ export * from './role.interface';
 export * from './address.interface';
 export * from './property.interface';
 export * from './upload.interface';
+export * from './availability.interface';

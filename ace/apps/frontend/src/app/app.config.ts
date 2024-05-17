@@ -13,7 +13,7 @@ import { ServicesStore } from './stores/services.store';
 import { UsersStore } from './stores/users.store';
 import { AuthStore } from './stores/auth.store';
 import { PropertiesStore } from './stores/properties.store';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-    provideNativeDateAdapter()
+    provideNativeDateAdapter(),
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}
   ],
 };

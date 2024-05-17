@@ -52,7 +52,7 @@ export const appRoutes: Route[] = [
       { path: 'my-services', component: ServiceComponent }
     ]
   },
-  { path: 'propertyCreation', component: PropertyCreationComponent},
+  { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard]},
   { path: 'property/:id', component: PropertyComponent },
   { path: '**', redirectTo: '' },
   // {

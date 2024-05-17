@@ -10,8 +10,8 @@ import {
   UploadedFiles,
 } from '@nestjs/common';
 import { UploadsService } from './uploads.service';
-import { CreateUploadDto } from './dto/create-upload.dto';
-import { UpdateUploadDto } from './dto/update-upload.dto';
+import { CreateUploadDto } from '@ace/shared';
+import { UpdateUploadDto } from '@ace/shared';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Multer } from 'multer';
 import { PropertiesService } from '../properties/properties.service';
@@ -26,15 +26,15 @@ export class UploadsController {
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
   async upload(@UploadedFiles() files: Express.Multer.File[], @Body() createUploadDto: CreateUploadDto) {
-    const property = await this.propertiesService.findOne({id: createUploadDto.property_id});
-    return await this.uploadsService.create(files, property);
+    const property = await this.propertiesService.findOne({id: createUploadDto.propertyId});
+    return await this.uploadsService.bulkCreate(files, property);
   }
 
   @Post('property-images')
   @UseInterceptors(FilesInterceptor('files', 5))
   async uploadPropertyImages(@UploadedFiles() files: Express.Multer.File[], @Body() createUploadDto: CreateUploadDto) {
-    const property = await this.propertiesService.findOne({id: createUploadDto.property_id});
-    return await this.uploadsService.create(files, property);
+    const property = await this.propertiesService.findOne({id: createUploadDto.propertyId});
+    return await this.uploadsService.bulkCreate(files, property);
   }
 
   @Get()

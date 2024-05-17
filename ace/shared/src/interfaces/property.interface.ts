@@ -1,6 +1,8 @@
 import { IUpload } from "./upload.interface";
 import { IUser } from "./user.interface";
 
+export const property_types = ["HOUSE", "APARTMENT", "OFFICE", "LAND", "COMMERCIAL"] as const;
+
 export interface IProperty {
   id: number;
 
@@ -14,9 +16,9 @@ export interface IProperty {
 
   surface: number;
 
-  room_count: number;
+  roomCount: number;
 
-  isActive: boolean;
+  propertyType: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
 
   lessor: IUser;
 

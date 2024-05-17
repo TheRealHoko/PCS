@@ -1,13 +1,13 @@
 @if (property) {
     <h1 class="text-center"> {{ property.name }} </h1>
-    <div class="rounded-lg border-8 border-primary h-screen border-spacing-5 flex flex-col p-8">
+    <div class="rounded-lg border-8 border-primary border-spacing-5 flex flex-col p-8 gap-2">
         <div class="justify-center flex flex-row space-x-4">
             <img class="w-[642px] h-[450px] rounded-lg" src="{{ cdnUrl }}/{{property.images[0].path}}" alt="">
             <div class="grid grid-cols-2 gap-4">
-                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[0].path}}" alt="">
-                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[0].path}}" alt="">
-                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[0].path}}" alt="">
-                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[0].path}}" alt="">
+                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[1].path}}" alt="">
+                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[2].path}}" alt="">
+                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[3].path}}" alt="">
+                <img class="w-[251px] h-[217px] rounded-lg" src="{{ cdnUrl }}/{{property.images[4].path}}" alt="">
             </div>
         </div>
         <div class="flex flex-row space-x-4">
@@ -16,7 +16,7 @@
                 <p>{{ property.description }}</p>
                 <div class="flex flex-row gap-2">
                     <img class="rounded-full w-8" src="https://static1.personality-database.com/profile_images/b26440de6219476fac77635a298af98d.png" alt="">
-                    <p>Propriétaire: {{ property.lessor.firstname }} {{ property.lessor.lastname }} </p>
+                    <p>Lessor: {{ property.lessor.firstname }} {{ property.lessor.lastname }} </p>
                 </div>
                 @if (property.lessor.review) {
                     <p>Review : {{ property.lessor.review }}/5 </p>
@@ -28,11 +28,11 @@
                 <h1>Price: {{ property.price | currency: 'EUR' }} </h1>
                 <mat-form-field>
                     <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                    <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker">
                       <input matStartDate formControlName="start" placeholder="Start date">
                       <input matEndDate formControlName="end" placeholder="End date">
                     </mat-date-range-input>
-                    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+                    <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
                   
@@ -42,13 +42,19 @@
                     @if (range.controls.end.hasError('matEndDateInvalid')) {
                       <mat-error>Invalid end date</mat-error>
                     }
-                  </mat-form-field>
+                </mat-form-field>
                   
-                  
-                  <button mat-button (click)="reserveProperty(property)">
-                    Reserve
-                </button>
-                <p>Selected range: {{range.value | json}}</p>
+                @if (authStore.isAuthenticated()) {
+                    <button mat-button (click)="reserveProperty(property)">
+                        Reserve
+                    </button>
+                }
+                @else {
+                    <button mat-button routerLink="/login" >
+                        Login to reserve
+                    </button>
+                }
+                <p class="overflow-hidden">Selected range: {{range.value | json}}</p>
             </div>
         </div>
     </div>

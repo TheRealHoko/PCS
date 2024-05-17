@@ -2,15 +2,17 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "../../properties/entities/property.entity";
 
 @Entity()
-export class Upload {
+export class Availability {
+
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    path: string;
+    from: Date;
 
-    @ManyToOne(() => Property, (property) => property.images, {
-        onDelete: "CASCADE",
-    })
+    @Column()
+    to: Date;
+
+    @ManyToOne(() => Property, property => property.availabilities)
     property: Property;
 }

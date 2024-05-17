@@ -1,82 +1,102 @@
 <section class="flex justify-center items-start mt-16">
-    <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
-      <h1 class="text-secondary text-center text-2xl mb-5">Créer un service</h1>
-      <form
-        class="flex flex-col justify-center"
-        [formGroup]="propertyForm"
-        (ngSubmit)="onSubmit()"
-      >
-        <mat-form-field appearance="fill">
-          <mat-label>Nom du service</mat-label>
-          <input
-            matInput
-            formControlName="name"
-            name="name"
-            placeholder="Entrez le nom du service"
-            type="text"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <textarea
-            matInput
-            formControlName="description"
-            name="description"
-            placeholder="Décrivez le service"
-            required
-          ></textarea>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Type de service</mat-label>
-          <input
-            matInput
-            formControlName="service_type"
-            name="service_type"
-            placeholder="Type de service (ex. nettoyage, restauration)"
-            type="text"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Prix (€)</mat-label>
-          <input
-            matInput
-            formControlName="price"
-            name="price"
-            placeholder="Définissez un prix"
-            type="number"
-            min="0"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Effectif requis</mat-label>
-          <input
-            matInput
-            formControlName="effectif"
-            name="effectif"
-            placeholder="Nombre de personnes nécessaires"
-            type="number"
-            min="1"
-            required
-          />
-        </mat-form-field>
-  
-        <!-- Upload example -->
-        <div class="flex flex-col justify-center w-full">
-          <ace-upload (uploadFiles)="getFiles($event)"></ace-upload>
-        </div>
-
-        <button
-          class="bg-tertiary"
-          mat-raised-button
-          [disabled]="propertyForm.invalid"
-          type="submit"
+  <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
+    <h1 class="text-secondary text-center text-2xl mb-5">Rent a property</h1>
+    <form
+      class="flex flex-col justify-center"
+      [formGroup]="propertyForm"
+      (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Name of the property</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          name="name"
+          placeholder="Enter the name of the property"
+          type="text"
+          required />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          name="description"
+          placeholder="Describe the property in a few words"
+          required
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Property type</mat-label>
+        <mat-select 
+        formControlName="propertyType"
+        placeholder="(Ex. house, apartment, etc.)"
+        required
         >
-          Créer le service
-        </button>
-      </form>
-    </div>
-  </section>
-  
+          @for (type of propTypes; track $index) {
+            <mat-option [value]="type">{{ type | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Price (€)</mat-label>
+        <input
+          matInput
+          formControlName="price"
+          name="price"
+          placeholder="Define the price of the property per night"
+          type="number"
+          min="0"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Capacity</mat-label>
+        <input
+          matInput
+          formControlName="capacity"
+          name="capacity"
+          placeholder="Number of people the property can accommodate"
+          type="number"
+          min="1"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Surface (m²)</mat-label>
+        <input
+          matInput
+          formControlName="surface"
+          name="surface"
+          placeholder="Surface of the property in square meters"
+          type="number"
+          min="1"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Rooms</mat-label>
+        <input
+          matInput
+          formControlName="roomCount"
+          name="roomCount"
+          placeholder="Number of rooms in the property"
+          type="number"
+          min="1"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Upload example -->
+      <ace-upload (uploadFiles)="getFiles($event)"></ace-upload>
+
+      <button
+        class="bg-tertiary"
+        mat-raised-button
+        [disabled]="propertyForm.invalid"
+        type="submit"
+      >
+        Create the property
+      </button>
+    </form>
+  </div>
+</section>

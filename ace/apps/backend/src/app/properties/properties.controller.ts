@@ -21,7 +21,7 @@ export class PropertiesController {
 
   @Post()
   async create(@Body() createPropertyDto: CreatePropertyDto) {
-    const lessor = await this.usersService.findOne({ id: createPropertyDto.lessor_id });
+    const lessor = await this.usersService.findOne({ id: createPropertyDto.lessorId });
     return this.propertiesService.create(createPropertyDto, lessor);
   }
 

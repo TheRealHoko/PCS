@@ -19,5 +19,5 @@ export class CreateServiceDto {
   status?: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
   @IsNotEmpty()
-  provider_id!: number;
+  providerId!: number;
 }

@@ -27,7 +27,7 @@ export class ServicesController {
   @Post()
   async create(@Body() createServiceDto: CreateServiceDto) {
     const provider = await this.usersService.findOne({
-      id: createServiceDto.provider_id,
+      id: createServiceDto.providerId,
     });
     return this.servicesService.create(createServiceDto, provider);
   }
