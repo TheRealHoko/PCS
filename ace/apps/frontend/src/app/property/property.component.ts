@@ -36,8 +36,8 @@ export class PropertyComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   range = new FormGroup({
-    start: new FormControl<Date | null>(new Date(Date.now())),
-    end: new FormControl<Date | null>(null),
+    from: new FormControl<Date | null>(new Date(Date.now())),
+    to: new FormControl<Date | null>(null),
   });
 
   constructor(

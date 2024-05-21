@@ -6,4 +6,6 @@ export class CreateAvailabilityDto {
     
     @IsNotEmpty()
     to!: Date;
+
+    property_id?: number;
 }
