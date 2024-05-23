@@ -1,3 +1,4 @@
+import { IPropertyAvailability } from "./property-availability.interface";
 import { IUpload } from "./upload.interface";
 import { IUser } from "./user.interface";
 
@@ -23,4 +24,6 @@ export interface IProperty {
   lessor: IUser;
 
   images: IUpload[];
+
+  availabilities: IPropertyAvailability[];
 }

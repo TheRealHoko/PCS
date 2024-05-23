@@ -25,12 +25,12 @@
                 }
             </div>
             <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
-                <h1>Price: {{ property.price | currency: 'EUR' }} </h1>
+                <h1>Price: {{ computedPrice() | currency: 'EUR' }} ({{ property.price | currency: 'EUR' }}/night) </h1>
                 <mat-form-field>
                     <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker">
-                      <input matStartDate formControlName="start" placeholder="Start date">
-                      <input matEndDate formControlName="end" placeholder="End date">
+                    <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
+                      <input matStartDate formControlName="from" placeholder="Start date">
+                      <input matEndDate formControlName="to" placeholder="End date">
                     </mat-date-range-input>
                     <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -54,7 +54,7 @@
                         Login to reserve
                     </button>
                 }
-                <p class="overflow-hidden">Selected range: {{range.value | json}}</p>
+                <p>{{ selectedDaysCount() }}</p>
             </div>
         </div>
     </div>

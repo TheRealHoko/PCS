@@ -9,7 +9,7 @@ import { PropertyAvailability } from './entities/property-availability.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Property, PropertyAvailability]),
-    UsersModule,
+    UsersModule
   ],
   controllers: [PropertiesController],
   providers: [PropertiesService],

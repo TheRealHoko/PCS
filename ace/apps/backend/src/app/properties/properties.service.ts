@@ -13,13 +13,22 @@ export class PropertiesService {
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
     @InjectRepository(PropertyAvailability)
-    private readonly availabilityRepository: Repository<PropertyAvailability>
+    private readonly propertyAvailabilityRepository: Repository<PropertyAvailability>,
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, lessor: User): Promise<Property> {
     const property = this.propertyRepository.create(createPropertyDto);
     property.lessor = lessor;
-    return this.propertyRepository.save(property);
+    const savedProperty = await this.propertyRepository.save(property);
+
+    const availabilities = createPropertyDto.availabilities.map((availability) => {
+      const propertyAvailability = this.propertyAvailabilityRepository.create(availability);
+      propertyAvailability.property = savedProperty;
+      return propertyAvailability;
+    });
+    await this.propertyAvailabilityRepository.save(availabilities);
+    
+    return savedProperty;
   }
 
   findAll(): Promise<Property[]> {

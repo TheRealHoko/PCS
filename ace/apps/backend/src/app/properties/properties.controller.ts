@@ -16,7 +16,7 @@ import { UsersService } from '../users/users.service';
 export class PropertiesController {
   constructor(
     private readonly propertiesService: PropertiesService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
   ) {}
 
   @Post()

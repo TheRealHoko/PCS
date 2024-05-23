@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UploadComponent } from '../components/upload/upload.component';
@@ -8,7 +8,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
-import { CreateAvailabilityDto, CreatePropertyDto, IProperty } from '@ace/shared';
+import { CreatePropertyAvailabilityDto, CreatePropertyDto, IProperty } from '@ace/shared';
 import { UploadService } from '../services/upload.service';
 import { FileUpload } from '../components/upload/upload.directive';
 import { MatSelectModule } from '@angular/material/select';
@@ -76,8 +76,8 @@ export class PropertyCreationComponent {
   addAvailability() {
     this.availabilities().push(
       this.fb.group({
-        from: [this.fb.control<Date | null>(null), [Validators.required]],
-        to: [this.fb.control<Date | null>(null), [Validators.required]]
+        from: [null, [Validators.required]],
+        to: [null, [Validators.required]]
       })
     );
   }
