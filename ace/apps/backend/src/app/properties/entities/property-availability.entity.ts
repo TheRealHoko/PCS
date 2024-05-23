@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Property } from "../../properties/entities/property.entity";
+import { Property } from "./property.entity";
 
 @Entity()
-export class Availability {
+export class PropertyAvailability {
 
     @PrimaryGeneratedColumn()
     id: number;

@@ -8,7 +8,7 @@ import {
 import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
 import { IProperty } from '@ace/shared';
-import { Availability } from '../../availabilities/entities/availability.entity';
+import { PropertyAvailability } from './property-availability.entity';
 
 @Entity()
 export class Property implements IProperty {
@@ -46,10 +46,10 @@ export class Property implements IProperty {
   })
   images: Upload[];
 
-  @OneToMany(() => Availability, availability => availability.property, {
-    eager: true,
+  @OneToMany(() => PropertyAvailability, availability => availability.property, {
+    eager: true
   })
-  availabilities: Availability[];
+  availabilities: PropertyAvailability[];
 
   /** Crée la relation avec ADDRESS_ID pour la suite
    * @JoinTable()

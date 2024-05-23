@@ -14,7 +14,6 @@ import { FormModule } from './form/form.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { AvailabilitiesModule } from './availabilities/availabilities.module';
 
 @Module({
   imports: [
@@ -49,7 +48,6 @@ import { AvailabilitiesModule } from './availabilities/availabilities.module';
       rootPath: join(__dirname, '../../../public'),
       serveRoot: '/public/',
     }),
-    AvailabilitiesModule,
   ],
   controllers: [],
   providers: [Logger],

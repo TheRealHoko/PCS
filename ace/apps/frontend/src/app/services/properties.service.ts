@@ -13,8 +13,8 @@ export class PropertiesService {
     private readonly http: HttpClient
   ) { }
 
-  createProperty(CreatePropertyDto: CreatePropertyDto): Observable<IProperty> {
-    return this.http.post<IProperty>(`${environment.apiUrl}/api/properties`, CreatePropertyDto);
+  createProperty(createPropertyDto: CreatePropertyDto): Observable<IProperty> {
+    return this.http.post<IProperty>(`${environment.apiUrl}/api/properties`, createPropertyDto);
   }
   
   getProperties(): Observable<IProperty[]> {

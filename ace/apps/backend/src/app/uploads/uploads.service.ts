@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUploadDto } from '@ace/shared';
 import { UpdateUploadDto } from '@ace/shared';
 import { Property } from '../properties/entities/property.entity';
 import { Repository } from 'typeorm';
@@ -14,7 +13,6 @@ export class UploadsService {
   ) {}
 
   async bulkCreate(files: Express.Multer.File[], linkedProperty: Property) {
-    console.log(files);
     const uploads = [];
     files.forEach(file => {
       const upload = this.uploadRepository.create();

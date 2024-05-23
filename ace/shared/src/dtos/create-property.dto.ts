@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { IAvailability } from '../interfaces';
+import { CreateAvailabilityDto } from './create-availability.dto';
 
 export class CreatePropertyDto {
   @IsNotEmpty()
@@ -25,7 +25,4 @@ export class CreatePropertyDto {
 
   @IsNotEmpty()
   lessorId!: number;
-
-  @IsNotEmpty()
-  availabilities!: IAvailability[];
 }

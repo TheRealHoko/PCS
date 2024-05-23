@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { UploadComponent } from '../components/upload/upload.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
@@ -14,7 +14,7 @@ import { FileUpload } from '../components/upload/upload.directive';
 import { MatSelectModule } from '@angular/material/select';
 import { PropertiesService } from '../services/properties.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { AvailabilitiesService } from '../services/availabilities.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'ace-property-creation',
@@ -28,7 +28,8 @@ import { AvailabilitiesService } from '../services/availabilities.service';
     MatCheckboxModule,
     UploadComponent,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatIconModule
   ],
   templateUrl: './property-creation.component.html',
   styleUrl: './property-creation.component.css',
@@ -46,7 +47,6 @@ export class PropertyCreationComponent {
     private readonly alertService: AlertService,
     private readonly authService: AuthService,
     private readonly uploadService: UploadService,
-    private readonly availabilitiesService: AvailabilitiesService
   ) {
     this.minDate = new Date(Date.now());
     this.maxDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
@@ -58,9 +58,10 @@ export class PropertyCreationComponent {
       capacity: ['', [Validators.required, Validators.min(1)]],
       surface: ['', [Validators.required, Validators.min(1)]],
       roomCount: ['', [Validators.required, Validators.min(1)]],
-      from: [new FormControl<Date | null>(new Date(Date.now())), [Validators.required]],
-      to: [new FormControl<Date | null>(null), [Validators.required]]
+      availabilities: this.fb.array([])
     });
+
+    this.addAvailability();
   }
 
   getFiles(files: FileUpload[]) {
@@ -68,12 +69,28 @@ export class PropertyCreationComponent {
     console.log(this.files);
   }
 
+  availabilities(): FormArray {
+    return this.propertyForm.get('availabilities') as FormArray;
+  }
+
+  addAvailability() {
+    this.availabilities().push(
+      this.fb.group({
+        from: [this.fb.control<Date | null>(null), [Validators.required]],
+        to: [this.fb.control<Date | null>(null), [Validators.required]]
+      })
+    );
+  }
+
+  removeAvailability(index: number): void {
+    this.availabilities().removeAt(index);
+  }
+
   onSubmit() {
     if (this.propertyForm.valid) {
       console.log(this.propertyForm.value);
       const createPropertyDTO: CreatePropertyDto = this.propertyForm.value;
       const token = this.authService.getDecodedToken();
-      
       
       if (token && token.sub) {
         createPropertyDTO.lessorId = +token.sub;
@@ -85,17 +102,9 @@ export class PropertyCreationComponent {
       this.propertiesService.createProperty(createPropertyDTO).subscribe({
         next: (property: IProperty) => {
           const form = new FormData();
-          this.files.forEach(file => form.append('files', file.file));
+          this.files.map(file => form.append('files', file.file));
           form.append('propertyId', property.id.toString());
           this.uploadService.uploadPropertyImages(form).subscribe(console.log);
-          createPropertyDTO.availabilities.forEach(availability => {
-            const body: CreateAvailabilityDto = {
-              from: availability.from,
-              to: availability.to,
-              property_id: property.id
-            };
-            this.availabilitiesService.createAvailability(body);
-          });
           this.alertService.info('Property created successfully');
         },
         error: () => this.alertService.info('An error occurred while creating the property')

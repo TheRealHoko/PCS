@@ -5,12 +5,15 @@ import { Property } from './entities/property.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
+import { PropertyAvailability } from './entities/property-availability.entity';
 
 @Injectable()
 export class PropertiesService {
   constructor(
     @InjectRepository(Property)
-    private readonly propertyRepository: Repository<Property>
+    private readonly propertyRepository: Repository<Property>,
+    @InjectRepository(PropertyAvailability)
+    private readonly availabilityRepository: Repository<PropertyAvailability>
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, lessor: User): Promise<Property> {
