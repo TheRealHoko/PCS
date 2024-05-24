@@ -12,7 +12,7 @@
         </div>
         <div class="flex flex-row space-x-4">
             <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
-                <h1>Description:</h1>
+                <h1 class="underline">Description:</h1>
                 <p>{{ property.description }}</p>
                 <div class="flex flex-row gap-2">
                     <img class="rounded-full w-8" src="https://static1.personality-database.com/profile_images/b26440de6219476fac77635a298af98d.png" alt="">
@@ -25,7 +25,7 @@
                 }
             </div>
             <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
-                <h1>Price: {{ computedPrice() | currency: 'EUR' }} ({{ property.price | currency: 'EUR' }}/night) </h1>
+                <h1> <span class="underline">Price:</span> {{ computedPrice() | currency: 'EUR' }} ({{ property.pricePerNight | currency: 'EUR' }}/night) </h1>
                 <mat-form-field>
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
@@ -54,8 +54,22 @@
                         Login to reserve
                     </button>
                 }
-                <p>{{ selectedDaysCount() }}</p>
             </div>
+        </div>
+        <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
+            <h2 class="underline">Available services</h2>
+            @for (service of servicesStore.services(); track $index) {
+                <div class="flex flex-row space-x-4">
+                    <div class="flex flex-col w-5/6">
+                        <h3>{{ service.name }}</h3>
+                        <p>{{ service.description }}</p>
+                        <p>Price: {{ service.price | currency: 'EUR' }}</p>
+                        <button mat-button (click)="addServiceToCart(service)">
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 }

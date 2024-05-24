@@ -3,14 +3,14 @@ import { CreateServiceDto } from '@ace/shared';
 import { UpdateServiceDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Service } from './entities/service.entity';
-import { Repository } from 'typeorm';
+import { FindOneOptions, In, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class ServicesService {
   constructor(
     @InjectRepository(Service)
-    private readonly servicesRepository: Repository<Service>
+    private readonly servicesRepository: Repository<Service>,
   ) {}
 
   async create(createServiceDto: CreateServiceDto, provider: User) {
@@ -28,11 +28,11 @@ export class ServicesService {
     return services;
   }
 
-  async findOne(id: number) {
-    const service = await this.servicesRepository.findOne({ where: { id } });
+  async findOne(options: FindOneOptions<Service>) {
+    const service = await this.servicesRepository.findOne(options);
 
     if (!service) {
-      throw new NotFoundException(`Service #${id} not found`);
+      throw new NotFoundException(`Service #${options.where} not found`);
     }
     return service;
   }

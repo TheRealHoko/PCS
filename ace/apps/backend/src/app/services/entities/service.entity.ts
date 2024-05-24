@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { ServiceAvailability } from './service-availability.entity';
 
 @Entity()
 export class Service {
@@ -16,10 +17,10 @@ export class Service {
   available: Boolean;
 
   @Column({ nullable: false })
-  effectif: Number;
+  effectif: number;
 
   @Column({ nullable: false })
-  price: Number;
+  price: number;
 
   @Column({ nullable: false })
   service_type: string;
@@ -27,6 +28,12 @@ export class Service {
   @Column({ default: 'WAITING' })
   status: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
-  @ManyToOne(() => User, (user) => user.services, { eager: true })
+  // !! removed eager: true
+  @ManyToOne(() => User, (user) => user.services, {eager: true})
   provider: User;
+
+  @OneToMany(() => ServiceAvailability, availability => availability.service, {
+    eager: true
+  })
+  availabilities: ServiceAvailability[];
 }

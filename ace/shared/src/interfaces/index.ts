@@ -6,3 +6,5 @@ export * from './address.interface';
 export * from './property.interface';
 export * from './upload.interface';
 export * from './property-availability.interface';
+export * from './booking.interface';
+export * from './service.interface';

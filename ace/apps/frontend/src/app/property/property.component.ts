@@ -3,7 +3,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { PropertiesService } from '../services/properties.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
-import { IProperty, Property } from '@ace/shared';
+import { IProperty, Property, Service } from '@ace/shared';
 import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AuthStore } from '../stores/auth.store';
+import { ServicesStore } from '../stores/services.store';
 
 @Component({
   selector: 'ace-property',
@@ -40,13 +41,14 @@ export class PropertyComponent implements OnInit {
     to: new FormControl<Date | null>(null),
   });
   dateFilter! : (date: Date) => boolean;
-  selectedDaysCount = signal(0);
-  price = signal(0);
+  selectedDaysCount = signal(1);
+  price = signal(1);
   computedPrice = computed(() => this.price() * this.selectedDaysCount());
+  servicesStore = inject(ServicesStore);
 
   constructor(
     private readonly propertiesService: PropertiesService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {
     this.minDate = new Date(Date.now());
     this.maxDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
@@ -61,7 +63,7 @@ export class PropertyComponent implements OnInit {
       )
     ).subscribe(property => {
       this.property = property
-      this.price.set(property.price);
+      this.price.set(property.pricePerNight);
       const allowedDates = property.availabilities;
       this.dateFilter = (date: Date | null) => {
         if (!date) {
@@ -78,17 +80,25 @@ export class PropertyComponent implements OnInit {
       };
     });
 
+    // bug: able to book between available from one availabilities and to another
+    // https://material.angular.io/components/datepicker/overview#customizing-the-date-selection-logic
+    // create a selection strategy that only allows dates within the range available dates
+  
     this.range.valueChanges.subscribe(val => {
       const from = val.from;
       const to = val.to;
       if (from && to) {
         this.selectedDaysCount.set(this.calculateDaysCount(from, to));
       } else {
-        this.selectedDaysCount.set(0);
+        this.selectedDaysCount.set(1);
       }
     });
   }
   
+  addServiceToCart(service: Service) {
+    throw new Error('Method not implemented.');
+  }
+
   reserveProperty(property: IProperty): void {
     console.log(`Property ${property.id} reserved`);
   }

@@ -27,7 +27,7 @@ export class ServicesController {
   @Post()
   async create(@Body() createServiceDto: CreateServiceDto) {
     const provider = await this.usersService.findOne({
-      id: createServiceDto.providerId,
+      where: { id: createServiceDto.providerId },
     });
     return this.servicesService.create(createServiceDto, provider);
   }
@@ -39,7 +39,9 @@ export class ServicesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(+id);
+    return this.servicesService.findOne({
+      where: { id: +id },
+    });
   }
 
   @Patch(':id')
@@ -54,7 +56,12 @@ export class ServicesController {
       status: 'ONLINE',
     });
 
-    const provider = await this.usersService.findOne({ id: updatedService.provider.id });
+    const provider = await this.usersService.findOne({
+      where: {
+        id: updatedService.provider.id 
+      }
+    });
+
     if (!provider.roles.map(role => role.name).includes(RoleEnum.PROVIDER)) {
       this.usersService.update(updatedService.provider.id, {
         roles: [
@@ -88,7 +95,11 @@ export class ServicesController {
       status: 'OFFLINE',
     });
 
-    const provider = await this.usersService.findOne({ id: updatedService.provider.id });
+    const provider = await this.usersService.findOne({
+      where: {
+        id: updatedService.provider.id
+      }
+    });
     if (provider.services.length === 1) {
       this.usersService.update(updatedService.provider.id, {
         roles: [

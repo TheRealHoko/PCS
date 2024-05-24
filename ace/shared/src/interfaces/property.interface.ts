@@ -11,13 +11,15 @@ export interface IProperty {
 
   description: string;
 
-  price: number;
+  pricePerNight: number;
 
   capacity: number;
 
   surface: number;
 
   roomCount: number;
+
+  isBooked: boolean;
 
   propertyType: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
 

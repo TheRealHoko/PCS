@@ -8,10 +8,10 @@ export class CreateServiceDto {
   description!: string;
 
   @IsNotEmpty()
-  effectif!: Number;
+  effectif!: number;
 
   @IsNotEmpty()
-  price!: Number;
+  price!: number;
 
   @IsNotEmpty()
   service_type!: string;

@@ -52,7 +52,11 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException('Wrong token');
     }
 
-    const user = await this.usersSerive.findOne({ email: request.user.email });
+    const user = await this.usersSerive.findOne({
+      where: {
+        email: request.user.email
+      }
+    });
     const userRoles = user.roles.map((role) => role.name);
 
     return requiredRoles.some((role) => userRoles?.includes(role));

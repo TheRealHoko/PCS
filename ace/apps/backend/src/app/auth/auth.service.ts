@@ -34,7 +34,9 @@ export class AuthService {
   async login(signInDto: SignInDto): Promise<LoginResponse> {
     const { email, password } = signInDto;
 
-    const user = await this.usersService.findOne({ email });
+    const user = await this.usersService.findOne({
+      where: { email }
+    });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -61,7 +63,9 @@ export class AuthService {
 
   async register(registerInfo: RegisterDto) {
     const isEmailAlreadyExist = await this.usersService.findOne({
-      email: registerInfo.email,
+      where: {
+        email: registerInfo.email,
+      }
     });
     if (isEmailAlreadyExist) {
       throw new BadRequestException('Email already exists');
@@ -96,8 +100,10 @@ export class AuthService {
 
     try {
       const user: User = await this.usersService.findOne({
-        email_verification_token: token,
-        email: email,
+        where: {
+          email_verification_token: token,
+          email: email,
+        }
       });
 
       user.status = true;

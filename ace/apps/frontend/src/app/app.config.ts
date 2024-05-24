@@ -14,6 +14,7 @@ import { UsersStore } from './stores/users.store';
 import { AuthStore } from './stores/auth.store';
 import { PropertiesStore } from './stores/properties.store';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { DefaultMatCalendarRangeStrategy, MatRangeDateSelectionModel } from '@angular/material/datepicker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +27,8 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideNativeDateAdapter(),
+    DefaultMatCalendarRangeStrategy,
+    MatRangeDateSelectionModel,
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}
   ],
 };

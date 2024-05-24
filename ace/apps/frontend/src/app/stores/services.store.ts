@@ -1,10 +1,12 @@
 import { Service, UpdateServiceDto } from '@ace/shared';
-import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
+import { signalStore, withState, withMethods, patchState, withComputed, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ServicesService } from '../services/services.service';
 import { computed, inject } from '@angular/core';
 import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
+import { UsersService } from '../services/users.service';
+import { AuthService } from '../services/auth.service';
 
 interface RxUpdateService {
   id: number;
@@ -22,7 +24,7 @@ export const ServicesStore = signalStore(
   withComputed((store) => ({
     serviceCount: computed(() => store.services().length)
   })),
-  withMethods((store, service = inject(ServicesService)) => ({
+  withMethods((store, service = inject(ServicesService), users = inject(UsersService), auth = inject(AuthService)) => ({
     refreshServices: rxMethod<void>(
       pipe(
         debounceTime(500),
@@ -32,6 +34,24 @@ export const ServicesStore = signalStore(
             tapResponse({
               next: (response) => {
                 patchState(store, { services: response });
+              },
+              error: (err) => {
+                console.error(err);
+              },
+            })
+          );
+        })
+      )
+    ),
+    getOwnServices: rxMethod<void>(
+      pipe(
+        debounceTime(500),
+        switchMap(() => {
+          const userId = auth.getDecodedToken()?.sub;
+          return users.getUser(+userId!).pipe(
+            tapResponse({
+              next: (response) => {
+                patchState(store, { services: response.services?.filter(service => service.status !== "OFFLINE") });
               },
               error: (err) => {
                 console.error(err);
@@ -139,5 +159,10 @@ export const ServicesStore = signalStore(
         })
       )
     ),
-  }))
+  })),
+  withHooks({
+    onInit: (store) => {
+      store.refreshServices();
+    }
+  }),
 );

@@ -2,20 +2,20 @@ import { Route } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ReviewComponent } from './admin/review/review.component';
 import { UsersComponent } from './admin/users/users.component';
-import { LocationComponent } from './admin/location/location.component';
 import { ProviderAdminDashboardComponent } from './admin/provider/provider.component';
 import { ToolsComponent } from './admin/tools/tools.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { UploadComponent } from './components/upload/upload.component';
 import { authGuard } from './guard/auth.guard';
 import { RoleEnum } from '@ace/shared';
 import { rolesGuard } from './guard/roles.guard';
 import { ServiceCreationFormComponent } from './provider-form/provider-form.component';
 import { publicGuard } from './guard/public.guard';
-import { ServiceComponent } from './service/service.component';
+import { ServiceDashboardComponent } from './service-dashboard/service-dashboard.component';
 import { PropertyCreationComponent } from './property-creation/property-creation.component';
 import { PropertyComponent } from './property/property.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { ServiceViewComponent } from './service-view/service-view.component';
 
 export const appRoutes: Route[] = [
   { path: '', component: HomeComponent },
@@ -38,7 +38,7 @@ export const appRoutes: Route[] = [
     children: [
       { path: 'users', component: UsersComponent },
       { path: 'review', component: ReviewComponent },
-      { path: 'location', component: LocationComponent },
+      { path: 'property', component: PropertyComponent },
       { path: 'provider', component: ProviderAdminDashboardComponent },
       { path: 'tools', component: ToolsComponent },
     ],
@@ -49,11 +49,18 @@ export const appRoutes: Route[] = [
     canActivate: [authGuard, rolesGuard],
     data: { roles: [RoleEnum.PROVIDER] },
     children: [
-      { path: 'my-services', component: ServiceComponent }
+      { 
+        path: 'myServices', 
+        component: ServiceDashboardComponent,
+      },
+      {
+        path: 'myServices/:id', component: ServiceViewComponent
+      }
     ]
   },
   { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard]},
   { path: 'property/:id', component: PropertyComponent },
+  { path: 'bookings', component: BookingsComponent, canActivate: [authGuard]},
   { path: '**', redirectTo: '' },
   // {
   //   path: 'renter',

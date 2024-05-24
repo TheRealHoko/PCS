@@ -14,6 +14,7 @@ import { FormModule } from './form/form.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BookingsModule } from './bookings/bookings.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '../../../public'),
       serveRoot: '/public/',
     }),
+    BookingsModule,
   ],
   controllers: [],
   providers: [Logger],

@@ -31,14 +31,17 @@ export class UsersController {
   @Get()
   @Roles(RoleEnum.ADMIN)
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAll({
+      relations: ['services']
+
+    });
   }
 
   @Get(':id')
   // @Roles(RoleEnum.ADMIN)
   findOne(@Param('id') id: string) {
     return this.usersService.findOne({
-      id: +id,
+      where: { id: +id },
     });
   }
 

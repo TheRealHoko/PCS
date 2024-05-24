@@ -9,6 +9,7 @@ import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
 import { IProperty } from '@ace/shared';
 import { PropertyAvailability } from './property-availability.entity';
+import { Booking } from '../../bookings/entities/booking.entity';
 
 @Entity()
 export class Property implements IProperty {
@@ -22,7 +23,7 @@ export class Property implements IProperty {
   description: string;
 
   @Column()
-  price: number;
+  pricePerNight: number;
 
   @Column()
   capacity: number;
@@ -32,6 +33,9 @@ export class Property implements IProperty {
 
   @Column()
   roomCount: number;
+
+  @Column({default: false})
+  isBooked: boolean;
 
   @Column()
   propertyType: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
@@ -50,6 +54,9 @@ export class Property implements IProperty {
     eager: true
   })
   availabilities: PropertyAvailability[];
+
+  @OneToMany(() => Booking, booking => booking.property)
+  bookings: Booking[];
 
   /** Crée la relation avec ADDRESS_ID pour la suite
    * @JoinTable()

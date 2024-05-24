@@ -9,7 +9,7 @@ export class Property implements IProperty {
   
   description!: string;
   
-  price!: number;
+  pricePerNight!: number;
   
   capacity!: number;
   
@@ -17,6 +17,8 @@ export class Property implements IProperty {
   
   roomCount!: number;
   
+  isBooked!: boolean;
+
   propertyType!: "HOUSE" | "APARTMENT" | "OFFICE" | "LAND" | "COMMERCIAL";
   
   lessor!: User;

@@ -10,8 +10,8 @@
           Utilisateurs
         </button>
         <br />
-        <button routerLink="admin/location" routerLinkActive="current">
-          Location
+        <button routerLink="admin/property" routerLinkActive="current">
+          Gestion propriétés
         </button>
         <br />
         <button routerLink="admin/review" routerLinkActive="current">
@@ -42,15 +42,16 @@
   }
   @else {
   <mat-toolbar color="primary">
-    <div class="flex flex-row">
+    <div class="flex flex-row gap-4">
       <a routerLink="/">PCS</a>
+      <button mat-button routerLink="/bookings">Bookings</button>
     </div>
     <ace-account-dropdown class="ml-auto scale-150"></ace-account-dropdown>
   </mat-toolbar>
   <div class="m-5 h-screen">
       <router-outlet>
       </router-outlet>
-    </div>
+  </div>
   }
 }
 @else {

@@ -7,7 +7,7 @@ import {
 import { CreateUserDto } from '@ace/shared';
 import { UpdateUserDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles/entities/role.entity';
@@ -59,8 +59,8 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find();
+  async findAll(options?: FindManyOptions<User>): Promise<User[]> {
+    const users = await this.usersRepository.find(options);
 
     if (!users) {
       throw new NotFoundException('No users');
@@ -74,8 +74,8 @@ export class UsersService {
     return usersWithoutHash;
   }
 
-  async findOne(where: FindOptionsWhere<User>): Promise<User | null> {
-    const user = await this.usersRepository.findOne({ where });
+  async findOne(options: FindOneOptions<User>): Promise<User | null> {
+    const user = await this.usersRepository.findOne(options);
 
     if (!user) {
       throw new NotFoundException('User not found');

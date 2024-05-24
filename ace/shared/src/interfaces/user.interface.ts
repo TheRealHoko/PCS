@@ -1,5 +1,6 @@
 import { IAddress } from './address.interface';
 import { IRole } from './role.interface';
+import { IService } from './service.interface';
 
 export interface IUser {
   id: number;
@@ -25,4 +26,6 @@ export interface IUser {
   status: boolean;
 
   review?: 0 | 1 | 2 | 3 | 4 | 5;
+
+  services?: IService[];
 }

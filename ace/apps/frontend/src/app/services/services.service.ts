@@ -14,6 +14,10 @@ export class ServicesService {
     return this.http.get<Service[]>(`${environment.apiUrl}/api/services`);
   }
 
+  getOwnServices(): Observable<Service[]> {
+    return this.http.get<Service[]>(`${environment.apiUrl}/api/services/own`);
+  }
+
   createServices(createServiceDto: CreateServiceDto): Observable<Service> {
     return this.http.post<Service>(
       `${environment.apiUrl}/api/services`,

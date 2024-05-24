@@ -5,6 +5,7 @@ export * from './create-service.dto';
 export * from './create-property.dto';
 export * from './create-upload.dto';
 export * from './create-availability.dto';
+export * from './create-service-availability.dto';
 export * from './register.dto';
 export * from './signin.dto';
 export * from './update-address.dto';

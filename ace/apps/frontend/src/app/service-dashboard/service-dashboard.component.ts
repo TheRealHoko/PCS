@@ -14,10 +14,10 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     RouterModule
   ],
-  templateUrl: './service.component.html',
-  styleUrl: './service.component.css',
+  templateUrl: './service-dashboard.component.html',
+  styleUrl: './service-dashboard.component.css',
 })
-export class ServiceComponent implements OnInit {
+export class ServiceDashboardComponent implements OnInit {
   readonly servicesStore = inject(ServicesStore);
   columns = [
     { key: 'name', display: 'Name' },
@@ -29,6 +29,6 @@ export class ServiceComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.servicesStore.refreshServices();
+    this.servicesStore.getOwnServices();
   }
 }
