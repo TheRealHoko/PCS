@@ -3,17 +3,17 @@ import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
 export class CreateBookingDto {
     @IsDateString()
     @IsNotEmpty()
-    from: Date;
+    from!: Date;
 
     @IsDateString()
     @IsNotEmpty()
-    to: Date;
+    to!: Date;
 
     @IsNotEmpty()
     @IsNumber()
-    travellerId: number;
+    travellerId!: number;
 
     @IsNotEmpty()
     @IsNumber()
-    propertyId: number;
+    propertyId!: number;
 }

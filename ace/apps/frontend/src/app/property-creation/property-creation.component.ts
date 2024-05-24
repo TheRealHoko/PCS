@@ -54,7 +54,7 @@ export class PropertyCreationComponent {
       name: ['', Validators.required],
       description: ['', Validators.required],
       propertyType: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
+      pricePerNight: ['', [Validators.required, Validators.min(0)]],
       capacity: ['', [Validators.required, Validators.min(1)]],
       surface: ['', [Validators.required, Validators.min(1)]],
       roomCount: ['', [Validators.required, Validators.min(1)]],

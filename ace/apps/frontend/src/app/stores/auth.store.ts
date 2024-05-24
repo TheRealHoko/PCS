@@ -1,4 +1,4 @@
-import { RoleEnum } from '@ace/shared';
+import { AceJwtPayload, RoleEnum } from '@ace/shared';
 import { InjectionToken, computed, inject } from '@angular/core';
 import {
   patchState,
@@ -23,25 +23,25 @@ export interface AuthenticateType {
 
 export interface AuthState {
   isAuthenticated: boolean;
-  roles: RoleEnum[];
+  token: AceJwtPayload | void;
   isLoading: boolean;
 }
 
 const AUTH_STATE = new InjectionToken<AuthState>('AuthState', {
   factory: (authService = inject(AuthService)) => ({
     isAuthenticated: authService.isLoggedIn(),
-    roles: (authService.getDecodedToken()?.roles as RoleEnum[]) || [],
+    token: authService.getDecodedToken(),
     isLoading: false,
   }),
 });
 
 export const AuthStore = signalStore(
   withState<AuthState>(() => inject(AUTH_STATE)),
-  withComputed(({ roles }) => ({
+  withComputed(({ token }) => ({
     // hasRoles: computed(() => roles())
-    isProvider: computed(() => roles().includes(RoleEnum.PROVIDER)),
-    isRenter: computed(() => roles().includes(RoleEnum.RENTER)),
-    isAdmin: computed(() => roles().includes(RoleEnum.ADMIN)),
+    isProvider: computed(() => token()?.roles.includes(RoleEnum.PROVIDER)),
+    isRenter: computed(() => token()?.roles.includes(RoleEnum.RENTER)),
+    isAdmin: computed(() => token()?.roles.includes(RoleEnum.ADMIN)),
   })),
   withMethods(
     (
@@ -60,9 +60,7 @@ export const AuthStore = signalStore(
                   authService.setToken(response.token);
                   patchState(store, {
                     isAuthenticated: true,
-                    roles:
-                      (authService.getDecodedToken()?.roles as RoleEnum[]) ||
-                      [],
+                    token: authService.getDecodedToken(),
                     isLoading: false,
                   });
                   alertService.info('Logged in successfully');
@@ -79,7 +77,7 @@ export const AuthStore = signalStore(
       ),
       logout: () => {
         authService.logout();
-        patchState(store, { isAuthenticated: false, roles: [] });
+        patchState(store, { isAuthenticated: false, token: undefined});
       },
     })
   )

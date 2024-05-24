@@ -3,7 +3,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { PropertiesService } from '../services/properties.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
-import { IProperty, Property, Service } from '@ace/shared';
+import { CreateBookingDto, IProperty, Property, Service } from '@ace/shared';
 import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AuthStore } from '../stores/auth.store';
 import { ServicesStore } from '../stores/services.store';
+import { BookingsService } from '../services/bookings.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'ace-property',
@@ -49,6 +51,8 @@ export class PropertyComponent implements OnInit {
   constructor(
     private readonly propertiesService: PropertiesService,
     private readonly route: ActivatedRoute,
+    private readonly bookingsService: BookingsService,
+    private readonly alertService: AlertService
   ) {
     this.minDate = new Date(Date.now());
     this.maxDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
@@ -99,8 +103,18 @@ export class PropertyComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  reserveProperty(property: IProperty): void {
-    console.log(`Property ${property.id} reserved`);
+  reserveProperty(): void {
+    if (this.range.valid) {
+      const createBookingDto: CreateBookingDto = {
+        propertyId: this.property.id,
+        from: this.range.value.from as Date,
+        to: this.range.value.to as Date,
+        travellerId: +this.authStore.token()?.sub!
+      };
+      this.bookingsService.createBooking(createBookingDto).subscribe(() => {
+        this.alertService.info('Property reserved successfully!');
+      });
+    }
   }
 
   private calculateDaysCount(from: Date, to: Date): number {

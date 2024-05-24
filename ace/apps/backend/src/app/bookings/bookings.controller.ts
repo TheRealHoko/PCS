@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { CreateBookingDto } from './dto/create-booking.dto';
-import { UpdateBookingDto } from './dto/update-booking.dto';
+import { CreateBookingDto } from '@ace/shared';
+import { UpdateBookingDto } from '@ace/shared';
 import { UsersService } from '../users/users.service';
 import { PropertiesService } from '../properties/properties.service';
 import { FindOptionsWhere } from 'typeorm';

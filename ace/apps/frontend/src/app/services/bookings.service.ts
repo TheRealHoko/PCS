@@ -1,4 +1,4 @@
-import { IBooking } from "@ace/shared";
+import { CreateBookingDto, IBooking } from "@ace/shared";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
@@ -20,8 +20,8 @@ export class BookingsService {
     return this.http.get<IBooking>(`${environment.apiUrl}/api/bookings/${id}`);
   }
 
-  createBooking(booking: IBooking): Observable<IBooking> {
-    return this.http.post<IBooking>(`${environment.apiUrl}/api/bookings`, booking);
+  createBooking(createBookingDto: CreateBookingDto): Observable<IBooking> {
+    return this.http.post<IBooking>(`${environment.apiUrl}/api/bookings`, createBookingDto);
   }
 
   updateBooking(booking: IBooking): Observable<IBooking> {

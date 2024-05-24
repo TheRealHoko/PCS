@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBookingDto } from './dto/create-booking.dto';
-import { UpdateBookingDto } from './dto/update-booking.dto';
+import { CreateBookingDto } from '@ace/shared';
+import { UpdateBookingDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from './entities/booking.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';

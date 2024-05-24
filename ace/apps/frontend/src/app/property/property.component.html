@@ -25,7 +25,7 @@
                 }
             </div>
             <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
-                <h1> <span class="underline">Price:</span> {{ computedPrice() | currency: 'EUR' }} ({{ property.pricePerNight | currency: 'EUR' }}/night) </h1>
+                <h1><span class="underline">Price:</span> {{ computedPrice() | currency: 'EUR' }} ({{ property.pricePerNight | currency: 'EUR' }}/night) </h1>
                 <mat-form-field>
                     <mat-label>Enter a date range</mat-label>
                     <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
@@ -45,7 +45,7 @@
                 </mat-form-field>
                   
                 @if (authStore.isAuthenticated()) {
-                    <button mat-button (click)="reserveProperty(property)">
+                    <button mat-button (click)="reserveProperty()">
                         Reserve
                     </button>
                 }

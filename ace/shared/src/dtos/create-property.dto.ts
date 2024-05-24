@@ -9,7 +9,7 @@ export class CreatePropertyDto {
   description!: string;
 
   @IsNotEmpty()
-  price!: number;
+  pricePerNight!: number;
 
   @IsNotEmpty()
   capacity!: number;
