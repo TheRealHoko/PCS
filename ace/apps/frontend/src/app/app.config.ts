@@ -15,6 +15,8 @@ import { AuthStore } from './stores/auth.store';
 import { PropertiesStore } from './stores/properties.store';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { DefaultMatCalendarRangeStrategy, MatRangeDateSelectionModel } from '@angular/material/datepicker';
+import { provideNgxStripe } from "ngx-stripe";
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideNativeDateAdapter(),
     DefaultMatCalendarRangeStrategy,
     MatRangeDateSelectionModel,
-    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    provideNgxStripe(environment.stripeKey)
   ],
 };
