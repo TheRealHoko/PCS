@@ -132,6 +132,9 @@ export class PropertyComponent implements OnInit {
           }
         );
     }
+    else {
+      this.alertService.info('Please select a valid date range!');
+    }
   }
 
   private calculateDaysCount(from: Date, to: Date): number {
