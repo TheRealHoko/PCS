@@ -16,6 +16,7 @@ import { PropertyCreationComponent } from './property-creation/property-creation
 import { PropertyComponent } from './property/property.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { ServiceViewComponent } from './service-view/service-view.component';
+import { PaymentComponent } from './payment/payment.component';
 
 export const appRoutes: Route[] = [
   { path: '', component: HomeComponent },
@@ -58,9 +59,10 @@ export const appRoutes: Route[] = [
       }
     ]
   },
-  { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard]},
+  { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard] },
   { path: 'property/:id', component: PropertyComponent },
-  { path: 'bookings', component: BookingsComponent, canActivate: [authGuard]},
+  { path: 'bookings', component: BookingsComponent, canActivate: [authGuard] },
+  { path: 'payment', component: PaymentComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
   // {
   //   path: 'renter',

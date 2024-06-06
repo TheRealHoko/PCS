@@ -2,8 +2,8 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { PropertiesService } from '../services/properties.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
-import { CreateBookingDto, IProperty, Property, Service } from '@ace/shared';
+import { switchMap } from 'rxjs';
+import { CreateBookingDto, IProperty, Service } from '@ace/shared';
 import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +14,8 @@ import { AuthStore } from '../stores/auth.store';
 import { ServicesStore } from '../stores/services.store';
 import { BookingsService } from '../services/bookings.service';
 import { AlertService } from '../services/alert.service';
+import { PaymentService } from '../services/payment.service';
+import { StripeService } from 'ngx-stripe';
 
 @Component({
   selector: 'ace-property',
@@ -52,7 +54,9 @@ export class PropertyComponent implements OnInit {
     private readonly propertiesService: PropertiesService,
     private readonly route: ActivatedRoute,
     private readonly bookingsService: BookingsService,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private readonly paymentService: PaymentService,
+    private readonly stripeService: StripeService
   ) {
     this.minDate = new Date(Date.now());
     this.maxDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
@@ -105,15 +109,28 @@ export class PropertyComponent implements OnInit {
 
   reserveProperty(): void {
     if (this.range.valid) {
+      console.log("Reserving property");
+      console.log(this.computedPrice());
       const createBookingDto: CreateBookingDto = {
         propertyId: this.property.id,
         from: this.range.value.from as Date,
         to: this.range.value.to as Date,
         travellerId: +this.authStore.token()?.sub!
       };
-      this.bookingsService.createBooking(createBookingDto).subscribe(() => {
-        this.alertService.info('Property reserved successfully!');
-      });
+
+      this.paymentService.checkout({ propertyId: this.property.id, amount: this.computedPrice() })
+        .pipe(
+          switchMap(session => {
+            console.log(session);
+            return this.stripeService.redirectToCheckout({ sessionId: session.id });
+          })
+        )
+        .subscribe(() => {
+            this.bookingsService.createBooking(createBookingDto).subscribe(() => {
+              this.alertService.info('Property reserved successfully!');
+            });
+          }
+        );
     }
   }
 

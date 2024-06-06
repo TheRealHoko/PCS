@@ -15,6 +15,7 @@ import { UploadsModule } from './uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { BookingsModule } from './bookings/bookings.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { BookingsModule } from './bookings/bookings.module';
       serveRoot: '/public/',
     }),
     BookingsModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [Logger],

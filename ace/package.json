@@ -41,6 +41,7 @@
     "nodemailer": "^6.9.13",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "stripe": "^15.9.0",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.20",
     "zone.js": "~0.14.3"
