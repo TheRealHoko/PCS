@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { PropertiesService } from '../services/properties.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ace-property-creation',
@@ -47,6 +48,7 @@ export class PropertyCreationComponent {
     private readonly alertService: AlertService,
     private readonly authService: AuthService,
     private readonly uploadService: UploadService,
+    private readonly router: Router
   ) {
     this.minDate = new Date(Date.now());
     this.maxDate = new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate());
@@ -106,6 +108,7 @@ export class PropertyCreationComponent {
           form.append('propertyId', property.id.toString());
           this.uploadService.uploadPropertyImages(form).subscribe(console.log);
           this.alertService.info('Property created successfully');
+          this.router.navigateByUrl('/');
         },
         error: () => this.alertService.info('An error occurred while creating the property')
       });

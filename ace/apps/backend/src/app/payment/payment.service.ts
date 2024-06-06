@@ -1,4 +1,4 @@
-import { Property } from '@ace/shared';
+import { Property, User } from '@ace/shared';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Stripe } from "stripe";
@@ -11,7 +11,7 @@ export class PaymentService {
         this.stripe = new Stripe(configService.get<string>('STRIPE_KEY'));
     }
 
-    async checkoutProperty(property: Property, amount: number) {
+    async checkoutProperty(property: Property, amount: number, booker: User) {
         console.log(property);
         console.log("Amount: " + amount);
         const session = await this.stripe.checkout.sessions.create({
@@ -31,10 +31,14 @@ export class PaymentService {
                 }
             ],
             mode: 'payment',
-            success_url: 'http://localhost:4200/success',
+            success_url: 'http://localhost:4200/payment/success?sessionId={CHECKOUT_SESSION_ID}&userId=' + booker.id,
             cancel_url: 'http://localhost:4200/cancel',
         });
 
         return { id: session.id };
+    }
+
+    async retrieveCheckoutSession(sessionId: string) {
+        return this.stripe.checkout.sessions.retrieve(sessionId);
     }
 }
