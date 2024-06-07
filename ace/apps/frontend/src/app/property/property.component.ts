@@ -41,7 +41,7 @@ export class PropertyComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   range = new FormGroup({
-    from: new FormControl<Date | null>(new Date(Date.now())),
+    from: new FormControl<Date | null>(null),
     to: new FormControl<Date | null>(null),
   });
   dateFilter! : (date: Date) => boolean;
@@ -118,19 +118,22 @@ export class PropertyComponent implements OnInit {
         travellerId: +this.authStore.token()?.sub!
       };
 
-      this.paymentService.checkout({ propertyId: this.property.id, amount: this.computedPrice() })
+      this.bookingsService.createBooking(createBookingDto)
         .pipe(
-          switchMap(session => {
-            console.log(session);
-            return this.stripeService.redirectToCheckout({ sessionId: session.id });
+          switchMap(booking => {
+            return this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice() }).pipe(
+              switchMap(session => {
+                return this.stripeService.redirectToCheckout({ sessionId: session.id });
+              })
+            );
           })
-        )
-        .subscribe(() => {
-            this.bookingsService.createBooking(createBookingDto).subscribe(() => {
-              this.alertService.info('Property reserved successfully!');
-            });
-          }
-        );
+        ).subscribe({
+          complete: () => this.alertService.info('Property reserved successfully!'),
+          error: (error) =>{
+            console.error('Error during booking or checkout process', error);
+            this.alertService.info('Could not complete booking or checkout process.');
+          },
+        });
     }
     else {
       this.alertService.info('Please select a valid date range!');

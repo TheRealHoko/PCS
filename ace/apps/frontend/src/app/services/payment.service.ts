@@ -10,15 +10,15 @@ export class PaymentService {
 
   constructor(private readonly http: HttpClient) { }
 
-  checkout(data: { propertyId: number, amount: number }): Observable<{id: string}> {
+  checkoutProperty(data: { propertyId: number, amount: number }): Observable<{id: string}> {
     return this.http.post<{id: string}>(`${environment.apiUrl}/api/payment/checkout`, data);
   }
 
   success(data: { sessionId: string, userId: number }): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/payment/success`, { params: data });
+    return this.http.post<any>(`${environment.apiUrl}/api/payment/success`, data);
   }
 
   cancel(data: { sessionId: string, userId: number }): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/payment/cancel`, { params: data });
+    return this.http.post<any>(`${environment.apiUrl}/api/payment/cancel`, data);
   }
 }

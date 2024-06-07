@@ -62,7 +62,7 @@ export const appRoutes: Route[] = [
   { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard] },
   { path: 'property/:id', component: PropertyComponent },
   { path: 'bookings', component: BookingsComponent, canActivate: [authGuard] },
-  { path: 'payment', component: PaymentComponent, canActivate: [authGuard] },
+  { path: 'payment', component: PaymentComponent, canActivate: [authGuard], children: [{ path: 'success', component: PaymentComponent }]},
   { path: '**', redirectTo: '' },
   // {
   //   path: 'renter',

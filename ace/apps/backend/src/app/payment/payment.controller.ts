@@ -15,7 +15,7 @@ export class PaymentController {
 
     @Post('checkout')
     @UseGuards(RolesGuard)
-    async checkout(@Req() req: any, @Body() data: { propertyId: number, amount: number }) {
+    async checkoutProperty(@Req() req: any, @Body() data: { propertyId: number, amount: number }) {
         try {
             const user = await this.usersService.findOne({where: {id: req['user'].id}});
             const property = await this.propertiesService.findOne({id: data.propertyId});
@@ -26,9 +26,10 @@ export class PaymentController {
         }
     }
 
-    @Get('success')
+    @Post('success')
     async success(@Body() data: { sessionId: string, userId: number}) {
         try {
+            console.log(data);
             const session = await this.stripeService.retrieveCheckoutSession(data.sessionId);
             const user = await this.usersService.findOne({where: {id: data.userId}});
             return { session: session, userFirstName: user.firstname };

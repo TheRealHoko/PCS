@@ -42,9 +42,10 @@ export class PaymentComponent implements OnInit {
       this.params = params
       console.log(params);
       if (params['sessionId'] && params['userId']) {
-        this.paymentService.success({ sessionId: params['sessionId'], userId: +params['userId'] })
-          .subscribe(data => {
-            console.log(data);
+        this.paymentService.success({ sessionId: params['sessionId'], userId: params['userId'] })
+          .subscribe(session => {
+
+            console.log(session);
           });
       }
     });
