@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, RoleEnum } from '@ace/shared';
@@ -30,11 +31,20 @@ export class UsersController {
 
   @Get()
   @Roles(RoleEnum.ADMIN)
-  findAll() {
-    return this.usersService.findAll({
-      relations: ['services']
+  findAll(@Query('role') role?: RoleEnum) {
+    const options: any = {
+      relations: ['services'],
+    };
 
-    });
+    if (role) {
+      options.where = { 
+        roles: { 
+          name: role
+        }
+      };
+    }
+
+    return this.usersService.findAll(options);
   }
 
   @Get(':id')
