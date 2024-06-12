@@ -8,6 +8,7 @@ import { AuthStore } from '../stores/auth.store';
 import { UsersService } from '../services/users.service';
 import { IUser, User } from '@ace/shared';
 import { Observable, map } from 'rxjs';
+import { BookingsService } from '../services/bookings.service';
 
 @Component({
   selector: 'ace-payment',
@@ -29,7 +30,8 @@ export class PaymentComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly paymentService: PaymentService,
     private readonly usersService: UsersService,
-    private readonly stripeService: StripeService
+    private readonly stripeService: StripeService,
+    private readonly bookingsService: BookingsService
   ) { 
     this.usersService.getUser(+this.auth.token()?.sub!)
       .pipe(
@@ -44,7 +46,6 @@ export class PaymentComponent implements OnInit {
       if (params['sessionId'] && params['userId']) {
         this.paymentService.success({ sessionId: params['sessionId'], userId: params['userId'] })
           .subscribe(session => {
-
             console.log(session);
           });
       }

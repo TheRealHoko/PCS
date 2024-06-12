@@ -11,4 +11,6 @@ export interface IBooking {
     traveller: IUser;
     
     property: IProperty;
+
+    status: 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
 }

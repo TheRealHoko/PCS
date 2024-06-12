@@ -14,6 +14,9 @@ export class Booking implements IBooking {
     @Column()
     to: Date;
 
+    @Column({default: 'pending'})
+    status: 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
+
     @ManyToOne(() => User, user => user.bookings, {
         eager: true
     })

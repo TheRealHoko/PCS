@@ -58,6 +58,8 @@ export class Property implements IProperty {
   @OneToMany(() => Booking, booking => booking.property)
   bookings: Booking[];
 
+  @Column({nullable: true})
+  review?: 0 | 1 | 2 | 3 | 4 | 5;
   /** Crée la relation avec ADDRESS_ID pour la suite
    * @JoinTable()
    * address_id: ADDRESS[id]

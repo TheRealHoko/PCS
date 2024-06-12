@@ -118,22 +118,18 @@ export class PropertyComponent implements OnInit {
         travellerId: +this.authStore.token()?.sub!
       };
 
-      this.bookingsService.createBooking(createBookingDto)
+      this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice() })
         .pipe(
-          switchMap(booking => {
-            return this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice() }).pipe(
-              switchMap(session => {
-                return this.stripeService.redirectToCheckout({ sessionId: session.id });
-              })
-            );
+          switchMap(session => {
+            console.log(session);
+            this.bookingsService.createBooking(createBookingDto).subscribe();
+            return this.stripeService.redirectToCheckout({ sessionId: session.id });
           })
-        ).subscribe({
-          complete: () => this.alertService.info('Property reserved successfully!'),
-          error: (error) =>{
-            console.error('Error during booking or checkout process', error);
-            this.alertService.info('Could not complete booking or checkout process.');
-          },
-        });
+        )
+        .subscribe(() => {
+            this.alertService.info('Property booking successfully!');
+          }
+        );
     }
     else {
       this.alertService.info('Please select a valid date range!');

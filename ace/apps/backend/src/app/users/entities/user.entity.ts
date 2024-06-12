@@ -13,6 +13,7 @@ import { Service } from '../../services/entities/service.entity';
 import { Property } from '../../properties/entities/property.entity';
 import { IUser } from '@ace/shared';
 import { Booking } from '../../bookings/entities/booking.entity';
+import { Ticket } from '../../tickets/entities/ticket.entity';
 
 @Entity()
 export class User implements IUser {
@@ -64,9 +65,9 @@ export class User implements IUser {
   @OneToMany(() => Property, property => property.lessor)
   properties: Property[];
 
-  @Column({nullable: true})
-  review?: 0 | 1 | 2 | 3 | 4 | 5;
-
   @OneToMany(() => Booking, booking => booking.traveller)
   bookings: Booking[];
+
+  @OneToMany(() => Ticket, ticket => ticket.assignee)
+  tickets: Ticket[];
 }

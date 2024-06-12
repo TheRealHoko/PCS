@@ -7,8 +7,8 @@ import { Stripe } from "stripe";
 export class PaymentService {
     private stripe: Stripe;
 
-    constructor(configService: ConfigService) {
-        this.stripe = new Stripe(configService.get<string>('STRIPE_KEY'));
+    constructor(private readonly configService: ConfigService) {
+        this.stripe = new Stripe(this.configService.get<string>('STRIPE_KEY'));
     }
 
     async checkoutProperty(property: Property, amount: number, booker: User) {
@@ -23,7 +23,7 @@ export class PaymentService {
                         product_data: {
                             name: property.name,
                             description: property.description,
-                            // images: [ 'http://localhost:3000/' + property.images[0].path],
+                            // images: [ `${this.configService.get('BACK_URL')}/${property.images[0].path}`],
                         },
                         unit_amount: amount * 100,
                     },
@@ -31,8 +31,8 @@ export class PaymentService {
                 }
             ],
             mode: 'payment',
-            success_url: 'http://localhost:4200/payment/success?sessionId={CHECKOUT_SESSION_ID}&userId=' + booker.id,
-            cancel_url: 'http://localhost:4200/cancel',
+            success_url: `${this.configService.get('FRONT_URL')}/payment/success?sessionId={CHECKOUT_SESSION_ID}&userId=${booker.id}`,
+            cancel_url: `${this.configService.get('FRONT_URL')}/payment/cancel?sessionId={CHECKOUT_SESSION_ID}&userId=${booker.id}`,
         });
 
         return { id: session.id };
@@ -40,5 +40,9 @@ export class PaymentService {
 
     async retrieveCheckoutSession(sessionId: string) {
         return this.stripe.checkout.sessions.retrieve(sessionId);
+    }
+
+    async retrieveInvoices(sessionId: string) {
+        return this.stripe.invoices.list({ customer: sessionId });
     }
 }

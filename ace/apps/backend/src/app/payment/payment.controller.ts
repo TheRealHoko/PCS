@@ -37,4 +37,15 @@ export class PaymentController {
             throw new BadRequestException(error.message);
         }
     }
+
+    @Get('invoices')
+    async invoices(@Req() req: Request, @Body() data: { sessionId: string}) {
+        try {
+            const user = await this.usersService.findOne({where: {id: req['user'].id}});
+            const invoices = await this.stripeService.retrieveInvoices(data.sessionId);
+            return invoices;
+        } catch (error) {
+            throw new BadRequestException(error.message);
+        }
+    }
 }

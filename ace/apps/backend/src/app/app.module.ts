@@ -10,7 +10,7 @@ import { ServicesModule } from './services/services.module';
 import { AddressModule } from './address/address.module';
 import { MailModule } from './services/mail.module';
 import { PropertiesModule } from './properties/properties.module';
-import { FormModule } from './form/form.module';
+import { TicketsModule } from './tickets/tickets.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -24,7 +24,7 @@ import { PaymentModule } from './payment/payment.module';
     RolesModule,
     AuthModule,
     PropertiesModule,
-    FormModule,
+    TicketsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

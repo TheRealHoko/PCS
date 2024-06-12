@@ -25,7 +25,7 @@ def assign_user(ticket_id, token):
     
     tk.Label(assign_window, text="Assigner à :").pack(pady=10)
     user_var = tk.StringVar(assign_window)
-    user_var.set(admins[0]["email"]) 
+    user_var.set(admins[0]["email"])
     
     users = [admin["email"] for admin in admins]
     user_menu = tk.OptionMenu(assign_window, user_var, *users)
@@ -98,12 +98,19 @@ def init(t):
     for ticket in tickets:
         frame = tk.Frame(root)
         frame.pack(fill='x')
-        
+
         tk.Label(frame, text=ticket["id"], width=5).pack(side='left')
         tk.Label(frame, text=ticket["message"], width=50).pack(side='left')
-        
+        canvas = tk.Canvas(frame, width=20, height=20)
+        if ticket["isSolved"] == True:
+            canvas.create_oval(0, 0, 20, 20, fill="green")
+            canvas.pack(side='left')
+        else:
+            canvas.create_oval(0, 0, 20, 20, fill="red")
+            canvas.pack(side='left')
         tk.Button(frame, text="Assigner", command=lambda t=ticket["id"]: assign_user(t, token)).pack(side='left')
         tk.Button(frame, text="Retour", command=lambda t=ticket["id"]: return_message(t)).pack(side='left')
-        tk.Button(frame, text="Valider", command=lambda t=ticket["id"]: validate_ticket(t)).pack(side='left')
+        if ticket["isSolved"] == False:
+            tk.Button(frame, text="Valider", command=lambda t=ticket["id"]: validate_ticket(t)).pack(side='left')
 
     root.mainloop()
