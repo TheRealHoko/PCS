@@ -24,7 +24,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class HomeComponent implements OnInit {
   propertiesStore = inject(PropertiesStore);
-  cdnUrl = environment.apiUrl;
+  cdnUrl = environment.cdnUrl;
 
   constructor(
   ) {}

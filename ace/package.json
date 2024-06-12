@@ -2,7 +2,10 @@
   "name": "@ace/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "frontend:dev:docker": "nx serve frontend --host=0.0.0.0 --poll 5000",
+    "backend:dev:docker": "nx serve backend --host=0.0.0.0"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "17.3.8",

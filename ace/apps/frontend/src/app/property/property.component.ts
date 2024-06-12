@@ -37,7 +37,7 @@ import { StripeService } from 'ngx-stripe';
 export class PropertyComponent implements OnInit {
   authStore = inject(AuthStore);
   property!: IProperty;
-  cdnUrl = environment.apiUrl;
+  cdnUrl = environment.cdnUrl;
   minDate: Date;
   maxDate: Date;
   range = new FormGroup({
