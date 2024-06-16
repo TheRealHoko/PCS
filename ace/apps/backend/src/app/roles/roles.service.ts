@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoleDto } from '@ace/shared';
 import { UpdateRoleDto } from '@ace/shared';
-import { Repository } from 'typeorm';
+import { FindOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -23,8 +23,8 @@ export class RolesService {
     return await this.rolesRepository.find();
   }
 
-  async findOne(id: number) {
-    const role = await this.rolesRepository.findOneBy({ id });
+  async findOne(where: FindOptionsWhere<Role>) {
+    const role = await this.rolesRepository.findOneBy(where);
 
     if (!role) {
       throw new NotFoundException('Role not found');

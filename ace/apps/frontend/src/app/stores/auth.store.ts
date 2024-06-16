@@ -8,13 +8,12 @@ import {
   withState,
 } from '@ngrx/signals';
 import { AuthService } from '../services/auth.service';
-import { JwtPayload } from 'jwt-decode';
-import { UsersService } from '../services/users.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { concatMap, pipe, switchMap, tap } from 'rxjs';
+import { concatMap, map, pipe, repeat, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { AlertService } from '../services/alert.service';
 import { Router } from '@angular/router';
+import { UsersService } from '../services/users.service';
 
 export interface AuthenticateType {
   email: string;
@@ -24,6 +23,7 @@ export interface AuthenticateType {
 export interface AuthState {
   isAuthenticated: boolean;
   token: AceJwtPayload | void;
+  roles: RoleEnum[] | void;
   isLoading: boolean;
 }
 
@@ -31,23 +31,24 @@ const AUTH_STATE = new InjectionToken<AuthState>('AuthState', {
   factory: (authService = inject(AuthService)) => ({
     isAuthenticated: authService.isLoggedIn(),
     token: authService.getDecodedToken(),
+    roles: authService.getDecodedToken()?.roles,
     isLoading: false,
   }),
 });
 
 export const AuthStore = signalStore(
   withState<AuthState>(() => inject(AUTH_STATE)),
-  withComputed(({ token }) => ({
-    // hasRoles: computed(() => roles())
-    isProvider: computed(() => token()?.roles.includes(RoleEnum.PROVIDER)),
-    isRenter: computed(() => token()?.roles.includes(RoleEnum.RENTER)),
-    isAdmin: computed(() => token()?.roles.includes(RoleEnum.ADMIN)),
+  withComputed(({ roles }) => ({
+    isProvider: computed(() => roles()?.includes(RoleEnum.PROVIDER)),
+    isRenter: computed(() => roles()?.includes(RoleEnum.RENTER)),
+    isAdmin: computed(() => roles()?.includes(RoleEnum.ADMIN)),
   })),
   withMethods(
     (
       store,
       authService = inject(AuthService),
       alertService = inject(AlertService),
+      usersService = inject(UsersService),
       router = inject(Router)
     ) => ({
       authenticate: rxMethod<AuthenticateType>(
@@ -68,6 +69,27 @@ export const AuthStore = signalStore(
                 },
                 error: (err) => {
                   alertService.info('Login failed');
+                  console.error(err);
+                },
+              })
+            );
+          })
+        )
+      ),
+      refreshRoles: rxMethod<void>(
+        pipe(
+          tap(() => {
+            const id = authService.getDecodedToken()?.sub;
+            if (!id) {
+              return;
+            }
+            return usersService.getUser(+id).pipe(
+              tapResponse({
+                next: (response) => {
+                  console.log(response);
+                  patchState(store, { roles: response.roles?.map(role => role.name) as RoleEnum[] });
+                },
+                error: (err) => {
                   console.error(err);
                 },
               })

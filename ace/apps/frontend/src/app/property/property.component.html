@@ -26,25 +26,25 @@
             </div>
             <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
                 <h1><span class="underline">Price:</span> {{ computedPrice() | currency: 'EUR' }} ({{ property.pricePerNight | currency: 'EUR' }}/night) </h1>
-                <mat-form-field>
-                    <mat-label>Enter a date range</mat-label>
-                    <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
-                      <input matStartDate formControlName="from" placeholder="Start date">
-                      <input matEndDate formControlName="to" placeholder="End date">
-                    </mat-date-range-input>
-                    <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                  
-                    @if (range.controls.from.hasError('matStartDateInvalid')) {
-                      <mat-error>Invalid start date</mat-error>
-                    }
-                    @if (range.controls.to.hasError('matEndDateInvalid')) {
-                      <mat-error>Invalid end date</mat-error>
-                    }
-                </mat-form-field>
-                  
                 @if (authStore.isAuthenticated()) {
+                    <mat-form-field>
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
+                        <input matStartDate formControlName="from" placeholder="Start date">
+                        <input matEndDate formControlName="to" placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    
+                        @if (range.controls.from.hasError('matStartDateInvalid')) {
+                        <mat-error>Invalid start date</mat-error>
+                        }
+                        @if (range.controls.to.hasError('matEndDateInvalid')) {
+                        <mat-error>Invalid end date</mat-error>
+                        }
+                    </mat-form-field>
+                  
                     <button mat-button (click)="reserveProperty()">
                         Reserve
                     </button>

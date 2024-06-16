@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UploadComponent } from '../components/upload/upload.component';
@@ -16,6 +16,7 @@ import { PropertiesService } from '../services/properties.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { AuthStore } from '../stores/auth.store';
 
 @Component({
   selector: 'ace-property-creation',
@@ -41,6 +42,7 @@ export class PropertyCreationComponent {
   propTypes = ['HOUSE', 'APARTMENT', 'OFFICE', 'LAND', 'COMMERCIAL'];
   minDate: Date;
   maxDate: Date;
+  authStore = inject(AuthStore);
 
   constructor(
     private readonly fb: FormBuilder,
@@ -107,6 +109,7 @@ export class PropertyCreationComponent {
           this.files.map(file => form.append('files', file.file));
           form.append('propertyId', property.id.toString());
           this.uploadService.uploadPropertyImages(form).subscribe(console.log);
+          this.authStore.refreshRoles();
           this.alertService.info('Property created successfully');
           this.router.navigateByUrl('/');
         },

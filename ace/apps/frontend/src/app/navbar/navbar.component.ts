@@ -29,7 +29,10 @@ import { AccountDropdownComponent } from '../account-dropdown/account-dropdown.c
 export class NavbarComponent {
   authStore = inject(AuthStore);
 
-  constructor(private readonly alertService: AlertService) {}
+  constructor(private readonly alertService: AlertService) {
+    this.authStore.refreshRoles();
+    
+  }
 
   logout() {
     this.authStore.logout();
