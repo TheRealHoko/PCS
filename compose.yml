@@ -18,32 +18,34 @@ services:
     image: phpmyadmin
     ports:
       - 8080:80
-    depends_on:
-      - db
-
-  backend:
-    extends:
-      file: compose.base.yml
-      service: nx-app-base
-    command: npm run backend:dev:docker
-    ports:
-      - 3000:3000
     networks:
       - ace-bridged
     depends_on:
       - db
 
-  frontend:
-    extends:
-      file: compose.base.yml
-      service: nx-app-base
-    command: npm run frontend:dev:docker
-    ports:
-      - 4200:4200
-    networks:
-      - ace-bridged
-    depends_on:
-      - backend
+  # backend:
+  #   extends:
+  #     file: compose.base.yml
+  #     service: nx-app-base
+  #   command: npm run backend:dev:docker
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - ace-bridged
+  #   depends_on:
+  #     - db
+
+  # frontend:
+  #   extends:
+  #     file: compose.base.yml
+  #     service: nx-app-base
+  #   command: npm run frontend:dev:docker
+  #   ports:
+  #     - 4200:4200
+  #   networks:
+  #     - ace-bridged
+  #   depends_on:
+  #     - backend
   
 volumes:
   db:

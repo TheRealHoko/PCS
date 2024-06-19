@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProviderAdminDashboardComponent } from './provider.component';
+import { ProviderAdminDashboardComponent } from './provider-admin-dashboard.component';
 
 describe('ProviderComponent', () => {
   let component: ProviderAdminDashboardComponent;

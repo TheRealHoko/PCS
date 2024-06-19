@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -17,6 +17,10 @@ import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/cor
 import { DefaultMatCalendarRangeStrategy, MatRangeDateSelectionModel } from '@angular/material/datepicker';
 import { provideNgxStripe } from "ngx-stripe";
 import { environment } from '../environments/environment';
+import { registerLocaleData } from '@angular/common';
+import localeFr from "@angular/common/locales/fr";
+
+registerLocaleData(localeFr, 'fr-FR');
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +35,9 @@ export const appConfig: ApplicationConfig = {
     provideNativeDateAdapter(),
     DefaultMatCalendarRangeStrategy,
     MatRangeDateSelectionModel,
-    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
-    provideNgxStripe(environment.stripeKey)
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
+    provideNgxStripe(environment.stripeKey), 
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' }
   ],
 };

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePropertyDto } from '@ace/shared';
 import { UpdatePropertyDto } from '@ace/shared';
 import { Property } from './entities/property.entity';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { PropertyAvailability } from './entities/property-availability.entity';
@@ -31,8 +31,8 @@ export class PropertiesService {
     return savedProperty;
   }
 
-  findAll(): Promise<Property[]> {
-    return this.propertyRepository.find();
+  findAll(options?: FindManyOptions<Property>): Promise<Property[]> {
+    return this.propertyRepository.find(options);
   }
 
   async findOne(

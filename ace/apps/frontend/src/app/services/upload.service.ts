@@ -17,4 +17,8 @@ export class UploadService {
     return this.http.post(`${environment.apiUrl}/api/uploads/property-images`, files);
   }
 
+  uploadProfileImage(files: FormData): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/uploads/profile-image`, files);
+  }
+
 }

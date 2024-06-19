@@ -21,8 +21,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatIconModule,
     MatTooltipModule,
   ],
-  templateUrl: './provider.component.html',
-  styleUrl: './provider.component.css',
+  templateUrl: './provider-admin-dashboard.component.html',
+  styleUrl: './provider-admin-dashboard.component.css',
 })
 export class ProviderAdminDashboardComponent implements OnInit {
   readonly servicesStore = inject(ServicesStore);

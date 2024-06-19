@@ -3,6 +3,7 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
+  Input,
   Output,
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -24,22 +25,27 @@ export enum DropColor {
 export class UploadDirective {
   constructor(private readonly sanitizer: DomSanitizer) {}
 
+  @Input() maxFiles: number = 5;
+
   @Output() dropFiles: EventEmitter<FileUpload[]> = new EventEmitter();
   @HostBinding('style.background') backgroundColor = DropColor.Default;
 
-  @HostListener('dragover', ['$event']) public dragOver(event: DragEvent) {
+  @HostListener('dragover', ['$event'])
+  public dragOver(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.backgroundColor = DropColor.Over;
   }
 
-  @HostListener('dragleave', ['$event']) public dragLeave(event: DragEvent) {
+  @HostListener('dragleave', ['$event'])
+  public dragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.backgroundColor = DropColor.Default;
   }
 
-  @HostListener('drop', ['$event']) public drop(event: DragEvent) {
+  @HostListener('drop', ['$event'])
+  public drop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     this.backgroundColor = DropColor.Default;
@@ -49,7 +55,8 @@ export class UploadDirective {
     let files: FileUpload[] = [];
 
     if (fileList) {
-      for (let i = 0; i < fileList.length; i++) {
+      console.log(files.length, this.maxFiles);
+      for (let i = 0; i < fileList.length && files.length < this.maxFiles; i++) {
         const file = fileList[i];
         const url = this.sanitizer.bypassSecurityTrustUrl(
           window.URL.createObjectURL(file)

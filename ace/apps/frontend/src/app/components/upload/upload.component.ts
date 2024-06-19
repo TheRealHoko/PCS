@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileUpload, UploadDirective } from './upload.directive';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,13 +14,16 @@ import { MatButtonModule } from '@angular/material/button';
 export class UploadComponent {
   files: FileUpload[] = [];
 
+  @Input() maxFiles: number = 5;
+
   @Output() uploadFiles: EventEmitter<FileUpload[]> = new EventEmitter();
 
   onDropFiles(files: FileUpload[]) {
-    this.files = [...this.files, ...files];
-
-    if (this.files.length > 0) {
-      this.uploadFiles.emit(this.files);
+    if (this.files.length <  this.maxFiles) {
+      this.files = [...this.files, ...files];
+      if (this.files.length > 0) {
+        this.uploadFiles.emit(this.files);
+      }
     }
   }
 }

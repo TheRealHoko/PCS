@@ -9,7 +9,7 @@ import {
 } from '@ngrx/signals';
 import { AuthService } from '../services/auth.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { concatMap, map, pipe, repeat, switchMap, tap } from 'rxjs';
+import { concatMap, exhaustMap, map, pipe, repeat, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { AlertService } from '../services/alert.service';
 import { Router } from '@angular/router';
@@ -40,7 +40,7 @@ export const AuthStore = signalStore(
   withState<AuthState>(() => inject(AUTH_STATE)),
   withComputed(({ roles }) => ({
     isProvider: computed(() => roles()?.includes(RoleEnum.PROVIDER)),
-    isRenter: computed(() => roles()?.includes(RoleEnum.RENTER)),
+    isLessor: computed(() => roles()?.includes(RoleEnum.LESSOR)),
     isAdmin: computed(() => roles()?.includes(RoleEnum.ADMIN)),
   })),
   withMethods(
@@ -62,12 +62,14 @@ export const AuthStore = signalStore(
                   patchState(store, {
                     isAuthenticated: true,
                     token: authService.getDecodedToken(),
+                    roles: authService.getDecodedToken()?.roles,
                     isLoading: false,
                   });
                   alertService.info('Logged in successfully');
                   router.navigateByUrl('/');
                 },
                 error: (err) => {
+                  patchState(store, { isLoading: false });
                   alertService.info('Login failed');
                   console.error(err);
                 },
@@ -78,12 +80,10 @@ export const AuthStore = signalStore(
       ),
       refreshRoles: rxMethod<void>(
         pipe(
-          tap(() => {
-            const id = authService.getDecodedToken()?.sub;
-            if (!id) {
-              return;
-            }
-            return usersService.getUser(+id).pipe(
+          tap(() => { console.log(store.token()); }),
+          switchMap(() => {
+            const id = store.token()?.sub;
+            return usersService.getUser(+id!).pipe(
               tapResponse({
                 next: (response) => {
                   console.log(response);

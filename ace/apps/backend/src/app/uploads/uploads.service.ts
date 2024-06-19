@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUploadDto } from '@ace/shared';
 import { Property } from '../properties/entities/property.entity';
+import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Upload } from './entities/upload.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +13,7 @@ export class UploadsService {
     private readonly uploadRepository: Repository<Upload>
   ) {}
 
-  async bulkCreate(files: Express.Multer.File[], linkedProperty: Property) {
+  async saveFilesLinkedToProperty(files: Express.Multer.File[], linkedProperty: Property) {
     const uploads = [];
     files.forEach(file => {
       const upload = this.uploadRepository.create();
@@ -22,6 +23,14 @@ export class UploadsService {
     });
     await this.uploadRepository.save(uploads);
     return { message: `Uploaded ${uploads.length} files linked to property #${linkedProperty.id}`};
+  }
+
+  async saveFileLinkedToUser(file: Express.Multer.File, linkedUser: User) {
+    const upload = this.uploadRepository.create();
+    upload.path = file.path;
+    upload.user = linkedUser;
+    await this.uploadRepository.save(upload);
+    return { message: `Uploaded image linked to user #${linkedUser.id}`};
   }
 
   findAll(): Promise<Upload[]> {

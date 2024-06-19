@@ -15,6 +15,7 @@ import { AlertService } from '../services/alert.service';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
+  RouterModule,
   RouterOutlet,
 } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     RouterOutlet,
     MatIconModule,
     MatProgressSpinnerModule,
+    RouterModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

@@ -1,9 +1,11 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IsEmail } from 'class-validator';
@@ -14,6 +16,8 @@ import { Property } from '../../properties/entities/property.entity';
 import { IUser } from '@ace/shared';
 import { Booking } from '../../bookings/entities/booking.entity';
 import { Ticket } from '../../tickets/entities/ticket.entity';
+import { Upload } from '../../uploads/entities/upload.entity';
+import { Comment } from '../../tickets/entities/comment.entity';
 
 @Entity()
 export class User implements IUser {
@@ -38,7 +42,6 @@ export class User implements IUser {
 
   @Column()
   phone: string;
-  
   
   @Column({ nullable: true })
   email_verification_token?: string;
@@ -70,4 +73,13 @@ export class User implements IUser {
 
   @OneToMany(() => Ticket, ticket => ticket.assignee)
   tickets: Ticket[];
+
+  @OneToOne(() => Upload, upload => upload.user, {
+    eager: true,
+  })
+  @JoinColumn()
+  profile_picture: Upload;
+
+  @OneToMany(() => Comment, comment => comment.sent_by)
+  comments: Comment[]
 }

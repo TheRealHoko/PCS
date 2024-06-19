@@ -109,7 +109,6 @@ export class PropertyCreationComponent {
           this.files.map(file => form.append('files', file.file));
           form.append('propertyId', property.id.toString());
           this.uploadService.uploadPropertyImages(form).subscribe(console.log);
-          this.authStore.refreshRoles();
           this.alertService.info('Property created successfully');
           this.router.navigateByUrl('/');
         },

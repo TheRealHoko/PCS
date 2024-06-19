@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { AceJwtPayload, LoginResponse, RegisterDto } from '@ace/shared';
+import { AceJwtPayload, IUser, LoginResponse, RegisterDto } from '@ace/shared';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import { Observable, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   register(registerDto: RegisterDto) {
-    return this.http.post(
+    return this.http.post<IUser>(
       `${environment.apiUrl}/api/auth/register`,
       registerDto
     );

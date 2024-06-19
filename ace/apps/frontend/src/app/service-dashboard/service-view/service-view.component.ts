@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServicesService } from '../services/services.service';
+import { ServicesService } from '../../services/services.service';
 import { IService } from '@ace/shared';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -36,12 +36,12 @@ export class ServiceViewComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   availabilitiesForm: FormGroup;
+  availableDates: Date[] = [];
+  isDateDisabled = (date: Date) =>!this.availableDates.includes(date);
 
   constructor(
     private readonly servicesService: ServicesService,
     private readonly route: ActivatedRoute,
-    private readonly selectionModel: MatRangeDateSelectionModel<Date>,
-    private readonly selectionStrategy: DefaultMatCalendarRangeStrategy<Date>,
     private readonly fb: FormBuilder
   ) {
     this.minDate = new Date(Date.now());
@@ -59,21 +59,18 @@ export class ServiceViewComponent implements OnInit {
           return this.servicesService.getService(id);
         }
       )
-    ).subscribe(service => this.service = service);
-  }
-
-  rangeChanged(selectedDate: Date) {
-    const selection = this.selectionModel.selection,
-    newSelection = this.selectionStrategy.selectionFinished(
-      selectedDate,
-      selection
-    );
-
-    this.selectionModel.updateSelection(newSelection, this);
-    this.selectedDateRange = new DateRange<Date>(
-      newSelection.start,
-      newSelection.end
-    );
+    ).subscribe(service => {
+      this.service = service;
+      this.availabilities().controls.forEach(availability => {
+        const from = availability.get('from')!.value;
+        const to = availability.get('to')!.value;
+        if (from && to) {
+          for (let date = from; date <= to; date.setDate(date.getDate() + 1)) {
+            this.availableDates.push(new Date(date));
+          }
+        }
+      });
+    });
   }
 
   availabilities(): FormArray {

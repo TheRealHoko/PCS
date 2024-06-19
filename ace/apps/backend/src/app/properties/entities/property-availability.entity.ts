@@ -13,6 +13,8 @@ export class PropertyAvailability {
     @Column()
     to: Date;
 
-    @ManyToOne(() => Property, property => property.availabilities)
+    @ManyToOne(() => Property, property => property.availabilities, {
+        onDelete: 'CASCADE',
+    })
     property: Property;
 }

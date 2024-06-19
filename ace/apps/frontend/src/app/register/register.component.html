@@ -6,211 +6,222 @@
       [formGroup]="registerForm"
       (ngSubmit)="onRegister()"
     >
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          formControlName="email"
-          name="email"
-          placeholder="john.smith@email.com"
-          type="email"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          formControlName="password"
-          name="password"
-          placeholder="Enter your password"
-          required
-          [type]="hidePassword ? 'password' : 'text'"
-        />
-        <button
-          type="button"
-          mat-icon-button
-          matSuffix
-          (click)="hidePassword = !hidePassword"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hidePassword"
-        >
-          <mat-icon>{{
-            hidePassword ? 'visibility_off' : 'visibility'
-          }}</mat-icon>
-        </button>
-        <ol>
-          <li>
-            <mat-error *ngIf="password.errors?.['required']">
-              Password is required
-            </mat-error>
-          </li>
-          <li>
-            <mat-error *ngIf="password.errors?.['hasNumeric']">
-              Password must contain 1 number (0-9)
-            </mat-error>
-          </li>
-          <li>
-            <mat-error *ngIf="password.errors?.['hasUpperCase']">
-              Password must contain 1 uppercase letters
-            </mat-error>
-          </li>
-          <li>
-            <mat-error *ngIf="password.errors?.['hasLowerCase']">
-              Password must contain 1 lowercase letters
-            </mat-error>
-          </li>
-          <li>
-            <mat-error *ngIf="password.errors?.['hasSpecialCharacter']">
-              Password must contain 1 non-alpha numeric number
-            </mat-error>
-          </li>
-          <li>
-            <mat-error
-              *ngIf="password.errors?.['minLength'] || password.errors?.['maxLength']"
-            >
-              Password is 8-16 characters with no space
-            </mat-error>
-          </li>
-        </ol>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Confirm password</mat-label>
-        <input
-          matInput
-          formControlName="confirmPassword"
-          name="password"
-          placeholder="Confirm your password"
-          required
-          [type]="hidePasswordConfirmation ? 'password' : 'text'"
-        />
-        <button
-          type="button"
-          mat-icon-button
-          matSuffix
-          (click)="hidePasswordConfirmation = !hidePasswordConfirmation"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hidePasswordConfirmation"
-        >
-          <mat-icon>{{
-            hidePasswordConfirmation ? 'visibility_off' : 'visibility'
-          }}</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Firstname</mat-label>
-        <input
-          matInput
-          formControlName="firstname"
-          name="firstname"
-          placeholder="Ex. John"
-          type="text"
-        />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Lastname</mat-label>
-        <input
-          matInput
-          formControlName="lastname"
-          name="lastname"
-          placeholder="Ex. Smith"
-          type="text"
-        />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Phone number</mat-label>
-        <input
-          matInput
-          formControlName="phone"
-          name="phone"
-          placeholder="01.23.45.67.89"
-          type="tel"
-        />
-      </mat-form-field>
-
-      <h1 class="text-secondary text-center text-2xl mb-5">Address</h1>
-
-      <div formGroupName="address" class="flex flex-col justify-center">
+    <mat-stepper formArrayName="registerFormArray" linear="false">
+      <mat-step label="Basic info" formGroupName="0" [stepControl]="registerFormArray?.get([0])!">
+      <div class="flex flex-col justify-center">
         <mat-form-field appearance="fill">
-          <mat-label>Street number</mat-label>
+          <mat-label>Email</mat-label>
           <input
             matInput
-            formControlName="street_number"
-            name="street_number"
-            placeholder="1"
+            formControlName="email"
+            name="email"
+            placeholder="john.smith@email.com"
+            type="email"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            [type]="hidePassword ? 'password' : 'text'"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
+          </button>
+          <ol>
+            <li>
+              <mat-error *ngIf="password.errors?.['required']">
+                Password is required
+              </mat-error>
+            </li>
+            <li>
+              <mat-error *ngIf="password.errors?.['hasNumeric']">
+                Password must contain 1 number (0-9)
+              </mat-error>
+            </li>
+            <li>
+              <mat-error *ngIf="password.errors?.['hasUpperCase']">
+                Password must contain 1 uppercase letters
+              </mat-error>
+            </li>
+            <li>
+              <mat-error *ngIf="password.errors?.['hasLowerCase']">
+                Password must contain 1 lowercase letters
+              </mat-error>
+            </li>
+            <li>
+              <mat-error *ngIf="password.errors?.['hasSpecialCharacter']">
+                Password must contain 1 non-alpha numeric number
+              </mat-error>
+            </li>
+            <li>
+              <mat-error
+                *ngIf="password.errors?.['minLength'] || password.errors?.['maxLength']"
+              >
+                Password is 8-16 characters with no space
+              </mat-error>
+            </li>
+          </ol>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            name="password"
+            placeholder="Confirm your password"
+            required
+            [type]="hidePasswordConfirmation ? 'password' : 'text'"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hidePasswordConfirmation = !hidePasswordConfirmation"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePasswordConfirmation"
+          >
+            <mat-icon>{{
+              hidePasswordConfirmation ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Firstname</mat-label>
+          <input
+            matInput
+            formControlName="firstname"
+            name="firstname"
+            placeholder="Ex. John"
             type="text"
           />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Street name</mat-label>
+          <mat-label>Lastname</mat-label>
           <input
             matInput
-            formControlName="street_name"
-            name="street_name"
-            placeholder="rue de la vallée"
+            formControlName="lastname"
+            name="lastname"
+            placeholder="Ex. Smith"
             type="text"
           />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Apartment number</mat-label>
+          <mat-label>Phone number</mat-label>
           <input
             matInput
-            formControlName="apartment_number"
-            name="apartment_number"
-            placeholder="42"
-            type="text"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>City</mat-label>
-          <input
-            matInput
-            formControlName="city"
-            name="city"
-            placeholder="Paris"
-            type="text"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>State</mat-label>
-          <input
-            matInput
-            formControlName="state"
-            name="state"
-            placeholder="Île-de-France"
-            type="text"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Postal code</mat-label>
-          <input
-            matInput
-            formControlName="postal_code"
-            name="postal_code"
-            placeholder="75012"
-            type="text"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Country</mat-label>
-          <input
-            matInput
-            formControlName="country"
-            name="country"
-            placeholder="France"
-            type="text"
+            formControlName="phone"
+            name="phone"
+            placeholder="01.23.45.67.89"
+            type="tel"
           />
         </mat-form-field>
       </div>
+      <button mat-button matStepperNext type="button">Next</button>
+      </mat-step>
+      <mat-step label="Address" formGroupName="1" [stepControl]="registerFormArray?.get([1])!">
+        <div formGroupName="address" class="flex flex-col justify-center">
+          <mat-form-field appearance="fill">
+            <mat-label>Street number</mat-label>
+            <input
+              matInput
+              formControlName="street_number"
+              name="street_number"
+              placeholder="1"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Street name</mat-label>
+            <input
+              matInput
+              formControlName="street_name"
+              name="street_name"
+              placeholder="rue de la vallée"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Apartment number</mat-label>
+            <input
+              matInput
+              formControlName="apartment_number"
+              name="apartment_number"
+              placeholder="42"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <input
+              matInput
+              formControlName="city"
+              name="city"
+              placeholder="Paris"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>State</mat-label>
+            <input
+              matInput
+              formControlName="state"
+              name="state"
+              placeholder="Île-de-France"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Postal code</mat-label>
+            <input
+              matInput
+              formControlName="postal_code"
+              name="postal_code"
+              placeholder="75012"
+              type="text"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <input
+              matInput
+              formControlName="country"
+              name="country"
+              placeholder="France"
+              type="text"
+            />
+          </mat-form-field>
+        </div>
+      <button mat-button matStepperPrevious type="button">Previous</button>
+      <button mat-button matStepperNext type="button">Next</button>
 
       <!-- Styling doesn't work on material angular (find fix ?)-->
-      <button
-        class="bg-tertiary"
-        mat-raised-button
-        [disabled]="registerForm.invalid"
-        type="submit"
-      >
-        Sign up
-      </button>
+    </mat-step>
+    <mat-step label="Profile picture" formGroupName="2" [stepControl]="registerFormArray?.get([2])!">
+      <ace-upload [maxFiles]="1" (uploadFiles)="getProfilePicture($event)"></ace-upload>
+        <button
+          class="bg-tertiary"
+          mat-raised-button
+          [disabled]="registerForm.invalid"
+          type="submit"
+        >
+          Sign up
+        </button>
+      </mat-step>
+    </mat-stepper>
     </form>
   </div>
 </section>

@@ -34,9 +34,6 @@ export class Property implements IProperty {
   @Column()
   roomCount: number;
 
-  @Column({default: false})
-  isBooked: boolean;
-
   @Column()
   propertyType: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
 
@@ -51,7 +48,7 @@ export class Property implements IProperty {
   images: Upload[];
 
   @OneToMany(() => PropertyAvailability, availability => availability.property, {
-    eager: true
+    eager: true,
   })
   availabilities: PropertyAvailability[];
 

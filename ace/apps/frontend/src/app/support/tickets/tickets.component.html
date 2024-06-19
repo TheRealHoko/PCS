@@ -1,0 +1,33 @@
+<mat-table [dataSource]="tickets">
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let ticket"> {{ ticket.id }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="topic">
+        <mat-header-cell *matHeaderCellDef> Topic </mat-header-cell>
+        <mat-cell *matCellDef="let ticket"> {{ ticket.topic }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+        <mat-cell *matCellDef="let ticket"> {{ ticket.description }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Resolved </mat-header-cell>
+        <mat-cell *matCellDef="let ticket">
+            @if (ticket.isSolved) {
+                <mat-icon>done</mat-icon>
+            }
+            @else {
+                <mat-icon>close</mat-icon>
+            }
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions" >
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let ticket">
+            <button mat-button [routerLink]="[ticket.id]">View</button>
+        </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

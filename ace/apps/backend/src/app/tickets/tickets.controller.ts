@@ -1,20 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, Logger } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { UsersService } from '../users/users.service';
+import { RolesGuard } from '../roles/roles.guard';
+import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Controller('tickets')
+@UseGuards(RolesGuard)
 export class TicketsController {
-  constructor(private readonly ticketService: TicketsService) {}
+  logger = new Logger(TicketsController.name);
+
+  constructor(
+    private readonly ticketService: TicketsService,
+    private readonly usersService: UsersService
+  ) {}
 
   @Post()
-  create(@Body() createFormDto: CreateTicketDto) {
-    return this.ticketService.create(createFormDto);
+  async create(@Req() req: any, @Body() createFormDto: CreateTicketDto) {
+    const user = await this.usersService.findOne({where: {id: req.user.sub}});
+    return this.ticketService.create(createFormDto, user);
   }
 
   @Get()
   findAll() {
     return this.ticketService.findAll();
+  }
+
+  @Get('my-tickets')
+  async findMyTickets(@Req() req: any) {
+    this.logger.debug(`Finding tickets for user ${req.user.sub}`);
+    const user = await this.usersService.findOne({where: {id: req.user.sub}});
+    return this.ticketService.findMyTickets(user);
+  }
+
+  @Get('my-tickets/:id')
+  async findMyTicket(@Req() req: any, @Param('id') id: string) {
+    this.logger.debug(`Finding ticket ${id} for user ${req.user.sub}`);
+    const user = await this.usersService.findOne({where: {id: req.user.sub}});
+    return this.ticketService.findMyTicket(user, id);
   }
 
   @Get(':id')
@@ -35,5 +59,12 @@ export class TicketsController {
   @Patch(':id/assign/:assigneeId')
   assignTicket(@Param('id') id: string, @Param('assigneeId') assigneeId: string) {
     return this.ticketService.assignTicket(+id, +assigneeId);
+  }
+
+  @Post(':id/comment')
+  async addComment(@Req() req: any, @Param('id') id: string, @Body() createCommentDto: CreateCommentDto) {
+    const user = await this.usersService.findOne({where: {id: req.user.sub}});
+
+    return this.ticketService.addComment(+id, createCommentDto, user);
   }
 }

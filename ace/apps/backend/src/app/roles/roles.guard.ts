@@ -17,7 +17,7 @@ import { RoleEnum } from '@ace/shared';
 export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly usersSerive: UsersService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
   ) {}
@@ -53,14 +53,25 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException('Wrong token');
     }
 
-    const user = await this.usersSerive.findOne({
-      where: {
-        email: request.user.email
-      }
-    });
-    const userRoles = user.roles.map((role) => role.name);
+    try {
+      const options = { 
+        where: {
+          email: request.user.email
+        }
+      };
 
-    return requiredRoles.some((role) => userRoles?.includes(role));
+      this.logger.debug(options);
+      const user = await this.usersService.findOne(options);
+      
+      this.logger.log(`User ${user.email} has roles ${user.roles.map((role) => role.name).join(', ')}`);
+
+      const userRoles = user.roles.map((role) => role.name);
+
+      return requiredRoles.some((role) => userRoles?.includes(role));
+    } catch (error) {
+      this.logger.log(`What the fuck`);
+      
+    }
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

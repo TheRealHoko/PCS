@@ -3,7 +3,7 @@ import { signalStore, withState, withMethods, patchState, withComputed, withHook
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ServicesService } from '../services/services.service';
 import { computed, inject } from '@angular/core';
-import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, pipe, repeat, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../services/auth.service';
@@ -40,12 +40,14 @@ export const ServicesStore = signalStore(
               },
             })
           );
-        })
+        }),
+        repeat()
       )
     ),
     getOwnServices: rxMethod<void>(
       pipe(
         debounceTime(500),
+        distinctUntilChanged(),
         switchMap(() => {
           const userId = auth.getDecodedToken()?.sub;
           return users.getUser(+userId!).pipe(

@@ -29,7 +29,6 @@ export class BookingsController {
       where: { id: createBookingDto.travellerId }
     });
     const property = await this.propertiesService.findOne({ id: createBookingDto.propertyId });
-    this.propertiesService.update(property.id, { isBooked: true });
     return this.bookingsService.create(createBookingDto, traveller, property);
   }
 

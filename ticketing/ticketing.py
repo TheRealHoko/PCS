@@ -4,7 +4,7 @@ import requests as r
 from main import BASE_URL
 
 def fetch_tickets():
-    response = r.get(f"{BASE_URL}/tickets")
+    response = r.get(f"{BASE_URL}/tickets", headers={"Authorization": f"Bearer {token}"})
     tickets = response.json()
     print(tickets)
     return tickets
@@ -100,7 +100,7 @@ def init(t):
         frame.pack(fill='x')
 
         tk.Label(frame, text=ticket["id"], width=5).pack(side='left')
-        tk.Label(frame, text=ticket["message"], width=50).pack(side='left')
+        tk.Label(frame, text=ticket["topic"], width=50).pack(side='left')
         canvas = tk.Canvas(frame, width=20, height=20)
         if ticket["isSolved"] == True:
             canvas.create_oval(0, 0, 20, 20, fill="green")

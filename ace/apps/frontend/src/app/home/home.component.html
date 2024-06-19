@@ -1,6 +1,11 @@
 @if (propertiesStore.isLoading()) {
     <mat-spinner class="absolute left-1/2 top-1/2"></mat-spinner>
 }
+@else if (propertiesStore.properties().length === 0) {
+    <div class="flex justify-center items-center">
+        <p>No properties found</p>
+    </div>
+}
 @else {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   @for (property of propertiesStore.properties(); track $index) {

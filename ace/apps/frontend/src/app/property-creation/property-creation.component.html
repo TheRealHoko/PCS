@@ -87,7 +87,7 @@
       </mat-form-field>
 
       <!-- Upload example -->
-      <ace-upload (uploadFiles)="getFiles($event)"></ace-upload>
+      <ace-upload [maxFiles]="5" (uploadFiles)="getFiles($event)"></ace-upload>
 
       <div formArrayName="availabilities">
         <div *ngFor="let availability of availabilities().controls; let i = index" [formGroupName]="i">

@@ -1,33 +1,38 @@
-<h1>Bookings</h1>
-@for (booking of bookings; track $index) {
-    <div class="flex flex-row space-x-4">
-        <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
-            <div class="flex flex-row">
-                <h1 class="underline">Property name: </h1>
-                <p> {{ booking.property.name }}</p>
+<h1 class="text-3xl text-center">Bookings</h1>
+@if (bookings.length === 0) {
+    <h2 class="text-center">No bookings available</h2>
+}
+@else {
+    @for (booking of bookings; track $index) {
+        <div class="flex flex-row space-x-4">
+            <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
+                <div class="flex flex-row">
+                    <h1 class="underline">Property name: </h1>
+                    <p> {{ booking.property.name }}</p>
+                </div>
+                <div class="flex flex-row">
+                    <h1 class="underline">Price: </h1>
+                    <p> {{ booking.property.pricePerNight | currency }}</p>
+                </div>
+                <div class="flex flex-row">
+                    <h1 class="underline">From: </h1>
+                    <p> {{ booking.from | date: 'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="flex flex-row">
+                    <h1 class="underline">To: </h1>
+                    <p> {{ booking.to | date: 'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="flex flex-row">
+                    <h1 class="underline">Status: </h1>
+                    <p>{{ booking.status }}</p>
+                </div>
             </div>
-            <div class="flex flex-row">
-                <h1 class="underline">Price: </h1>
-                <p> {{ booking.property.pricePerNight | currency: 'EUR' }}</p>
-            </div>
-            <div class="flex flex-row">
-                <h1 class="underline">From: </h1>
-                <p> {{ booking.from | date: 'dd/MM/yyyy' }}</p>
-            </div>
-            <div class="flex flex-row">
-                <h1 class="underline">To: </h1>
-                <p> {{ booking.to | date: 'dd/MM/yyyy' }}</p>
-            </div>
-            <div class="flex flex-row">
-                <h1 class="underline">Status: </h1>
-                <p>{{ booking.status }}</p>
+            <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
+                <button mat-button routerLink="/property/{{booking.property.id}}">View property</button>
+                <button mat-button (click)="cancelBooking(booking)">
+                    Cancel booking
+                </button>
             </div>
         </div>
-        <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
-            <button mat-button routerLink="/property/{{booking.property.id}}">View property</button>
-            <button mat-button (click)="cancelBooking(booking)">
-                Cancel booking
-            </button>
-        </div>
-    </div>
+    }
 }

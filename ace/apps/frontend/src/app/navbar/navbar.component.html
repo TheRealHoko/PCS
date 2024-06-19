@@ -7,24 +7,21 @@
       </div>
       <div class="navbarButton">
         <button routerLink="admin/users" routerLinkActive="current">
-          Utilisateurs
+          Manage Users
         </button>
         <br />
         <button routerLink="admin/property" routerLinkActive="current">
-          Gestion propriétés
+          Manage properties
         </button>
         <br />
         <button routerLink="admin/review" routerLinkActive="current">
-          Gestion avis
+          Manage reviews
         </button>
         <br />
         <button routerLink="admin/provider" routerLinkActive="current">
-          Gestion prestations
+          Manage service providers
         </button>
-        <br />
-        <button routerLink="admin/tools" routerLinkActive="current">Outil</button>
-        <br />
-        <button (click)="logout()">Déconnexion</button>
+        <button (click)="logout()">Logout</button>
       </div>
       <div class="adminFooter">
         <p>ACE&#64;2024</p>
@@ -44,7 +41,9 @@
   <mat-toolbar color="primary">
     <div class="flex flex-row gap-4">
       <a routerLink="/">PCS</a>
-      <button mat-button routerLink="/bookings">Bookings</button>
+      <button routerLink="/" mat-button>Catalog</button>
+      <button mat-button routerLink="/bookings">My Bookings</button>
+      <button mat-button routerLink="/subscriptions">Subscriptions</button>
     </div>
     <ace-account-dropdown class="ml-auto scale-150"></ace-account-dropdown>
   </mat-toolbar>
@@ -58,8 +57,10 @@
   <mat-toolbar color="primary">
     <div class="flex flex-row">
       <a routerLink="/">PCS</a>
+      <button routerLink="/" mat-button>Catalog</button>
       <button routerLink="login" mat-button>Login</button>
       <button routerLink="register" mat-button>Register</button>
+      <button mat-button routerLink="/subscriptions">Subscriptions</button>
     </div>
   </mat-toolbar>
   <router-outlet></router-outlet>

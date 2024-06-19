@@ -19,8 +19,6 @@ export interface IProperty {
 
   roomCount: number;
 
-  isBooked: boolean;
-
   propertyType: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
 
   lessor: IUser;

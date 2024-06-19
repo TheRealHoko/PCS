@@ -1,6 +1,7 @@
 import { IAddress } from './address.interface';
 import { IRole } from './role.interface';
 import { IService } from './service.interface';
+import { IUpload } from './upload.interface';
 
 export interface IUser {
   id: number;
@@ -28,4 +29,6 @@ export interface IUser {
   review?: 0 | 1 | 2 | 3 | 4 | 5;
 
   services?: IService[];
+
+  profile_picture?: IUpload;
 }

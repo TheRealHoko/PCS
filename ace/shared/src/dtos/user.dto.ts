@@ -1,5 +1,4 @@
 import { IAddress, IUser } from '../interfaces';
-import { Address } from './address.dto';
 import { Role } from './role.dto';
 
 export class User implements IUser {

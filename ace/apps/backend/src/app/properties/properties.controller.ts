@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Logger,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { CreatePropertyDto, RoleEnum } from '@ace/shared';
@@ -29,9 +31,9 @@ export class PropertiesController {
       where : { id: createPropertyDto.lessorId }
     });
     const lessorRoles = lessor.roles.map(role => role.name);
-    if (!lessorRoles.includes(RoleEnum.RENTER)) {
+    if (!lessorRoles.includes(RoleEnum.LESSOR)) {
       this.logger.log(`Adding Renter role to lessor ${lessor.email}`);
-      await this.usersService.update(lessor.id, {roles: [...lessorRoles, RoleEnum.RENTER]});
+      await this.usersService.update(lessor.id, {roles: [...lessorRoles, RoleEnum.LESSOR]});
     }
     return this.propertiesService.create(createPropertyDto, lessor);
   }

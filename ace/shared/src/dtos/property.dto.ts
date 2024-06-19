@@ -17,8 +17,6 @@ export class Property implements IProperty {
   
   roomCount!: number;
   
-  isBooked!: boolean;
-
   propertyType!: "HOUSE" | "APARTMENT" | "OFFICE" | "LAND" | "COMMERCIAL";
   
   lessor!: User;

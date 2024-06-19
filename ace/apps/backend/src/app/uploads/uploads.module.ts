@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Upload } from './entities/upload.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { diskStorage } from 'multer';
       })
     }),
     TypeOrmModule.forFeature([Upload]),
-    PropertiesModule
+    PropertiesModule,
+    UsersModule
   ],
   controllers: [UploadsController],
   providers: [UploadsService],

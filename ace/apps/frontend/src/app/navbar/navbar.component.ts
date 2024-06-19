@@ -8,7 +8,7 @@ import { ReviewComponent } from '../admin/review/review.component';
 import { RouterModule } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { AuthStore } from '../stores/auth.store';
-import { AccountDropdownComponent } from '../account-dropdown/account-dropdown.component';
+import { AccountDropdownComponent } from './account-dropdown/account-dropdown.component';
 
 @Component({
   selector: 'ace-navbar',
@@ -30,8 +30,6 @@ export class NavbarComponent {
   authStore = inject(AuthStore);
 
   constructor(private readonly alertService: AlertService) {
-    this.authStore.refreshRoles();
-    
   }
 
   logout() {

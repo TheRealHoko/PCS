@@ -16,6 +16,7 @@ import { Address } from '../address/entities/address.entity';
 @Injectable()
 export class UsersService {
   private saltRounds = 10;
+  private logger = new Logger(UsersService.name);
 
   constructor(
     @InjectRepository(User)
@@ -51,9 +52,10 @@ export class UsersService {
     }
 
     try {
-      const hash = await bcrypt.hash(createUserDto.password, this.saltRounds);
-      user.hash = hash;
-      return this.usersRepository.save(user);
+      const passwordHash = await bcrypt.hash(createUserDto.password, this.saltRounds);
+      user.hash = passwordHash;
+      const {hash, ...userWithoutHash} = await this.usersRepository.save(user);
+      return userWithoutHash;
     } catch (error) {
       throw new Error(error.message);
     }

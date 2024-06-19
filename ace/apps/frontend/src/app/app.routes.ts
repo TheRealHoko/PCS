@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ReviewComponent } from './admin/review/review.component';
 import { UsersComponent } from './admin/users/users.component';
-import { ProviderAdminDashboardComponent } from './admin/provider/provider.component';
+import { ProviderAdminDashboardComponent } from './admin/provider-admin-dashboard/provider-admin-dashboard.component';
 import { ToolsComponent } from './admin/tools/tools.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -15,11 +15,18 @@ import { ServiceDashboardComponent } from './service-dashboard/service-dashboard
 import { PropertyCreationComponent } from './property-creation/property-creation.component';
 import { PropertyComponent } from './property/property.component';
 import { BookingsComponent } from './bookings/bookings.component';
-import { ServiceViewComponent } from './service-view/service-view.component';
+import { ServiceViewComponent } from './service-dashboard/service-view/service-view.component';
 import { PaymentComponent } from './payment/payment.component';
+import { MyPropertiesComponent } from './my-properties/my-properties.component';
+import { PropertyAdminDashboardComponent } from './admin/property-admin-dashboard/property-admin-dashboard.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { ContactComponent } from './support/contact/contact.component';
+import { SupportComponent } from './support/support.component';
+import { TicketsComponent } from './support/tickets/tickets.component';
+import { TicketViewComponent } from './support/tickets/ticket-view/ticket-view.component';
 
 export const appRoutes: Route[] = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, title: 'Home'},
   {
     path: 'login',
     component: LoginComponent,
@@ -39,37 +46,62 @@ export const appRoutes: Route[] = [
     children: [
       { path: 'users', component: UsersComponent },
       { path: 'review', component: ReviewComponent },
-      { path: 'property', component: PropertyComponent },
+      { path: 'property', component: PropertyAdminDashboardComponent },
       { path: 'provider', component: ProviderAdminDashboardComponent },
       { path: 'tools', component: ToolsComponent },
     ],
   },
-  { path: 'serviceCreation', component: ServiceCreationFormComponent },
+  { path: 'service-creation', component: ServiceCreationFormComponent },
   { 
     path: 'provider',
     canActivate: [authGuard, rolesGuard],
     data: { roles: [RoleEnum.PROVIDER] },
     children: [
       { 
-        path: 'myServices', 
+        path: 'my-services', 
         component: ServiceDashboardComponent,
       },
       {
-        path: 'myServices/:id', component: ServiceViewComponent
+        path: 'my-services/:id',
+        component: ServiceViewComponent
       }
     ]
   },
-  { path: 'propertyCreation', component: PropertyCreationComponent, canActivate: [authGuard] },
+  {
+    path: 'subscriptions',
+    component: SubscriptionsComponent,
+  },
+  { path: 'my-properties', component: MyPropertiesComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.LESSOR] } },
+  { path: 'property-creation', component: PropertyCreationComponent, canActivate: [authGuard] },
   { path: 'property/:id', component: PropertyComponent },
   { path: 'bookings', component: BookingsComponent, canActivate: [authGuard] },
   { path: 'payment', component: PaymentComponent, canActivate: [authGuard], children: [{ path: 'success', component: PaymentComponent }]},
+  {
+    path: 'support',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'contact',
+        component: ContactComponent,
+      },
+      {
+        path: 'tickets',
+        children: [
+          {
+            path: '',
+            component: TicketsComponent,
+          },
+          {
+            path: ':id',
+            component: TicketViewComponent
+          }
+        ]
+      },
+      {
+        path: '',
+        component: SupportComponent,
+      }
+    ]
+  },
   { path: '**', redirectTo: '' },
-  // {
-  //   path: 'renter',
-  //   canActivate: [authGuard, rolesGuard],
-  //   data: { roles: [RoleEnum.RENTER] },
-  //   children: [
-  //     { path: 'my-properties', component: }
-  //   ]
-  // }
 ];

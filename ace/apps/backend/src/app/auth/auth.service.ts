@@ -3,7 +3,6 @@ import {
   HttpException,
   Injectable,
   Logger,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
@@ -20,10 +19,12 @@ import { SignInDto } from '@ace/shared';
 import { User } from '../users/entities/user.entity';
 import { MailService } from '../services/mail.service';
 import { randomBytes } from 'crypto';
+import { promisify } from "util";
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
+  private readonly randomBytesAsync = promisify(randomBytes);
 
   constructor(
     private readonly usersService: UsersService,
@@ -62,35 +63,41 @@ export class AuthService {
   }
 
   async register(registerInfo: RegisterDto) {
-    const isEmailAlreadyExist = await this.usersService.findOne({
-      where: {
-        email: registerInfo.email,
+    try {
+      const isEmailAlreadyExist = await this.usersService.findOne({
+        where: {
+          email: registerInfo.email,
+        }
+      });
+
+      if (isEmailAlreadyExist) {
+        throw new BadRequestException('Email already exists');
       }
-    });
-    if (isEmailAlreadyExist) {
-      throw new BadRequestException('Email already exists');
+
+    } catch (error) {
+      if (error.status === 404) {
+        this.logger.log('User not found');
+      }
+      else if (error.status === 400) {
+        throw new BadRequestException('Email already exists');
+      }
     }
+    
+    const buf = await this.randomBytesAsync(48);
+    const token = buf.toString('hex');
+    console.log(token);
+    const user: CreateUserDto = {
+      email: registerInfo.email,
+      firstname: registerInfo.firstname,
+      lastname: registerInfo.lastname,
+      password: registerInfo.password,
+      phone: registerInfo.phone,
+      address: registerInfo.address,
+      email_verification_token: token,
+    };
 
-    randomBytes(48, (err, buf) => {
-      if (err) {
-        throw err;
-      }
-
-      const token = buf.toString('hex');
-      console.log(token);
-      const user: CreateUserDto = {
-        email: registerInfo.email,
-        firstname: registerInfo.firstname,
-        lastname: registerInfo.lastname,
-        password: registerInfo.password,
-        phone: registerInfo.phone,
-        address: registerInfo.address,
-        email_verification_token: token,
-      };
-
-      this.mailService.sendVerificationMail(registerInfo.email, token);
-      this.usersService.create(user);
-    });
+    this.mailService.sendVerificationMail(registerInfo.email, token);
+    return this.usersService.create(user);
   }
 
   async verify(email: string, token: string) {
