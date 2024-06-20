@@ -22,10 +22,9 @@
         <ul>
             @for (comment of ticket.comments; track $index) {
                 <li>
-                    <div class="comment">
-                        <div class="author">{{ comment.sent_by.email }}</div>
-                        <div class="message">{{ comment.content }}</div>
-                        <div class="timestamp">{{ comment.updated_at | date }}</div>
+                    <div>
+                        <p>Comment: {{ comment.content }}</p>
+                        <p>Sent by: {{ comment.sent_by.email }} | {{ comment.updated_at | date }}</p>
                     </div>
                 </li>
             }
