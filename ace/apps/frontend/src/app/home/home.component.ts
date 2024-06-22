@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from "@angular/material/card";
 import { PropertiesStore } from '../stores/properties.store';
@@ -27,7 +27,9 @@ export class HomeComponent implements OnInit {
   cdnUrl = environment.cdnUrl;
 
   constructor(
-  ) {}
+  ) {
+    effect(() => console.log(this.propertiesStore.isLoading()));
+  }
 
   ngOnInit(): void {
     this.propertiesStore.refreshProperties();

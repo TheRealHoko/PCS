@@ -4,6 +4,9 @@ import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angula
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TicketsService } from '../../services/tickets.service';
+import { Router } from '@angular/router';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-contact',
@@ -21,7 +24,12 @@ import { MatInputModule } from '@angular/material/input';
 export class ContactComponent implements OnInit {
   contactForm!: FormGroup;
 
-  constructor(private readonly fb: FormBuilder) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly ticketsService: TicketsService,
+    private readonly router: Router,
+    private readonly alertsService: AlertService
+  ) { }
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({
@@ -33,7 +41,13 @@ export class ContactComponent implements OnInit {
   onSubmit(): void {
     if (this.contactForm.valid) {
       console.log(this.contactForm.value);
-      // Send the form data to your server or API
+      this.ticketsService.createTicket(this.contactForm.value.topic, this.contactForm.value.description)
+      .subscribe(ticket => {
+          console.log(ticket);
+          this.alertsService.info('Ticket created successfully');
+          this.router.navigate(['/support/tickets']);
+        }
+      );
     }
   }
 }

@@ -2,6 +2,14 @@
     <div>
         <h1>Topic: {{ ticket.topic }}</h1>
         <p>Description: {{ ticket.description }}</p>
+        <p>Assigned to:
+        @if (ticket.assignee) {
+            {{ ticket.assignee.email }}
+        }
+        @else {
+            Not assigned
+        }
+        </p>
     <div class="ticket-discussion">
         <h2>Discussion</h2>
         <form

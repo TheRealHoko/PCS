@@ -5,6 +5,7 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { UsersService } from '../users/users.service';
 import { RolesGuard } from '../roles/roles.guard';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { Ticket } from './entities/ticket.entity';
 
 @Controller('tickets')
 @UseGuards(RolesGuard)
@@ -23,8 +24,10 @@ export class TicketsController {
   }
 
   @Get()
-  findAll() {
-    return this.ticketService.findAll();
+  async findAll() {
+    const tickets = await this.ticketService.findAll();
+    console.log(tickets);
+    return tickets;
   }
 
   @Get('my-tickets')
@@ -57,7 +60,8 @@ export class TicketsController {
   }
 
   @Patch(':id/assign/:assigneeId')
-  assignTicket(@Param('id') id: string, @Param('assigneeId') assigneeId: string) {
+  async assignTicket(@Param('id') id: string, @Param('assigneeId') assigneeId: string): Promise<Ticket> {
+    this.logger.debug(`Assigning ticket ${id} to user ${assigneeId}`);
     return this.ticketService.assignTicket(+id, +assigneeId);
   }
 

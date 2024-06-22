@@ -20,4 +20,8 @@ export class TicketsService {
     addComment(ticketId: number, content: string) {
         return this.http.post<Comment>(`${environment.apiUrl}/api/tickets/${ticketId}/comment`, { content: content });
     }
+
+    createTicket(topic: string, description: string) {
+        return this.http.post<Ticket>(`${environment.apiUrl}/api/tickets`, {topic: topic, description: description});
+    }
 }

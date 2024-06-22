@@ -19,9 +19,9 @@ export const PropertiesStore = signalStore(
   withMethods((store, properties = inject(PropertiesService)) => ({
     refreshProperties: rxMethod<void>(
       pipe(
+        tap(() => patchState(store, { isLoading: true })),
         debounceTime(500),
         distinctUntilChanged(),
-        tap(() => patchState(store, { isLoading: true })),
         switchMap(() => {
           return properties.getProperties().pipe(
             tapResponse({

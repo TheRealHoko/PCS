@@ -56,10 +56,13 @@ export class TicketsService {
   }
 
   async assignTicket(id: number, assigneeId: number): Promise<Ticket> {
+    console.log("id: " + id);
     const ticket = await this.ticketRepository.preload({
       id: id,
       assignee: { id: assigneeId }
     });
+
+    console.log("ticket: " + ticket);
     if (!ticket) {
       throw new NotFoundException();
     }

@@ -21,7 +21,9 @@ export class Ticket {
     @JoinColumn()
     createdBy: User;
 
-    @ManyToOne(() => User, user => user.tickets)
+    @ManyToOne(() => User, user => user.tickets, {
+        eager: true
+    })
     assignee: User;
 
     @OneToMany(() => Comment, comment => comment.ticket, { cascade: true })

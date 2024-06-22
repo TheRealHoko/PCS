@@ -3,15 +3,19 @@ from tkinter import messagebox
 import requests as r
 from main import BASE_URL
 
+headers= lambda token: {
+    "Authorization": f"Bearer {token}"
+}
+         
 def fetch_tickets():
-    response = r.get(f"{BASE_URL}/tickets", headers={"Authorization": f"Bearer {token}"})
+    response = r.get(f"{BASE_URL}/tickets", headers=headers(token))
     tickets = response.json()
     print(tickets)
     return tickets
 
 def fetch_admins(token):
     print(token)
-    response = r.get(f"{BASE_URL}/users?role=ADMIN", headers={"Authorization": f"Bearer {token}"})
+    response = r.get(f"{BASE_URL}/users?role=ADMIN", headers=headers(token))
     print(response.text)
     response.raise_for_status()
     admins = response.json()
@@ -33,6 +37,8 @@ def assign_user(ticket_id, token):
     
     def confirm_assign():
         selected_user = user_var.get()
+        assigneeId = [admin["id"] for admin in admins if admin["email"] == selected_user][0]
+        response = r.patch(f"{BASE_URL}/tickets/{ticket_id}/assign/{assigneeId}", headers=headers(token))
         messagebox.showinfo("Assigné", f"Ticket {ticket_id} assigné à {selected_user}")
         assign_window.destroy()
     
@@ -95,6 +101,11 @@ def init(t):
 
     tickets = fetch_tickets()
 
+    if len(tickets) == 0:
+        tk.Label(root, text="Aucun ticket disponible", font=("Arial", 25)).pack()
+        root.mainloop()
+        return
+    
     for ticket in tickets:
         frame = tk.Frame(root)
         frame.pack(fill='x')
