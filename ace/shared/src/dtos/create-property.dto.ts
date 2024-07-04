@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { CreatePropertyAvailabilityDto } from './create-availability.dto';
+import { CreatePropertyUnavailabilityDto } from './create-property-unavailability.dto';
 
 export class CreatePropertyDto {
   @IsNotEmpty()
@@ -24,8 +24,8 @@ export class CreatePropertyDto {
   propertyType!: 'HOUSE' | 'APARTMENT' | 'OFFICE' | 'LAND' | 'COMMERCIAL';
 
   @IsNotEmpty()
-  lessorId!: number;
+  bookingType!: 'INSTANT' | 'REQUEST';
 
   @IsNotEmpty()
-  availabilities!: CreatePropertyAvailabilityDto[];
+  lessorId!: number;
 }

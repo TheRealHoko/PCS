@@ -5,29 +5,21 @@ import { Property } from './entities/property.entity';
 import { FindManyOptions, FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
-import { PropertyAvailability } from './entities/property-availability.entity';
+import { PropertyUnavailability } from './entities/property-unavailability.entity';
 
 @Injectable()
 export class PropertiesService {
   constructor(
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
-    @InjectRepository(PropertyAvailability)
-    private readonly propertyAvailabilityRepository: Repository<PropertyAvailability>,
+    @InjectRepository(PropertyUnavailability)
+    private readonly propertyAvailabilityRepository: Repository<PropertyUnavailability>,
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto, lessor: User): Promise<Property> {
     const property = this.propertyRepository.create(createPropertyDto);
     property.lessor = lessor;
     const savedProperty = await this.propertyRepository.save(property);
-
-    const availabilities = createPropertyDto.availabilities.map((availability) => {
-      const propertyAvailability = this.propertyAvailabilityRepository.create(availability);
-      propertyAvailability.property = savedProperty;
-      return propertyAvailability;
-    });
-    await this.propertyAvailabilityRepository.save(availabilities);
-    
     return savedProperty;
   }
 

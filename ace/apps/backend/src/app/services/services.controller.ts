@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto, RoleEnum } from '@ace/shared';
 import { UpdateServiceDto } from '@ace/shared';
 import { MailService } from './mail.service';
 import { UsersService } from '../users/users.service';
+import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 
 @Controller('services')
 export class ServicesController {
@@ -33,7 +35,19 @@ export class ServicesController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('from') from?: string, @Query('to') to?: string) { 
+    if (from && to) {
+      const fromParsed = from ? new Date(from) : null;
+      const toParsed = to ? new Date(to) : null;
+      return this.servicesService.findAll({
+        where: {
+          availabilities: {
+            from: MoreThanOrEqual(fromParsed),
+            to: LessThanOrEqual(toParsed),
+          },
+        },
+      });
+    }
     return this.servicesService.findAll();
   }
 

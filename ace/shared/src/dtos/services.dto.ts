@@ -1,4 +1,4 @@
-import { IService } from "../interfaces";
+import { IService, IServiceAvailability } from "../interfaces";
 
 export class Service implements IService {
   id!: number;
@@ -7,13 +7,13 @@ export class Service implements IService {
   
   description!: string;
   
-  available!: Boolean;
-  
   effectif!: number;
   
   price!: number;
   
   service_type!: string;
-
+  
   status!: "OFFLINE" | "WAITING" | "ONLINE";
+
+  availabilities!: IServiceAvailability[];
 }

@@ -5,8 +5,8 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
 import { AppModule } from './app/app.module';
+import { LoggerInterceptor } from './app/interceptors/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +14,7 @@ async function bootstrap() {
   app.enableCors({ credentials: true });
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new LoggerInterceptor());
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(

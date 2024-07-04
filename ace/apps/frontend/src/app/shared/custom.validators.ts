@@ -6,6 +6,12 @@ import {
 } from '@angular/forms';
 
 export class CustomValidators {
+  static numeric(control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value;
+    const isNumeric = /^[0-9]+$/.test(value);
+    return isNumeric ? null : { numeric: true };
+  }
+  
   static passwordPolicy(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value: string = control.value;

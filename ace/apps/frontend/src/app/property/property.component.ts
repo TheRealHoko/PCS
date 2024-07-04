@@ -3,7 +3,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { PropertiesService } from '../services/properties.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { CreateBookingDto, IProperty, Service } from '@ace/shared';
+import { CreateBookingDto, IProperty, Property, Service } from '@ace/shared';
 import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,6 +49,7 @@ export class PropertyComponent implements OnInit {
   price = signal(1);
   computedPrice = computed(() => this.price() * this.selectedDaysCount());
   servicesStore = inject(ServicesStore);
+  cart: Service[] = [];
 
   constructor(
     private readonly propertiesService: PropertiesService,
@@ -70,21 +71,21 @@ export class PropertyComponent implements OnInit {
         }
       )
     ).subscribe(property => {
-      this.property = property
+      this.property = property;
       this.price.set(property.pricePerNight);
-      const allowedDates = property.availabilities;
+      const unavailableDates = property.propertyUnavailabilities;
       this.dateFilter = (date: Date | null) => {
         if (!date) {
           return false;
         }
         
         const time = date.getTime();
-        const isBetween = allowedDates.some(d => {
+        const isUnavailable = unavailableDates.some(d => {
           const fromTime = new Date(d.from).getTime();
           const toTime = new Date(d.to).getTime();
           return time >= fromTime && time <= toTime;
         });
-        return isBetween;
+        return !isUnavailable;
       };
     });
 
@@ -97,6 +98,8 @@ export class PropertyComponent implements OnInit {
       const to = val.to;
       if (from && to) {
         this.selectedDaysCount.set(this.calculateDaysCount(from, to));
+        console.log(from.toISOString(), to.toISOString());
+        this.servicesStore.getFilteredServices({ from, to });
       } else {
         this.selectedDaysCount.set(1);
       }
@@ -104,7 +107,12 @@ export class PropertyComponent implements OnInit {
   }
   
   addServiceToCart(service: Service) {
-    throw new Error('Method not implemented.');
+    this.cart.push(service);
+    this.servicesStore.addedToCart(service);
+  }
+
+  removeServiceFromCart(service: Service) {
+    this.cart = this.cart.filter(s => s.id !== service.id);
   }
 
   reserveProperty(): void {
@@ -118,7 +126,7 @@ export class PropertyComponent implements OnInit {
         travellerId: +this.authStore.token()?.sub!
       };
 
-      this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice() })
+      this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice(), serviceIds: this.cart.map(s => s.id)})
         .pipe(
           switchMap(session => {
             console.log(session);

@@ -24,6 +24,8 @@ import { ContactComponent } from './support/contact/contact.component';
 import { SupportComponent } from './support/support.component';
 import { TicketsComponent } from './support/tickets/tickets.component';
 import { TicketViewComponent } from './support/tickets/ticket-view/ticket-view.component';
+import { PropertyEditComponent } from './property/property-edit/property-edit.component';
+import { ServiceEditComponent } from './service-dashboard/service-edit/service-edit.component';
 
 export const appRoutes: Route[] = [
   { path: '', component: HomeComponent, title: 'Home'},
@@ -58,13 +60,23 @@ export const appRoutes: Route[] = [
     data: { roles: [RoleEnum.PROVIDER] },
     children: [
       { 
-        path: 'my-services', 
-        component: ServiceDashboardComponent,
+        path: 'my-services',
+        children: [
+          {
+            path: ':id',
+            component: ServiceViewComponent
+          },
+          {
+            path: ':id/edit',
+            component: ServiceEditComponent
+          },
+          {
+            path: '',
+            component: ServiceDashboardComponent
+          }
+        ]
       },
-      {
-        path: 'my-services/:id',
-        component: ServiceViewComponent
-      }
+      
     ]
   },
   {
@@ -73,7 +85,24 @@ export const appRoutes: Route[] = [
   },
   { path: 'my-properties', component: MyPropertiesComponent, canActivate: [authGuard, rolesGuard], data: { roles: [RoleEnum.LESSOR] } },
   { path: 'property-creation', component: PropertyCreationComponent, canActivate: [authGuard] },
-  { path: 'property/:id', component: PropertyComponent },
+  {
+    path: 'property',
+    children: [
+      {
+        path: ':id',
+        children: [
+          {
+            path: '',
+            component: PropertyComponent,
+          },
+          {
+            path: 'edit',
+            component: PropertyEditComponent
+          }
+        ]
+      },
+    ]
+  },
   { path: 'bookings', component: BookingsComponent, canActivate: [authGuard] },
   { path: 'payment', component: PaymentComponent, canActivate: [authGuard], children: [{ path: 'success', component: PaymentComponent }]},
   {

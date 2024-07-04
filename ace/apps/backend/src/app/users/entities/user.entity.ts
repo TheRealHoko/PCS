@@ -82,4 +82,7 @@ export class User implements IUser {
 
   @OneToMany(() => Comment, comment => comment.sent_by)
   comments: Comment[]
+
+  // @OneToMany(() => Comment, comment => comment.sent_by)
+  // property_comments: Comment[]
 }

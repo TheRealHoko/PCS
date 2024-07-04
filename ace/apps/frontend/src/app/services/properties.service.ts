@@ -1,4 +1,4 @@
-import { CreatePropertyDto, IProperty } from '@ace/shared';
+import { CreatePropertyDto, IProperty, UpdatePropertyDto } from '@ace/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -23,5 +23,9 @@ export class PropertiesService {
 
   getProperty(id: number): Observable<IProperty> {
     return this.http.get<IProperty>(`${environment.apiUrl}/api/properties/${id}`);
+  }
+
+  updateProperty(id: number, UpdatePropertyDto: UpdatePropertyDto): Observable<IProperty> {
+    return this.http.patch<IProperty>(`${environment.apiUrl}/api/properties/${id}`, UpdatePropertyDto);
   }
 }

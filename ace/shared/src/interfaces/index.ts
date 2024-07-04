@@ -5,7 +5,7 @@ export * from './role.interface';
 export * from './address.interface';
 export * from './property.interface';
 export * from './upload.interface';
-export * from './property-availability.interface';
+export * from './service-availability.interface';
 export * from './booking.interface';
 export * from './service.interface';
 export * from './ticket.interface';

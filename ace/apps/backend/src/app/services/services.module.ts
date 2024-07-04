@@ -11,5 +11,6 @@ import { ServiceAvailability } from './entities/service-availability.entity';
   imports: [TypeOrmModule.forFeature([Service, ServiceAvailability]), MailModule, UsersModule],
   controllers: [ServicesController],
   providers: [ServicesService],
+  exports: [ServicesService],
 })
 export class ServicesModule {}

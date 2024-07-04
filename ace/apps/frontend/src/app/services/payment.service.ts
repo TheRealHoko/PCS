@@ -10,7 +10,7 @@ export class PaymentService {
 
   constructor(private readonly http: HttpClient) { }
 
-  checkoutProperty(data: { propertyId: number, amount: number }): Observable<{id: string}> {
+  checkoutProperty(data: { propertyId: number, amount: number, serviceIds: number[] }): Observable<{id: string}> {
     return this.http.post<{id: string}>(`${environment.apiUrl}/api/payment/checkout`, data);
   }
 

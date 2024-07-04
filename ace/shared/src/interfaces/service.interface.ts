@@ -1,11 +1,11 @@
+import { IServiceAvailability } from "./service-availability.interface";
+
 export interface IService {
     id: number;
   
     name: string;
   
     description: string;
-  
-    available: Boolean;
   
     effectif: number;
   
@@ -14,4 +14,6 @@ export interface IService {
     service_type: string;
     
     status: 'OFFLINE' | 'WAITING' | 'ONLINE';
+
+    availabilities: IServiceAvailability[];
   }

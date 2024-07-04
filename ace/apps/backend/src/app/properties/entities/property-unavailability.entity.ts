@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Property } from "./property.entity";
 
 @Entity()
-export class PropertyAvailability {
+export class PropertyUnavailability {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,7 +13,7 @@ export class PropertyAvailability {
     @Column()
     to: Date;
 
-    @ManyToOne(() => Property, property => property.availabilities, {
+    @ManyToOne(() => Property, property => property.propertyUnavailabilities, {
         onDelete: 'CASCADE',
     })
     property: Property;

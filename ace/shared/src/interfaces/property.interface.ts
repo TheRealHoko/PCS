@@ -1,4 +1,5 @@
-import { IPropertyAvailability } from "./property-availability.interface";
+import { Comment } from "./comment.interface";
+import { PropertyUnavailability } from "../dtos/property-unavailability.dto";
 import { IUpload } from "./upload.interface";
 import { IUser } from "./user.interface";
 
@@ -25,5 +26,7 @@ export interface IProperty {
 
   images: IUpload[];
 
-  availabilities: IPropertyAvailability[];
+  propertyUnavailabilities: PropertyUnavailability[];
+
+  // comments: Comment[];
 }

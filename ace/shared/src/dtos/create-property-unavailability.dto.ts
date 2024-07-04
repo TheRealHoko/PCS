@@ -1,6 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 
-export class CreatePropertyAvailabilityDto {
+export class CreatePropertyUnavailabilityDto {
     @IsNotEmpty()
     from!: Date;
     

@@ -89,32 +89,6 @@
       <!-- Upload example -->
       <ace-upload [maxFiles]="5" (uploadFiles)="getFiles($event)"></ace-upload>
 
-      <div formArrayName="availabilities">
-        <div *ngFor="let availability of availabilities().controls; let i = index" [formGroupName]="i">
-          <mat-form-field>
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
-              <input matStartDate formControlName="from" placeholder="Start date">
-              <input matEndDate formControlName="to" placeholder="End date">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-      
-          <mat-error *ngIf="availability.get('from')?.hasError('required')">
-            Start date is required.
-          </mat-error>
-          <mat-error *ngIf="availability.get('to')?.hasError('required')">
-            End date is required.
-          </mat-error>
-      
-          <button type="button" mat-fab-button (click)="removeAvailability(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-        <button mat-raised-button color="primary" (click)="addAvailability()">Add</button>
-      </div>
-
       <button
         class="bg-tertiary"
         mat-raised-button

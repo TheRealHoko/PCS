@@ -10,7 +10,7 @@ export interface Comment {
 
     updated_at: Date;
 
-    ticket: Ticket;
+    ticket?: Ticket;
 
     sent_by: IUser;
 }

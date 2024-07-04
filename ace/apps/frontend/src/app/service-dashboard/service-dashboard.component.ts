@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicesStore } from '../stores/services.store';
 import { TableComponent } from '../components/table/table.component';
@@ -27,6 +27,10 @@ export class ServiceDashboardComponent implements OnInit {
     { key: 'price', display: 'Price' },
     { key: 'service_type', display: 'Type of the service' },
   ];
+
+  constructor() {
+    effect(() => console.log(this.servicesStore.services()))
+  }
 
   ngOnInit(): void {
     this.servicesStore.getOwnServices();

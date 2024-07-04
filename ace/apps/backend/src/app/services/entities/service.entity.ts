@@ -29,11 +29,14 @@ export class Service {
   status: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
   // !! removed eager: true
-  @ManyToOne(() => User, (user) => user.services, {eager: true})
+  @ManyToOne(() => User, (user) => user.services, {
+    eager: true
+  })
   provider: User;
 
   @OneToMany(() => ServiceAvailability, availability => availability.service, {
-    eager: true
+    eager: true,
+    cascade: true
   })
   availabilities: ServiceAvailability[];
 }

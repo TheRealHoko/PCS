@@ -4,11 +4,11 @@ import { PropertiesController } from './properties.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Property } from './entities/property.entity';
 import { UsersModule } from '../users/users.module';
-import { PropertyAvailability } from './entities/property-availability.entity';
+import { PropertyUnavailability } from './entities/property-unavailability.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Property, PropertyAvailability]),
+    TypeOrmModule.forFeature([Property, PropertyUnavailability]),
     forwardRef(() => UsersModule)
   ],
   controllers: [PropertiesController],

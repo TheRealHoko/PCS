@@ -3,7 +3,7 @@ import { CreateServiceDto } from '@ace/shared';
 import { UpdateServiceDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Service } from './entities/service.entity';
-import { FindOneOptions, In, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, In, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
@@ -19,8 +19,8 @@ export class ServicesService {
     return await this.servicesRepository.save(service);
   }
 
-  async findAll() {
-    const services = await this.servicesRepository.find();
+  async findAll(options?: FindManyOptions<Service>) {
+    const services = await this.servicesRepository.find(options);
 
     if (!services) {
       throw new NotFoundException('No services');
@@ -38,13 +38,17 @@ export class ServicesService {
   }
 
   async update(id: number, updateServiceDto: UpdateServiceDto) {
-    const service = await this.servicesRepository.findOneBy({ id });
+    const service = await this.servicesRepository.preload({
+      id: id,
+      ...updateServiceDto
+    });
+
     if (!service) {
       throw new NotFoundException(`Service with #${id} not found`);
     }
 
-    const updated = this.servicesRepository.merge(service, updateServiceDto);
-    return this.servicesRepository.save(updated);
+    
+    return this.servicesRepository.save(service);
   }
 
   async remove(id: number) {

@@ -11,7 +11,11 @@ export class ServicesService {
   constructor(private readonly http: HttpClient) {}
 
   getServices(): Observable<Service[]> {
-    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`);
+    return this.http.get<Service[]>(`${environment.apiUrl}/api/services`,);
+  }
+
+  getFilteredServices(from: string, to: string): Observable<Service[]> {
+    return this.http.get<Service[]>(`${environment.apiUrl}/api/services?from=${from}&to=${to}`);
   }
 
   getOwnServices(): Observable<Service[]> {

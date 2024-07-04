@@ -1,0 +1,38 @@
+@if (property) {
+    <p>Editing property #{{ property.id }}</p>
+    <div class="flex flex-row h-full w-max-full">
+        <div class="flex flex-col border-4 w-1/2 gap-4 text-center">
+            <form class="flex flex-col" [formGroup]="editPropertyForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" formControlName="name" value="{{ property.name }}">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Description" formControlName="description">{{ property.description }}</textarea>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Service type</mat-label>
+                <mat-select formControlName="propertyType" [(value)]="propTypes">
+                @for (item of propTypes; track $index) {
+                    <mat-option value="item">{{ item | titlecase }}</mat-option>
+                }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Price</mat-label>
+                <input matInput type="number" placeholder="Price" formControlName="pricePerNight" value="{{ property.pricePerNight }}">
+            </mat-form-field>
+            <button class="m-4" mat-raised-button color="primary" type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="flex flex-col border-4 w-1/2">
+            <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+    </div>
+}
+@else {
+    <div>
+        <h2>Property not found</h2>
+    </div>
+}

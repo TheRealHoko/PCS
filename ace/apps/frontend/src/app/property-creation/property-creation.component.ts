@@ -8,7 +8,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
-import { CreatePropertyAvailabilityDto, CreatePropertyDto, IProperty } from '@ace/shared';
+import { CreatePropertyUnavailabilityDto, CreatePropertyDto, IProperty } from '@ace/shared';
 import { UploadService } from '../services/upload.service';
 import { FileUpload } from '../components/upload/upload.directive';
 import { MatSelectModule } from '@angular/material/select';
@@ -62,32 +62,12 @@ export class PropertyCreationComponent {
       capacity: ['', [Validators.required, Validators.min(1)]],
       surface: ['', [Validators.required, Validators.min(1)]],
       roomCount: ['', [Validators.required, Validators.min(1)]],
-      availabilities: this.fb.array([])
     });
-
-    this.addAvailability();
   }
 
   getFiles(files: FileUpload[]) {
     this.files = [...this.files, ...files];
     console.log(this.files);
-  }
-
-  availabilities(): FormArray {
-    return this.propertyForm.get('availabilities') as FormArray;
-  }
-
-  addAvailability() {
-    this.availabilities().push(
-      this.fb.group({
-        from: [null, [Validators.required]],
-        to: [null, [Validators.required]]
-      })
-    );
-  }
-
-  removeAvailability(index: number): void {
-    this.availabilities().removeAt(index);
   }
 
   onSubmit() {
@@ -109,7 +89,7 @@ export class PropertyCreationComponent {
           this.files.map(file => form.append('files', file.file));
           form.append('propertyId', property.id.toString());
           this.uploadService.uploadPropertyImages(form).subscribe(console.log);
-          this.alertService.info('Property created successfully');
+          this.alertService.info('Property submitted successfully');
           this.router.navigateByUrl('/');
         },
         error: () => this.alertService.info('An error occurred while creating the property')

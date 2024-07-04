@@ -15,7 +15,7 @@
                 <h1 class="underline">Description:</h1>
                 <p>{{ property.description }}</p>
                 <div class="flex flex-row gap-2">
-                    <img class="rounded-full w-8" src="https://static1.personality-database.com/profile_images/b26440de6219476fac77635a298af98d.png" alt="">
+                    <img class="rounded-full w-8" [src]="cdnUrl + '/' + property.lessor.profile_picture?.path" alt="">
                     <p>Lessor: {{ property.lessor.firstname }} {{ property.lessor.lastname }} </p>
                 </div>
                 @if (property.lessor.review) {
@@ -54,6 +54,15 @@
                         Login to reserve
                     </button>
                 }
+                @for (item of cart; track $index) {
+                    <div class="flex flex-row space-x-2">
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.price | currency: 'EUR' }}</p>
+                        <button mat-button (click)="removeServiceFromCart(item)">
+                            Remove
+                        </button>
+                    </div>
+                }
             </div>
         </div>
         <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
@@ -71,5 +80,18 @@
                 </div>
             }
         </div>
+        <!-- <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
+            <h2 class="underline">Comments</h2>
+            <div class="flex flex-col space-y-2">
+                @for (comment of property.comments) {
+                    <div class="flex flex-row space-x-2">
+                        <img class="rounded-full w-8" [src]="cdnUrl + '/' + comment.sent_by.profile_picture?.path" alt="">
+                        <div class="flex flex-col">
+                            <p>{{ comment.sent_by.firstname }} {{ comment.sent_by.lastname }}</p>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </div>
+                }
+        </div> -->
     </div>
 }

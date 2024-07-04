@@ -1,14 +1,15 @@
 import {
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
-import { IProperty } from '@ace/shared';
-import { PropertyAvailability } from './property-availability.entity';
+import { Comment, IProperty } from '@ace/shared';
+import { PropertyUnavailability } from './property-unavailability.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
 
 @Entity()
@@ -47,16 +48,21 @@ export class Property implements IProperty {
   })
   images: Upload[];
 
-  @OneToMany(() => PropertyAvailability, availability => availability.property, {
+  @OneToMany(() => PropertyUnavailability, unavailability => unavailability.property, {
     eager: true,
+    cascade: true,
   })
-  availabilities: PropertyAvailability[];
+  propertyUnavailabilities: PropertyUnavailability[];
 
   @OneToMany(() => Booking, booking => booking.property)
   bookings: Booking[];
 
   @Column({nullable: true})
   review?: 0 | 1 | 2 | 3 | 4 | 5;
+
+  // @ManyToMany(() => User, user => user.property_comments)
+  // comments: Comment[];
+
   /** Crée la relation avec ADDRESS_ID pour la suite
    * @JoinTable()
    * address_id: ADDRESS[id]

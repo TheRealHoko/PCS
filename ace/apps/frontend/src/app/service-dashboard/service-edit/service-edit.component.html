@@ -1,0 +1,27 @@
+@if (service) {
+    <p>Editing service #{{ service.id }}</p>
+    <div class="flex flex-row h-full w-max-full">
+        <div class="flex flex-col w-full gap-4 text-center">
+            <form class="flex flex-col " [formGroup]="editServiceForm" (ngSubmit)="onSubmit()">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="Name" formControlName="name" value="{{ service.name }}">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Description" formControlName="description">{{ service.description }}</textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Price</mat-label>
+                    <input matInput type="number" placeholder="Price" formControlName="price" value="{{ service.price }}">
+                </mat-form-field>
+                <button class="m-4" mat-raised-button color="primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+}
+@else {
+    <div>
+        <h2>Service not found</h2>
+    </div>
+}

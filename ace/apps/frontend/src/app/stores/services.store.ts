@@ -3,7 +3,7 @@ import { signalStore, withState, withMethods, patchState, withComputed, withHook
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ServicesService } from '../services/services.service';
 import { computed, inject } from '@angular/core';
-import { debounceTime, distinctUntilChanged, pipe, repeat, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, from, pipe, repeat, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../services/auth.service';
@@ -11,6 +11,11 @@ import { AuthService } from '../services/auth.service';
 interface RxUpdateService {
   id: number;
   updateServiceDTO: UpdateServiceDto;
+}
+
+interface RxFilterServices {
+  from: Date;
+  to: Date;
 }
 
 export interface ServicesState {
@@ -44,6 +49,25 @@ export const ServicesStore = signalStore(
         repeat()
       )
     ),
+    getFilteredServices: rxMethod<RxFilterServices>(
+      pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap((dto) => {
+          return service.getFilteredServices(dto.from.toISOString(), dto.to.toISOString()).pipe(
+            tapResponse({
+              next: (response) => {
+                patchState(store, { services: response });
+              },
+              error: (err) => {
+                console.error(err);
+              },
+            })
+          );
+        }),
+        repeat()
+      )
+    ),
     getOwnServices: rxMethod<void>(
       pipe(
         debounceTime(500),
@@ -53,7 +77,9 @@ export const ServicesStore = signalStore(
           return users.getUser(+userId!).pipe(
             tapResponse({
               next: (response) => {
-                patchState(store, { services: response.services?.filter(service => service.status !== "OFFLINE") });
+                if (response.services) {
+                  patchState(store, { services: response.services.filter(service => service.status !== "OFFLINE") });
+                }
               },
               error: (err) => {
                 console.error(err);
@@ -63,6 +89,11 @@ export const ServicesStore = signalStore(
         })
       )
     ),
+    addedToCart: (service: Service) => {
+      patchState(store, {
+        services: store.services().filter((s) => s.id !== service.id),
+      });
+    },
     deleteService: rxMethod<number>(
       pipe(
         debounceTime(500),
