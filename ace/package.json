@@ -7,6 +7,10 @@
     "backend:dev:docker": "nx serve backend --host=0.0.0.0"
   },
   "private": true,
+  "browser": {
+    "util": false,
+    "stream": false
+  },
   "dependencies": {
     "@angular/animations": "17.3.8",
     "@angular/cdk": "17.3.8",

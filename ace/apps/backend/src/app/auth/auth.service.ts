@@ -33,11 +33,14 @@ export class AuthService {
   ) {}
 
   async login(signInDto: SignInDto): Promise<LoginResponse> {
+    Logger.log(2);
     const { email, password } = signInDto;
+    Logger.log(3);
 
     const user = await this.usersService.findOne({
       where: { email }
     });
+    Logger.log(4);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -46,18 +49,23 @@ export class AuthService {
     if (!user.status) {
       throw new BadRequestException('User not verified');
     }
+    Logger.log(5);
 
+    Logger.log("BCRYPT crash here in container");
     const isAuthorized = await bcrypt.compare(password, user.hash);
+    Logger.log(6);
 
     if (!isAuthorized) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    Logger.log(7);
 
     const payload: AceJwtPayload = {
       sub: user.id.toString(),
       email: user.email,
       roles: user.roles.map((role) => role.name) as RoleEnum[],
     };
+    Logger.log(8);
 
     return { token: await this.jwtService.signAsync(payload) };
   }

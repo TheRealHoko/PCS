@@ -7,12 +7,12 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/frontend",
         "index": "apps/frontend/src/index.html",
-        "browser": "apps/frontend/src/main.ts",
+        "main": "apps/frontend/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/frontend/tsconfig.app.json",
         "inlineStyleLanguage": "sass",
@@ -21,28 +21,17 @@
           "apps/frontend/src/custom-theme.scss",
           "apps/frontend/src/styles.sass"
         ],
-        "scripts": [],
-        "server": "apps/frontend/src/main.server.ts",
-        "prerender": true,
-        "ssr": {
-          "entry": "apps/frontend/server.ts"
-        }
+        "scripts": []
       },
       "configurations": {
         "production": {
-          "budgets": [
+          "outputHashing": "all",
+          "fileReplacements": [
             {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "replace": "apps/frontend/src/environments/environment.ts",
+              "with": "apps/frontend/src/environments/environment.development.docker.ts"
             }
-          ],
-          "outputHashing": "all"
+          ]
         },
         "development": {
           "optimization": false,
