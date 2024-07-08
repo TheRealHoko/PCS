@@ -16,7 +16,7 @@ export class BookingsService {
     return this.http.get<IBooking[]>(`${environment.apiUrl}/api/bookings`);
   }
 
-  getBooking(id: string): Observable<IBooking> {
+  getBooking(id: number): Observable<IBooking> {
     return this.http.get<IBooking>(`${environment.apiUrl}/api/bookings/${id}`);
   }
 

@@ -30,14 +30,26 @@ export class BookingsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} booking`;
+    return this.bookingRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateBookingDto: UpdateBookingDto) {
     return `This action updates a #${id} booking`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.bookingRepository.delete(id);
+  }
+
+  async cancelBooking(id: number) {
+    const booking = await this.bookingRepository.findOne({ where: { id } });
+    
+    if (booking.to < new Date(Date.now())) {
+      throw new Error('Cannot cancel a booking that has already ended');
+    }
+
+    return this.bookingRepository.update(id, { status: 'cancelled'});
   }
 }

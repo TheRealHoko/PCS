@@ -18,7 +18,6 @@ import { UpdateUserDto } from '@ace/shared';
 import { RolesGuard } from '../roles/roles.guard';
 import { Roles } from '../roles/roles.decorator';
 import { PropertiesService } from '../properties/properties.service';
-import { IsNumber, isNumber } from 'class-validator';
 
 @Controller('users')
 @UseGuards(RolesGuard)

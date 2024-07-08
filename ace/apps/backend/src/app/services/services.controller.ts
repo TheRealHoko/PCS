@@ -8,19 +8,25 @@ import {
   Delete,
   Logger,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { CreateServiceDto, RoleEnum } from '@ace/shared';
+import { CreateInterventionDto, CreateReviewDTO, CreateServiceDto, RoleEnum } from '@ace/shared';
 import { UpdateServiceDto } from '@ace/shared';
 import { MailService } from './mail.service';
 import { UsersService } from '../users/users.service';
 import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
+import { UploadsService } from '../uploads/uploads.service';
+import { Roles } from '../roles/roles.decorator';
+import { RolesGuard } from '../roles/roles.guard';
 
 @Controller('services')
 export class ServicesController {
   constructor(
     private readonly servicesService: ServicesService,
     private readonly usersService: UsersService,
+    private readonly uploadsService: UploadsService,
     private readonly mailService: MailService
   ) {}
 
@@ -145,5 +151,40 @@ export class ServicesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.servicesService.remove(+id);
+  }
+
+  @Post(':id/intervention')
+  intervention(@Param('id') id: number, @Body() createInterventionDTO: CreateInterventionDto) {
+    return this.servicesService.intervention(id, createInterventionDTO);
+  }
+
+  @Post(':id/reviews')
+  @Roles(RoleEnum.LESSOR)
+  @UseGuards(RolesGuard)
+  async addReview(@Req() req: any, @Param('id') serviceId: number, @Body() createReviewDTO: CreateReviewDTO) {
+    const user = await this.usersService.findOne(
+      {
+        where: {
+          id: req['user'].sub
+        }
+      }
+    );
+
+    return this.servicesService.addReview(user, serviceId, createReviewDTO);
+  }
+
+  @Get(':id/reviews')
+  @Roles(RoleEnum.LESSOR)
+  @UseGuards(RolesGuard)
+  async getReviews(@Req() req: any, @Param('id') propertyId: number) {
+    const user = await this.usersService.findOne(
+      {
+        where: {
+          id: req['user'].sub
+        }
+      }
+    ); 
+
+    return this.servicesService.getReviews(propertyId, user);
   }
 }

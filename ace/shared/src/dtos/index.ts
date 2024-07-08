@@ -25,3 +25,6 @@ export * from './services.dto';
 export * from './property.dto';
 export * from './upload.dto';
 export * from './property-unavailability.dto';
+export * from './create-intervention.dto';
+export * from './create-inventory-check.dto';
+export * from './create-review.dto';

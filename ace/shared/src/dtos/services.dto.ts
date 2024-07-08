@@ -1,13 +1,14 @@
 import { IService, IServiceAvailability } from "../interfaces";
+import { Review } from "../interfaces/review.interface";
 
 export class Service implements IService {
+  reviews!: Review[];
+  
   id!: number;
   
   name!: string;
   
   description!: string;
-  
-  effectif!: number;
   
   price!: number;
   

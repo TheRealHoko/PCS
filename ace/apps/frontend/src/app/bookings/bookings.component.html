@@ -29,6 +29,7 @@
             </div>
             <div class="flex flex-col rounded-lg border-4 w-1/6 justify-center align-middle text-center">
                 <button mat-button routerLink="/property/{{booking.property.id}}">View property</button>
+                <button mat-button routerLink="{{booking.id}}">View booking</button>
                 <button mat-button (click)="cancelBooking(booking)">
                     Cancel booking
                 </button>

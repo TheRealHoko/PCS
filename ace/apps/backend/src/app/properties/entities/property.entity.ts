@@ -11,6 +11,8 @@ import { User } from '../../users/entities/user.entity';
 import { Comment, IProperty } from '@ace/shared';
 import { PropertyUnavailability } from './property-unavailability.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
+import { InventoryCheck } from './inventory-check.entity';
+import { Review } from '../../services/entities/review.entity';
 
 @Entity()
 export class Property implements IProperty {
@@ -57,8 +59,17 @@ export class Property implements IProperty {
   @OneToMany(() => Booking, booking => booking.property)
   bookings: Booking[];
 
-  @Column({nullable: true})
-  review?: 0 | 1 | 2 | 3 | 4 | 5;
+  @OneToMany(() => Review, review => review.property, {
+    eager: true,
+    cascade: true,
+  })
+  reviews: Review[];
+
+  @OneToMany(() => InventoryCheck, inventoryCheck => inventoryCheck.property, {
+    eager: true,
+    cascade: true,
+  })
+  inventoryChecks: InventoryCheck[];
 
   // @ManyToMany(() => User, user => user.property_comments)
   // comments: Comment[];

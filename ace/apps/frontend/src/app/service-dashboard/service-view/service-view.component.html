@@ -5,8 +5,15 @@
             <p>Description: {{ service.description }}</p>
             <p>Service type: {{ service.service_type }} </p>
             <p>Status: {{ service.status }}</p>
-            <p>Headcount: {{ service.effectif }}</p>
             <p>Price: {{ service.price | currency: 'EUR' }}</p>
+            <p>Reviews: </p>
+            @if (service.reviews.length == 0) {
+                <p>No reviews yet</p>
+            }
+            @for (review of service.reviews; track $index) {
+                <p>{{ review.rating }}/5</p>
+                <p>{{ review.comment }}</p>
+            }
         </div>
         <div class="flex flex-col border-4 w-1/2">
             <full-calendar [options]="calendarOptions()"></full-calendar>

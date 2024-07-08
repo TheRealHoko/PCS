@@ -99,7 +99,7 @@ export class PropertyComponent implements OnInit {
       if (from && to) {
         this.selectedDaysCount.set(this.calculateDaysCount(from, to));
         console.log(from.toISOString(), to.toISOString());
-        this.servicesStore.getFilteredServices({ from, to });
+        // this.servicesStore.getFilteredServices({ from, to });
       } else {
         this.selectedDaysCount.set(1);
       }

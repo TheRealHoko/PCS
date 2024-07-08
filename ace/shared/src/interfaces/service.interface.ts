@@ -1,3 +1,4 @@
+import { Review } from "./review.interface";
 import { IServiceAvailability } from "./service-availability.interface";
 
 export interface IService {
@@ -7,8 +8,6 @@ export interface IService {
   
     description: string;
   
-    effectif: number;
-  
     price: number;
   
     service_type: string;
@@ -16,4 +15,6 @@ export interface IService {
     status: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
     availabilities: IServiceAvailability[];
+
+    reviews: Review[];
   }

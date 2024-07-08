@@ -1,4 +1,4 @@
-import { Collection, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Collection, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "../../users/entities/user.entity";
 import { Comment } from "./comment.entity";
 import { Type, Exclude } from "class-transformer";
@@ -7,6 +7,12 @@ import { Type, Exclude } from "class-transformer";
 export class Ticket {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
 
     @Column()
     topic: string;

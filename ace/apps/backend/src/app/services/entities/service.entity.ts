@@ -1,23 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { ServiceAvailability } from './service-availability.entity';
+import { Intervention } from './intervention.entity';
+import { Review } from './review.entity';
 
 @Entity()
 export class Service {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
   @Column({ nullable: false })
   name: string;
 
   @Column({ nullable: false })
   description: string;
-
-  @Column({ default: true })
-  available: Boolean;
-
-  @Column({ nullable: false })
-  effectif: number;
 
   @Column({ nullable: false })
   price: number;
@@ -39,4 +41,16 @@ export class Service {
     cascade: true
   })
   availabilities: ServiceAvailability[];
+
+  @OneToMany(() => Intervention, intervention => intervention.service, {
+    eager: true,
+    cascade: true
+  })
+  interventions: Intervention[];
+
+  @OneToMany(() => Review, review => review.service, {
+    eager: true,
+    cascade: true
+  })
+  reviews: Review[];
 }

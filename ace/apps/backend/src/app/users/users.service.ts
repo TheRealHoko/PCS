@@ -12,6 +12,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles/entities/role.entity';
 import { Address } from '../address/entities/address.entity';
+import { Review } from '../services/entities/review.entity';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +24,6 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
     @InjectRepository(Role)
     private readonly rolesRepository: Repository<Role>,
-    private readonly loggerService: Logger
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -41,7 +41,7 @@ export class UsersService {
     user.addresses = [address];
 
     if (createUserDto.roles) {
-      this.loggerService.log(createUserDto);
+      this.logger.log(createUserDto);
       const roles = await Promise.all(
         createUserDto.roles.map(async (role_name) => {
           return this.rolesRepository.findOne({ where: { name: role_name } });
@@ -109,7 +109,7 @@ export class UsersService {
         );
 
         user.roles = roles.filter((role) => role !== undefined);
-        this.loggerService.log(
+        this.logger.log(
           `Updating user ${user.id} with ${JSON.stringify(updateUserDto)}`
         );
       }

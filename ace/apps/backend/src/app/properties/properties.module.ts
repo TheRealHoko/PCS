@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Property } from './entities/property.entity';
 import { UsersModule } from '../users/users.module';
 import { PropertyUnavailability } from './entities/property-unavailability.entity';
+import { InventoryCheck } from './entities/inventory-check.entity';
+import { Review } from '../services/entities/review.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Property, PropertyUnavailability]),
+    TypeOrmModule.forFeature([Property, PropertyUnavailability, InventoryCheck, Review]),
     forwardRef(() => UsersModule)
   ],
   controllers: [PropertiesController],

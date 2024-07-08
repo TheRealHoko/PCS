@@ -26,6 +26,7 @@ import { TicketsComponent } from './support/tickets/tickets.component';
 import { TicketViewComponent } from './support/tickets/ticket-view/ticket-view.component';
 import { PropertyEditComponent } from './property/property-edit/property-edit.component';
 import { ServiceEditComponent } from './service-dashboard/service-edit/service-edit.component';
+import { BookingViewComponent } from './bookings/booking-view/booking-view.component';
 
 export const appRoutes: Route[] = [
   { path: '', component: HomeComponent, title: 'Home'},
@@ -103,7 +104,20 @@ export const appRoutes: Route[] = [
       },
     ]
   },
-  { path: 'bookings', component: BookingsComponent, canActivate: [authGuard] },
+  {
+    path: 'bookings',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: ':id',
+        component: BookingViewComponent
+      },
+      {
+        path: '',
+        component: BookingsComponent,
+      },
+    ]
+  },
   { path: 'payment', component: PaymentComponent, canActivate: [authGuard], children: [{ path: 'success', component: PaymentComponent }]},
   {
     path: 'support',

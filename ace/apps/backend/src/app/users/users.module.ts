@@ -9,7 +9,8 @@ import { PropertiesModule } from '../properties/properties.module';
 
 @Module({
   imports: [
-    ConfigModule, TypeOrmModule.forFeature([User, Role]),
+    ConfigModule,
+    TypeOrmModule.forFeature([User, Role]),
     forwardRef(() => PropertiesModule),
   ],
   controllers: [UsersController],

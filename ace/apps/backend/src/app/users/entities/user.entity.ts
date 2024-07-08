@@ -18,6 +18,7 @@ import { Booking } from '../../bookings/entities/booking.entity';
 import { Ticket } from '../../tickets/entities/ticket.entity';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { Comment } from '../../tickets/entities/comment.entity';
+import { Review } from '../../services/entities/review.entity';
 
 @Entity()
 export class User implements IUser {
@@ -83,6 +84,6 @@ export class User implements IUser {
   @OneToMany(() => Comment, comment => comment.sent_by)
   comments: Comment[]
 
-  // @OneToMany(() => Comment, comment => comment.sent_by)
-  // property_comments: Comment[]
+  @OneToMany(() => Review, review => review.user)
+  reviews: Review[]
 }
