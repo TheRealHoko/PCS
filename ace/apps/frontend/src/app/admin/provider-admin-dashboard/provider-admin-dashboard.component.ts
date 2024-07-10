@@ -9,6 +9,7 @@ import { ServicesStore } from '../../stores/services.store';
 import { DialogFormComponent } from '../../components/dialogs/dialog-form/dialog-form.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'ace-provider',
@@ -20,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatDialogModule,
     MatIconModule,
     MatTooltipModule,
+    RouterModule
   ],
   templateUrl: './provider-admin-dashboard.component.html',
   styleUrl: './provider-admin-dashboard.component.css',
@@ -60,14 +62,6 @@ export class ProviderAdminDashboardComponent implements OnInit {
     this.alertService.info(
       `Service ${row.name} (${row.id}) was refused, an email was sent to the user`
     );
-  }
-
-  editRow(row: { id: number }) {
-    this.dialog.open(DialogFormComponent, {
-      data: { name: 'hello' },
-    });
-
-    console.log(JSON.stringify(row.id));
   }
 
   deleteRow(row: { name: string; id: number }) {

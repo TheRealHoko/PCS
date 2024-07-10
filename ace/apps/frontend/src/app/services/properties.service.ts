@@ -28,4 +28,16 @@ export class PropertiesService {
   updateProperty(id: number, UpdatePropertyDto: UpdatePropertyDto): Observable<Property> {
     return this.http.patch<Property>(`${environment.apiUrl}/api/properties/${id}`, UpdatePropertyDto);
   }
+
+  deleteProperty(id: number): Observable<Property> {
+    return this.http.delete<Property>(`${environment.apiUrl}/api/properties/${id}`);
+  }
+
+  validateProperty(id: number): Observable<Property> {
+    return this.http.patch<Property>(`${environment.apiUrl}/api/properties/validate/${id}`, {});
+  }
+
+  invalidateProperty(id: number): Observable<Property> {
+    return this.http.patch<Property>(`${environment.apiUrl}/api/properties/validate/${id}`, {});
+  }
 }

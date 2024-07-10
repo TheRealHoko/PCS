@@ -23,7 +23,7 @@
       <mat-icon>thumb_down</mat-icon>
     </button>
     }
-    <button mat-flat-button (click)="editRow(row)" matTooltip="Edit">
+    <button mat-flat-button [routerLink]="[row.id, 'edit']" matTooltip="Edit">
       <mat-icon>edit</mat-icon>
     </button>
     <button mat-flat-button (click)="deleteRow(row)" matTooltip="Delete">

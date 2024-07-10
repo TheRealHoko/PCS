@@ -1,1 +1,33 @@
-<p>property-admin-dashboard works!</p>
+<ace-table
+  [datasource]="this.propertiesStore.properties()"
+  [columns]="columns"
+  [actionTemplate]="actionTemplate"
+>
+  @if (propertiesStore.properties().length == 0) {
+    <p emptyMessageDisplay>There are no services at the moment</p>
+  }
+  <ng-template #actionTemplate let-row>
+    @if (row.status === "WAITING") {
+    <button
+      mat-flat-button
+      (click)="validateProperty(row)"
+      matTooltip="Validate"
+    >
+      <mat-icon>thumb_up</mat-icon>
+    </button>
+    <button
+      mat-flat-button
+      (click)="invalidateProperty(row)"
+      matTooltip="Refuse"
+    >
+      <mat-icon>thumb_down</mat-icon>
+    </button>
+    }
+    <button mat-flat-button [routerLink]="[row.id, 'edit']" matTooltip="Edit">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-flat-button (click)="deleteRow(row)" matTooltip="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-template>
+</ace-table>

@@ -18,6 +18,7 @@ import { UpdatePropertyDto } from '@ace/shared';
 import { UsersService } from '../users/users.service';
 import { Roles } from '../roles/roles.decorator';
 import { RolesGuard } from '../roles/roles.guard';
+import { MailService } from '../services/mail.service';
 
 @Controller('properties')
 export class PropertiesController {
@@ -26,7 +27,8 @@ export class PropertiesController {
 
   constructor(
     private readonly propertiesService: PropertiesService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly mailService: MailService,
   ) {}
 
   @Post()
@@ -106,5 +108,47 @@ export class PropertiesController {
     );
 
     return this.propertiesService.getReviews(propertyId, user);
+  }
+
+  @Patch('validate/:id')
+  async validate(@Param('id') id: string) {
+    const updatedProperty = await this.propertiesService.update(+id, {
+      status: 'ONLINE',
+    });
+
+    const property = await this.propertiesService.findOne({ id: updatedProperty.id });
+
+    console.log(updatedProperty);
+
+    await this.mailService.sendMail(
+      property.lessor.email,
+      `Property creation request for #${property.id}`,
+      `
+      <h1>Your Property has been validated ${property.lessor.firstname} !</h1>
+      <p>After a thourough review your Property creation request has been validated by an admin</p>
+    `
+    );
+
+    return property;
+  }
+
+  @Patch('invalidate/:id')
+  async invalidate(@Param('id') id: string) {
+    const updatedProperty = await this.propertiesService.update(+id, {
+      status: 'OFFLINE',
+    });
+
+    const property = await this.propertiesService.findOne({ id: updatedProperty.id });
+
+    await this.mailService.sendMail(
+      property.lessor.email,
+      `Property creation request for #${updatedProperty.id}`,
+      `
+      <h1>Your Property has been refused ${property.lessor.firstname} :(</h1>
+      <p>After a thourough review your Property creation request has been invalidated by an admin</p>
+    `
+    );
+
+    return updatedProperty;
   }
 }

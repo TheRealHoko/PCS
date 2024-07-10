@@ -49,6 +49,9 @@ export class Property {
   })
   images: Upload[];
 
+  @Column({ default: 'WAITING' })
+  status: 'OFFLINE' | 'WAITING' | 'ONLINE';
+
   @OneToMany(() => PropertyUnavailability, unavailability => unavailability.property, {
     eager: true,
     cascade: true,

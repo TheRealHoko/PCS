@@ -28,4 +28,6 @@ export class CreatePropertyDto {
 
   @IsNotEmpty()
   lessorId!: number;
+
+  status?: 'OFFLINE' | 'WAITING' | 'ONLINE';
 }

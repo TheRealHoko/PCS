@@ -29,5 +29,7 @@ export class Property {
 
   propertyUnavailabilities!: PropertyUnavailability[];
 
+  status!: "OFFLINE" | "WAITING" | "ONLINE";
+
   // comments!: Comment[];
 }
