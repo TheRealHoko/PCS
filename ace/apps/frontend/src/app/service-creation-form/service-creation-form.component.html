@@ -1,0 +1,109 @@
+<section class="flex justify-center items-start mt-16">
+  <div class="bg-primary rounded-md w-1/2 p-5 max-w-md">
+    <h1 class="text-secondary text-center text-2xl mb-5">Créer un service</h1>
+    <form
+      class="flex flex-col justify-center"
+      [formGroup]="serviceForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Nom du service</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          name="name"
+          placeholder="Entrez le nom du service"
+          type="text"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          name="description"
+          placeholder="Décrivez le service"
+          required
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Service type</mat-label>
+        <mat-select 
+        formControlName="service_type"
+        placeholder=""
+        required
+        >
+          @for (type of serviceTypes; track $index) {
+            <mat-option [value]="type">{{ type | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Service category</mat-label>
+        <mat-select 
+        formControlName="service_category"
+        placeholder=""
+        required
+        >
+          @for (type of serviceCategories; track $index) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Pricing type</mat-label>
+        <mat-select 
+        formControlName="pricing_type"
+        placeholder=""
+        [(value)]="selectedPricingType"
+        required
+        >
+          @for (type of pricingTypes; track $index) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        @if (selectedPricingType() && selectedPricingType() !== "FIXED") {
+          <mat-label>Initial fee (€)</mat-label>
+        }
+        @else {
+          <mat-label>Price (€ TTC)</mat-label>
+        }
+        <input
+          matInput
+          formControlName="base_price"
+          name="base_price"
+          placeholder=""
+          type="number"
+          min="1"
+          required
+        />
+      </mat-form-field>
+      @if (selectedPricingType() && selectedPricingType() !== "FIXED") {
+        <mat-form-field appearance="fill">
+          <mat-label>Price {{ selectedPricingType() }} (€ TTC)</mat-label>
+          <input
+            matInput
+            formControlName="dynamic_price"
+            name="dynamic_price"
+            placeholder=""
+            type="number"
+            min="1"
+            required
+          />
+        </mat-form-field>
+    }
+
+      <button
+        class="bg-tertiary"
+        mat-raised-button
+        [disabled]="serviceForm.invalid"
+        type="submit"
+      >
+        Créer le service
+      </button>
+    </form>
+  </div>
+</section>

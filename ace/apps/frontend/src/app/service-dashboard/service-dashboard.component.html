@@ -1,11 +1,11 @@
 <div class="flex flex-row">
     <h1>My Services</h1>
-    <button class="ml-auto" mat-button routerLink="/serviceCreation">Add service</button>
+    <button class="ml-auto" mat-button routerLink="/service-creation">Add service</button>
 </div>
 <ace-table [datasource]="servicesStore.services()" [columns]="columns" [actionTemplate]="actionTemplate">
     <ng-template #actionTemplate let-row>
         <button mat-button [routerLink]="[row.id, 'edit']">Edit</button>
-        <button mat-button>Delete</button>
+        <button mat-button (click)="servicesStore.deleteService(row.id)" >Delete</button>
         <button mat-button [routerLink]="[row.id]">View</button>
     </ng-template>
 </ace-table>

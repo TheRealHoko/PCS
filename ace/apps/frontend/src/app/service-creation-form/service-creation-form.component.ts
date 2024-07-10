@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -15,6 +15,7 @@ import { AlertService } from '../services/alert.service';
 import { Router } from '@angular/router';
 import { CreateServiceDto } from '@ace/shared';
 import { AuthService } from '../services/auth.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'ace-service',
@@ -26,12 +27,34 @@ import { AuthService } from '../services/auth.service';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatCheckboxModule,
+    MatSelectModule
   ],
-  templateUrl: './provider-form.component.html',
-  styleUrls: ['./provider-form.component.css'],
+  templateUrl: './service-creation-form.component.html',
+  styleUrls: ['./service-creation-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServiceCreationFormComponent {
   serviceForm: FormGroup;
+  serviceTypes = ['ESSENTIAL', 'OPTIONAL'];
+  serviceCategories = [
+    'ESSENTIAL_PROPERTY_MANAGEMENT',
+    'ESSENTIAL_MAINTENANCE_REPAIR',
+    'MARKETING_COMMUNICATION',
+    'FINANCIAL_OPTIMIZATION',
+    'TRANSPORT',
+    'CONCIERGE',
+    'OTHER',
+  ];
+  pricingTypes = [
+    'FIXED',
+    'PER_KM',
+    'PER_HOUR',
+    'PER_DAY',
+    'PER_WEEK',
+    'PER_MONTH',
+    'PER_YEAR',
+  ];
+  selectedPricingType = signal('');
 
   constructor(
     private readonly fb: FormBuilder,
@@ -44,11 +67,15 @@ export class ServiceCreationFormComponent {
       name: ['', Validators.required],
       description: ['', Validators.required],
       service_type: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
-      effectif: ['', [Validators.required, Validators.min(1)]],
+      base_price: ['', [Validators.required, Validators.min(0)]],
+      pricing_type: ['', Validators.required],
+      service_category: ['', Validators.required],
+      dynamic_price: [null],
       available: [true],
-      validated: [false],
+      status: ['WAITING'],
     });
+
+    effect(() => console.log(this.selectedPricingType()))
   }
 
   onSubmit() {

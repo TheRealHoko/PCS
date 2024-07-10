@@ -15,30 +15,39 @@ export class Service {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ nullable: false })
+  @Column()
   name: string;
 
-  @Column({ nullable: false })
+  @Column()
   description: string;
 
-  @Column({ nullable: false })
-  price: number;
+  @Column()
+  base_price: number;
 
-  @Column({ nullable: false })
-  service_type: string;
+  @Column({nullable: true})
+  dynamic_price: number;
+
+  @Column()
+  service_type: "ESSENTIAL" | "OPTIONAL";
+
+  @Column()
+  service_category: "ESSENTIAL_PROPERTY_MANAGEMENT" | "ESSENTIAL_MAINTENANCE_REPAIR" | "MARKETING_COMMUNICATION" | "FINANCIAL_OPTIMIZATION" | "TRANSPORT" | "CONCIERGE" | "OTHER";
+
+  @Column()
+  pricing_type: "FIXED" | "PER_KM" | "PER_HOUR" | "PER_DAY" | "PER_WEEK" | "PER_MONTH" | "PER_YEAR";
 
   @Column({ default: 'WAITING' })
   status: 'OFFLINE' | 'WAITING' | 'ONLINE';
 
   // !! removed eager: true
   @ManyToOne(() => User, (user) => user.services, {
-    eager: true
+    eager: true,
   })
   provider: User;
 
   @OneToMany(() => ServiceAvailability, availability => availability.service, {
     eager: true,
-    cascade: true
+    cascade: true,
   })
   availabilities: ServiceAvailability[];
 
@@ -50,7 +59,7 @@ export class Service {
 
   @OneToMany(() => Review, review => review.service, {
     eager: true,
-    cascade: true
+    cascade: true,
   })
   reviews: Review[];
 }

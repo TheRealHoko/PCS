@@ -104,6 +104,7 @@ export class UsersController {
 
     return this.usersService.findOne({
       where: { id: id },
+      relations: ['services'],
     });
   }
 

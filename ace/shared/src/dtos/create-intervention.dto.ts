@@ -1,11 +1,9 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateInterventionDto {
-    @IsNotEmpty()
-    @IsString()
-    description!: string;
+    description?: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    price!: number;
+    price?: number;
+
+    status!: "REQUESTED" | "ONGOING" | "COMPLETED" | "CANCELLED";
 }

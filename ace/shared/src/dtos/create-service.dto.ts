@@ -8,13 +8,18 @@ export class CreateServiceDto {
   description!: string;
 
   @IsNotEmpty()
-  effectif!: number;
+  base_price!: number;
+
+  dynamic_price?: number;
 
   @IsNotEmpty()
-  price!: number;
+  service_type!: "ESSENTIAL" | "OPTIONAL";
 
   @IsNotEmpty()
-  service_type!: string;
+  service_category!: "ESSENTIAL_PROPERTY_MANAGEMENT" | "ESSENTIAL_MAINTENANCE_REPAIR" | "MARKETING_COMMUNICATION" | "FINANCIAL_OPTIMIZATION" | "TRANSPORT" | "CONCIERGE" | "OTHER";
+  
+  @IsNotEmpty()
+  pricing_type!: "FIXED" | "PER_KM" | "PER_HOUR" | "PER_DAY" | "PER_WEEK" | "PER_MONTH" | "PER_YEAR";
 
   status?: 'OFFLINE' | 'WAITING' | 'ONLINE';
 

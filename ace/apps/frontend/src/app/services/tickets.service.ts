@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { environment } from "../../environments/environment";
-import { Comment, Ticket } from "@ace/shared";
+import { Ticket } from "shared/src/dtos/ticket.dto";
+import { Comment } from "@ace/shared";
 
 @Injectable({
     providedIn: 'root'

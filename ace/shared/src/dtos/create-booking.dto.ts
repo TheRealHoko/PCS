@@ -1,4 +1,5 @@
 import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
+import { Intervention } from "./intervention.dto";
 
 export class CreateBookingDto {
     @IsDateString()
@@ -16,4 +17,12 @@ export class CreateBookingDto {
     @IsNotEmpty()
     @IsNumber()
     propertyId!: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    price!: number;
+
+    status?: 'pending' | 'confirmed' | 'cancelled' | 'checked-in' | 'checked-out';
+
+    requestedServicesId?: number[];
 }

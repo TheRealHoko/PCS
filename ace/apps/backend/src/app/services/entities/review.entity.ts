@@ -20,6 +20,8 @@ export class Review {
     @ManyToOne(() => Property, property => property.reviews)
     property: Property;
 
-    @ManyToOne(() => Service, service => service.reviews)
+    @ManyToOne(() => Service, service => service.reviews, {
+        onDelete: 'CASCADE'
+    })
     service: Service;
 }

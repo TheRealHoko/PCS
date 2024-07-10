@@ -1,13 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StripeElementsDirective, StripePaymentElementComponent, StripeService, injectStripe } from 'ngx-stripe';
-import { StripeElementsOptions } from '@stripe/stripe-js';
-import { ActivatedRoute, ActivatedRouteSnapshot, Params } from '@angular/router';
+import { StripeElementsDirective, StripePaymentElementComponent, StripeService } from 'ngx-stripe';
+import { ActivatedRoute, Params } from '@angular/router';
 import { PaymentService } from '../services/payment.service';
 import { AuthStore } from '../stores/auth.store';
 import { UsersService } from '../services/users.service';
-import { IUser, User } from '@ace/shared';
-import { Observable, map } from 'rxjs';
+import { User } from '@ace/shared';
+import { map } from 'rxjs';
 import { BookingsService } from '../services/bookings.service';
 
 @Component({
@@ -25,13 +24,12 @@ export class PaymentComponent implements OnInit {
   params: Params = [];
   auth = inject(AuthStore);
   user: User | undefined = undefined;
+  bookingsService = inject(BookingsService);
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly paymentService: PaymentService,
     private readonly usersService: UsersService,
-    private readonly stripeService: StripeService,
-    private readonly bookingsService: BookingsService
   ) { 
     this.usersService.getUser(+this.auth.token()?.sub!)
       .pipe(
@@ -45,8 +43,11 @@ export class PaymentComponent implements OnInit {
       console.log(params);
       if (params['sessionId'] && params['userId']) {
         this.paymentService.success({ sessionId: params['sessionId'], userId: params['userId'] })
-          .subscribe(session => {
-            console.log(session);
+          .subscribe({
+            next: data => {
+              console.log(data);
+              this.bookingsService.updateBooking(+data.session.metadata.bookingId, { status: 'confirmed' }).subscribe(console.log);
+            }
           });
       }
     });

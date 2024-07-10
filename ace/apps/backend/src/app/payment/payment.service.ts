@@ -1,8 +1,9 @@
-import { Property, User } from '@ace/shared';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Stripe } from "stripe";
 import { Service } from '../services/entities/service.entity';
+import { Property } from '../properties/entities/property.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class PaymentService {
@@ -13,7 +14,7 @@ export class PaymentService {
         this.stripe = new Stripe(this.configService.get<string>('STRIPE_KEY'));
     }
 
-    async checkoutProperty(property: Property, amount: number, booker: User, services: Service[]) {
+    async checkoutProperty(property: Property, amount: number, booker: User, services: Service[], cancelUrl: string, bookingId: number) {
         console.log(property);
         this.logger.debug("SERVICES" + services);
         console.log("Amount: " + amount);
@@ -25,9 +26,9 @@ export class PaymentService {
                         name: service.name,
                         description: service.description,
                     },
-                    unit_amount: service.price * 100,
+                    unit_amount: service.base_price * 100,
                 },
-                quantity: 1
+                quantity: 1,
             }
         });
 
@@ -50,7 +51,10 @@ export class PaymentService {
             ],
             mode: 'payment',
             success_url: `${this.configService.get('FRONT_URL')}/payment/success?sessionId={CHECKOUT_SESSION_ID}&userId=${booker.id}`,
-            cancel_url: `${this.configService.get('FRONT_URL')}/payment/cancel?sessionId={CHECKOUT_SESSION_ID}&userId=${booker.id}`,
+            cancel_url: cancelUrl,
+            metadata: {
+                bookingId: bookingId
+            }
         });
 
         return { id: session.id };

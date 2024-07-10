@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BookingsService } from '../services/bookings.service';
-import { IBooking } from '@ace/shared';
+import { Booking } from '@ace/shared';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './bookings.component.css',
 })
 export class BookingsComponent implements OnInit {
-  bookings: IBooking[] = [];
+  bookings: Booking[] = [];
 
   constructor(
     private readonly bookingsService: BookingsService,
@@ -29,7 +29,7 @@ export class BookingsComponent implements OnInit {
     });
   }
 
-  cancelBooking(booking: IBooking): void {
+  cancelBooking(booking: Booking): void {
     this.bookingsService.deleteBooking(booking.id).subscribe(() => {
       this.bookings = this.bookings.filter(b => b.id !== booking.id);
     });

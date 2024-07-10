@@ -1,14 +1,14 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UploadComponent } from '../components/upload/upload.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
-import { CreatePropertyUnavailabilityDto, CreatePropertyDto, IProperty } from '@ace/shared';
+import { CreatePropertyDto, Property } from '@ace/shared';
 import { UploadService } from '../services/upload.service';
 import { FileUpload } from '../components/upload/upload.directive';
 import { MatSelectModule } from '@angular/material/select';
@@ -84,7 +84,7 @@ export class PropertyCreationComponent {
       }
       
       this.propertiesService.createProperty(createPropertyDTO).subscribe({
-        next: (property: IProperty) => {
+        next: (property: Property) => {
           const form = new FormData();
           this.files.map(file => form.append('files', file.file));
           form.append('propertyId', property.id.toString());

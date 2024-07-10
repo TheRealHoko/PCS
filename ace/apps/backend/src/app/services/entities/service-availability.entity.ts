@@ -13,6 +13,8 @@ export class ServiceAvailability {
     @Column()
     to: Date;
 
-    @ManyToOne(() => Service, service => service.availabilities)
+    @ManyToOne(() => Service, service => service.availabilities, {
+        onDelete: 'CASCADE'
+    })
     service: Service;
 }

@@ -65,23 +65,6 @@ export class ServicesService {
     this.servicesRepository.delete(id);
   }
 
-  async intervention(id: number, createInterventionDTO: CreateInterventionDto) {
-    const service = await this.servicesRepository.findOne(
-      {
-        where: { id },
-        relations: ['interventions']
-      }
-    );
-
-    if (!service) {
-      throw new NotFoundException(`Service #${id} not found`);
-    }
-
-    this.logger.log(`Creating intervention for service #${id}`);
-    service.interventions.push(this.interventionsRepository.create(createInterventionDTO));
-    return this.servicesRepository.save(service);
-  }
-
   async addReview(user: User , serviceId: number, createReviewDTO: CreateReviewDTO) {
     const service = await this.servicesRepository.findOne({
       where: { id: serviceId }

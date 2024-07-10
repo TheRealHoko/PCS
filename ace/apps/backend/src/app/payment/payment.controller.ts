@@ -6,6 +6,7 @@ import { Request } from 'express';
 import { RolesGuard } from '../roles/roles.guard';
 import { ServicesService } from '../services/services.service';
 import { In } from 'typeorm';
+import { CheckoutDTO } from '@ace/shared';
 
 @Controller('payment')
 export class PaymentController {
@@ -18,7 +19,7 @@ export class PaymentController {
 
     @Post('checkout')
     @UseGuards(RolesGuard)
-    async checkoutProperty(@Req() req: any, @Body() data: { propertyId: number, amount: number, serviceIds: number[] }) {
+    async checkoutProperty(@Req() req: any, @Body() data: CheckoutDTO) {
         try {
             const user = await this.usersService.findOne({where: {id: req['user'].sub}});
             const property = await this.propertiesService.findOne({id: data.propertyId});
@@ -27,7 +28,7 @@ export class PaymentController {
                     id: In(data.serviceIds)
                 }
             });
-            const session = await this.stripeService.checkoutProperty(property, data.amount, user, services);
+            const session = await this.stripeService.checkoutProperty(property, data.amount, user, services, data.cancelUrl, data.bookingId);
             return session;
         } catch (error) {
             throw new BadRequestException(error.message);

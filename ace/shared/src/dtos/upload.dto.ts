@@ -1,9 +1,9 @@
-import { IProperty, IUpload } from "../interfaces";
+import { Property } from "./property.dto";
 
-export class Upload implements IUpload {
+export class Upload {
     id!: number;
 
     path!: string;
 
-    property!: IProperty;
+    property!: Property;
 }

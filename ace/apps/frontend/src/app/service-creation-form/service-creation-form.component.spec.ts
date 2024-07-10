@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProviderFormComponent } from './provider-form.component';
+import { ProviderFormComponent } from './service-creation-form.component';
 
 describe('ProviderComponent', () => {
   let component: ProviderFormComponent;

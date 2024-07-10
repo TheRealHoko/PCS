@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookingDto } from '@ace/shared';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateBookingDto, UpdateInterventionDto } from '@ace/shared';
 import { UpdateBookingDto } from '@ace/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from './entities/booking.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Property } from '../properties/entities/property.entity';
+import { Intervention } from '../services/entities/intervention.entity';
+import { Service } from '../services/entities/service.entity';
 
 @Injectable()
 export class BookingsService {
@@ -13,12 +15,26 @@ export class BookingsService {
   constructor(
     @InjectRepository(Booking)
     private bookingRepository: Repository<Booking>,
+    @InjectRepository(Intervention)
+    private interventionRepository: Repository<Intervention>
   ) { }
 
-  create(createBookingDto: CreateBookingDto, traveller: User, property: Property): Promise<Booking> {
+  async create(createBookingDto: CreateBookingDto, traveller: User, property: Property, requestedServices: Service[]): Promise<Booking> {
     const booking = this.bookingRepository.create(createBookingDto);
     booking.traveller = traveller;
     booking.property = property;
+    console.log("services", requestedServices);
+    const interventions = requestedServices.map((service) => {
+      const intervention = this.interventionRepository.create();
+      intervention.property = property;
+      intervention.service = service;
+      return intervention;
+    });
+
+    console.log('interventions', interventions);
+    booking.interventions = await this.interventionRepository.save(interventions);
+    console.log('booking interventions', booking);
+
     return this.bookingRepository.save(booking);
   }
 
@@ -35,8 +51,12 @@ export class BookingsService {
     });
   }
 
-  update(id: number, updateBookingDto: UpdateBookingDto) {
-    return `This action updates a #${id} booking`;
+  async update(id: number, updateBookingDto: UpdateBookingDto) {
+    const booking = await this.bookingRepository.preload({
+      id: id,
+      ...updateBookingDto,
+    });
+    return this.bookingRepository.save(booking);
   }
 
   async remove(id: number) {
@@ -51,5 +71,14 @@ export class BookingsService {
     }
 
     return this.bookingRepository.update(id, { status: 'cancelled'});
+  }
+
+  async updateIntervention(id: number, updateInterventionDto: UpdateInterventionDto) {
+    const intervention = await this.interventionRepository.preload({
+      id,
+      ...updateInterventionDto
+    });
+
+    return this.interventionRepository.save(intervention);
   }
 }

@@ -1,6 +1,4 @@
-import { IRole } from "../interfaces";
-
-export class Role implements IRole {
+export class Role {
   id!: number;
 
   name!: string;

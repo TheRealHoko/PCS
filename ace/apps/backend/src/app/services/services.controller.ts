@@ -17,7 +17,6 @@ import { UpdateServiceDto } from '@ace/shared';
 import { MailService } from './mail.service';
 import { UsersService } from '../users/users.service';
 import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
-import { UploadsService } from '../uploads/uploads.service';
 import { Roles } from '../roles/roles.decorator';
 import { RolesGuard } from '../roles/roles.guard';
 
@@ -26,7 +25,6 @@ export class ServicesController {
   constructor(
     private readonly servicesService: ServicesService,
     private readonly usersService: UsersService,
-    private readonly uploadsService: UploadsService,
     private readonly mailService: MailService
   ) {}
 
@@ -76,37 +74,44 @@ export class ServicesController {
       status: 'ONLINE',
     });
 
+    const service = await this.servicesService.findOne({
+      where: {
+        id: updatedService.id
+      }
+    });
+
+    console.log(updatedService);
     const provider = await this.usersService.findOne({
       where: {
-        id: updatedService.provider.id 
+        id: service.provider.id
       }
     });
 
     if (!provider.roles.map(role => role.name).includes(RoleEnum.PROVIDER)) {
-      this.usersService.update(updatedService.provider.id, {
+      this.usersService.update(service.provider.id, {
         roles: [
-          ...updatedService.provider.roles.map((role) => role.name),
+          ...service.provider.roles.map((role) => role.name),
           RoleEnum.PROVIDER,
         ],
       });
       this.logger.log(
-        `Added PROVIDER role to user #${updatedService.provider.id}`
+        `Added PROVIDER role to user #${service.provider.id}`
       );
     }
 
     await this.mailService.sendMail(
-      updatedService.provider.email,
-      `Service creation request for #${updatedService.id}`,
+      service.provider.email,
+      `Service creation request for #${service.id}`,
       `
-      <h1>Your service has been validated ${updatedService.provider.firstname} !</h1>
+      <h1>Your service has been validated ${service.provider.firstname} !</h1>
       <p>After a thourough review your service creation request has been validated by an admin</p>
     `
     );
 
     this.logger.log(
-      `Service validation email has been sent to ${updatedService.provider.email}`
+      `Service validation email has been sent to ${service.provider.email}`
     );
-    return updatedService;
+    return service;
   }
 
   @Patch('invalidate/:id')
@@ -151,11 +156,6 @@ export class ServicesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.servicesService.remove(+id);
-  }
-
-  @Post(':id/intervention')
-  intervention(@Param('id') id: number, @Body() createInterventionDTO: CreateInterventionDto) {
-    return this.servicesService.intervention(id, createInterventionDTO);
   }
 
   @Post(':id/reviews')

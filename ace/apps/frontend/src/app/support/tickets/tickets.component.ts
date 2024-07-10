@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'apps/frontend/src/environments/environment';
 import { MatTableModule } from '@angular/material/table';
-import { Ticket } from '@ace/shared';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { TicketsService } from '../../services/tickets.service';
+import { Ticket } from 'shared/src/dtos/ticket.dto';
 
 @Component({
   selector: 'ace-tickets',

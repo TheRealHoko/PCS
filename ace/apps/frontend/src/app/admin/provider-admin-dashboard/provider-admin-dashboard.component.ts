@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -23,16 +23,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   ],
   templateUrl: './provider-admin-dashboard.component.html',
   styleUrl: './provider-admin-dashboard.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProviderAdminDashboardComponent implements OnInit {
   readonly servicesStore = inject(ServicesStore);
   columns = [
     { key: 'id', display: 'ID' },
     { key: 'name', display: 'Name' },
+    { key: 'status', display: 'Status'},
     { key: 'description', display: 'Description' },
-    { key: 'available', display: 'Available' },
-    { key: 'effectif', display: 'Effectif' },
-    { key: 'price', display: 'Price' },
+    { key: 'base_price', display: 'Price' },
     { key: 'service_type', display: 'Type of the service' },
   ];
 

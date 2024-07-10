@@ -71,14 +71,15 @@ export const ServicesStore = signalStore(
     getOwnServices: rxMethod<void>(
       pipe(
         debounceTime(500),
-        distinctUntilChanged(),
         switchMap(() => {
           const userId = auth.getDecodedToken()?.sub;
           return users.getUser(+userId!).pipe(
             tapResponse({
               next: (response) => {
                 if (response.services) {
-                  patchState(store, { services: response.services.filter(service => service.status !== "OFFLINE") });
+                  const servicesThatAreNotWaiting = response.services.filter(service => service.status !== "WAITING");
+                  console.log("service", servicesThatAreNotWaiting);
+                  patchState(store, { services: servicesThatAreNotWaiting });
                 }
               },
               error: (err) => {
@@ -193,9 +194,4 @@ export const ServicesStore = signalStore(
       )
     ),
   })),
-  withHooks({
-    onInit: (store) => {
-      store.refreshServices();
-    }
-  }),
 );

@@ -1,9 +1,9 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, model, signal } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { PropertiesService } from '../services/properties.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { CreateBookingDto, IProperty, Property, Service } from '@ace/shared';
+import { of, switchMap } from 'rxjs';
+import { CreateBookingDto, Property, Service } from '@ace/shared';
 import { environment } from '../../environments/environment';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,9 @@ import { BookingsService } from '../services/bookings.service';
 import { AlertService } from '../services/alert.service';
 import { PaymentService } from '../services/payment.service';
 import { StripeService } from 'ngx-stripe';
+import { MatChipInputEvent, MatChipsModule } from "@angular/material/chips";
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 
 @Component({
   selector: 'ace-property',
@@ -29,14 +32,16 @@ import { StripeService } from 'ngx-stripe';
     FormsModule,
     ReactiveFormsModule,
     JsonPipe,
-    RouterModule
+    RouterModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   templateUrl: './property.component.html',
   styleUrl: './property.component.css',
 })
 export class PropertyComponent implements OnInit {
   authStore = inject(AuthStore);
-  property!: IProperty;
+  property!: Property;
   cdnUrl = environment.cdnUrl;
   minDate: Date;
   maxDate: Date;
@@ -47,9 +52,12 @@ export class PropertyComponent implements OnInit {
   dateFilter! : (date: Date) => boolean;
   selectedDaysCount = signal(1);
   price = signal(1);
-  computedPrice = computed(() => this.price() * this.selectedDaysCount());
+  computedPrice = computed(() => (this.price() * this.selectedDaysCount()) + this.cartTotal());
   servicesStore = inject(ServicesStore);
-  cart: Service[] = [];
+  currentService = model<Service>();
+  cart = signal<Service[]>([]);
+  cartTotal = computed(() => this.cart().reduce((acc, service) => acc + service.base_price, 0));
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(
     private readonly propertiesService: PropertiesService,
@@ -64,6 +72,7 @@ export class PropertyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.servicesStore.refreshServices();
     this.route.paramMap.pipe(
       switchMap(params => {
           const id = +params.get('id')!;
@@ -99,20 +108,36 @@ export class PropertyComponent implements OnInit {
       if (from && to) {
         this.selectedDaysCount.set(this.calculateDaysCount(from, to));
         console.log(from.toISOString(), to.toISOString());
-        // this.servicesStore.getFilteredServices({ from, to });
       } else {
         this.selectedDaysCount.set(1);
       }
     });
   }
-  
-  addServiceToCart(service: Service) {
-    this.cart.push(service);
-    this.servicesStore.addedToCart(service);
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      const service = this.servicesStore.services().find(s => s.name === value);
+      if (service) {
+        this.cart.update(cart => [...cart, service]);
+      }
+    }
+
+    this.currentService.set(undefined);
   }
 
-  removeServiceFromCart(service: Service) {
-    this.cart = this.cart.filter(s => s.id !== service.id);
+  remove(service: Service): void {
+    this.cart.update(cart => [...cart.filter(s => s.id !== service.id)])
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const service = this.servicesStore.services().find(s => s.name === event.option.viewValue);
+    if (service) {
+      this.cart.update(cart => [...cart, service]);
+      this.currentService.set(undefined);
+      event.option.deselect();
+    }
   }
 
   reserveProperty(): void {
@@ -123,21 +148,31 @@ export class PropertyComponent implements OnInit {
         propertyId: this.property.id,
         from: this.range.value.from as Date,
         to: this.range.value.to as Date,
-        travellerId: +this.authStore.token()?.sub!
+        travellerId: +this.authStore.token()?.sub!,
+        price: this.computedPrice(),
+        requestedServicesId: this.cart().map(s => s.id)
       };
 
-      this.paymentService.checkoutProperty({ propertyId: this.property.id, amount: this.computedPrice(), serviceIds: this.cart.map(s => s.id)})
-        .pipe(
-          switchMap(session => {
-            console.log(session);
-            this.bookingsService.createBooking(createBookingDto).subscribe();
-            return this.stripeService.redirectToCheckout({ sessionId: session.id });
-          })
-        )
-        .subscribe(() => {
-            this.alertService.info('Property booking successfully!');
-          }
-        );
+      this.bookingsService.createBooking(createBookingDto).subscribe((booking) => {
+        this.paymentService.checkoutProperty(
+          {
+            propertyId: this.property.id,
+            amount: this.computedPrice(),
+            serviceIds: this.cart().map(s => s.id),
+            cancelUrl: window.location.href,
+            bookingId: booking.id
+           })
+          .pipe(
+            switchMap(session => {
+              console.log(session);
+              return this.stripeService.redirectToCheckout({ sessionId: session.id });
+            })
+          )
+          .subscribe(() => {
+              this.alertService.info('Property booking successfully!');
+            }
+          );
+      });
     }
     else {
       this.alertService.info('Please select a valid date range!');

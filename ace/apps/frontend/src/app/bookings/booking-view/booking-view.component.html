@@ -1,24 +1,24 @@
 @if (booking) {
-    <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
-        <div class="flex flex-row">
-            <h1 class="underline">Property name: </h1>
-            <p> {{ booking.property.name }}</p>
+    <h1>Booking Details</h1>
+    <div class="flex flex-row gap-4">
+        <div>
+            <label>Booking ID:</label>
+            <span> {{ booking.id }}</span>
         </div>
-        <div class="flex flex-row">
-            <h1 class="underline">Price: </h1>
-            <p> {{ booking.property.pricePerNight | currency }}</p>
+        <div>
+            <label>Booking Status:</label>
+            <span> {{ booking.status }}</span>
         </div>
-        <div class="flex flex-row">
-            <h1 class="underline">From: </h1>
-            <p> {{ booking.from | date: 'dd/MM/yyyy' }}</p>
-        </div>
-        <div class="flex flex-row">
-            <h1 class="underline">To: </h1>
-            <p> {{ booking.to | date: 'dd/MM/yyyy' }}</p>
-        </div>
-        <div class="flex flex-row">
-            <h1 class="underline">Status: </h1>
-            <p>{{ booking.status }}</p>
+        <div class="flex flex-col">
+            <p>Requested services</p>
+            @for (intervention of booking.interventions; track $index) {
+                <p>Intervention #{{ intervention.id }} </p>
+                <p>Status: {{ intervention.status }} </p>
+                <button (click)="intervene(intervention)">Intervene</button>
+            }
         </div>
     </div>
+}
+@else {
+    <p>Booking not found!</p>
 }

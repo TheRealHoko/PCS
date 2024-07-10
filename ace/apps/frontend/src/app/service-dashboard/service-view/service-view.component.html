@@ -1,19 +1,45 @@
 @if (service) {
     <div class="flex flex-row h-full w-max-full">
         <div class="flex flex-col border-4 w-1/2 gap-4 text-center">
-            <h2>Name: {{ service.name }}</h2>
-            <p>Description: {{ service.description }}</p>
-            <p>Service type: {{ service.service_type }} </p>
-            <p>Status: {{ service.status }}</p>
-            <p>Price: {{ service.price | currency: 'EUR' }}</p>
-            <p>Reviews: </p>
-            @if (service.reviews.length == 0) {
-                <p>No reviews yet</p>
-            }
-            @for (review of service.reviews; track $index) {
-                <p>{{ review.rating }}/5</p>
-                <p>{{ review.comment }}</p>
-            }
+            <div class="border-2">
+                <h2>Name: {{ service.name }}</h2>
+                <p>Created at: {{ service.created_at | date }} </p>
+                <p>Updated at: {{ service.updated_at | date }} </p>
+                <p>Description: {{ service.description }}</p>
+                @if (service.pricing_type !== "FIXED") {
+                    <p>{{ service.pricing_type }} price: {{ service.dynamic_price }}</p>
+                    <p>Initial fee: {{ service.base_price | currency: 'EUR' }}</p>
+                }
+                @else {
+                    <p>Price: {{ service.base_price | currency: 'EUR' }}</p>
+                }
+                <p>Service type: {{ service.service_type }} </p>
+                <p>Service category: {{ service.service_category }} </p>
+                <p>Status: {{ service.status }}</p>
+                <p>Price: {{ service.base_price | currency: 'EUR' }}</p>
+            </div>
+
+            <div class="border-2">
+                <p>Requested Interventions:</p>
+                @if (service.interventions.length === 0) {
+                    <p>No interventions yet</p>
+                }
+                @else {
+                    @for (intervention of service.interventions; track $index) {
+                        <p>Intervention #{{ intervention.id }} {{ intervention.created_at | date }}</p>
+                    }
+                }
+            </div>
+            <div class="border-2">
+                <p>Reviews: </p>
+                @if (service.reviews.length == 0) {
+                    <p>No reviews yet</p>
+                }
+                @for (review of service.reviews; track $index) {
+                    <p>{{ review.rating }}/5</p>
+                    <p>{{ review.comment }}</p>
+                }
+            </div>
         </div>
         <div class="flex flex-col border-4 w-1/2">
             <full-calendar [options]="calendarOptions()"></full-calendar>

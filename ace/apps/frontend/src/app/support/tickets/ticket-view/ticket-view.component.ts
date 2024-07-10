@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Comment, Ticket } from '@ace/shared';
 import { TicketsService } from '../../../services/tickets.service';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -8,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Comment, Ticket } from '@ace/shared';
 
 @Component({
   selector: 'ace-ticket-view',

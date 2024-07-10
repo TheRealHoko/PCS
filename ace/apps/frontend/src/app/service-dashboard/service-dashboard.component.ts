@@ -22,14 +22,13 @@ export class ServiceDashboardComponent implements OnInit {
   columns = [
     { key: 'name', display: 'Name' },
     { key: 'description', display: 'Description' },
-    { key: 'available', display: 'Available' },
-    { key: 'effectif', display: 'Effectif' },
-    { key: 'price', display: 'Price' },
+    { key: 'status', display: 'Status' },
+    { key: 'base_price', display: 'Price' },
     { key: 'service_type', display: 'Type of the service' },
   ];
 
   constructor() {
-    effect(() => console.log(this.servicesStore.services()))
+    effect(() => console.log(this.servicesStore.services()));
   }
 
   ngOnInit(): void {

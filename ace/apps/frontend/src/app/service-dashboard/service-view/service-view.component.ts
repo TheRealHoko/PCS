@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicesService } from '../../services/services.service';
-import { IService } from '@ace/shared';
+import { Service } from '@ace/shared';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { DateRange, MatDatepickerModule } from '@angular/material/datepicker';
@@ -37,7 +37,7 @@ import { AlertService } from '../../services/alert.service';
   styleUrl: './service-view.component.css',
 })
 export class ServiceViewComponent implements OnInit {
-  service!: IService;
+  service!: Service;
   selectedDateRange: DateRange<Date> | undefined;
   minDate: Date;
   maxDate: Date;

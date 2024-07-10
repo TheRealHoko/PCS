@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PropertiesService } from '../services/properties.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { UsersService } from '../services/users.service';
 import { Observable } from 'rxjs';
-import { IProperty } from '@ace/shared';
+import { Property } from '@ace/shared';
 
 @Component({
   selector: 'ace-my-properties',
@@ -26,7 +25,7 @@ import { IProperty } from '@ace/shared';
 })
 export class MyPropertiesComponent {
   usersService = inject(UsersService);
-  properties$: Observable<IProperty[]> = this.usersService.getMyProperties();
+  properties$: Observable<Property[]> = this.usersService.getMyProperties();
   columnsToDiplay = ['name', 'price', 'actions'];
 
   deleteProperty(id: number) {

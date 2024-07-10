@@ -15,7 +15,7 @@
                 <h1 class="underline">Description:</h1>
                 <p>{{ property.description }}</p>
                 <div class="flex flex-row gap-2">
-                    <img class="rounded-full w-8" [src]="cdnUrl + '/' + property.lessor.profile_picture?.path" alt="">
+                    <img class="rounded-full w-8" [src]="cdnUrl + '/' + property.lessor.profile_picture.path" alt="">
                     <p>Lessor: {{ property.lessor.firstname }} {{ property.lessor.lastname }} </p>
                 </div>
             </div>
@@ -25,10 +25,10 @@
                     <mat-form-field>
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [min]="minDate" [max]="maxDate" [formGroup]="range" [rangePicker]="picker" [dateFilter]="dateFilter">
-                        <input matStartDate formControlName="from" placeholder="Start date">
-                        <input matEndDate formControlName="to" placeholder="End date">
+                            <input matStartDate formControlName="from" placeholder="Start date">
+                            <input matEndDate formControlName="to" placeholder="End date">
                         </mat-date-range-input>
-                        <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+                        
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     
@@ -39,6 +39,12 @@
                         <mat-error>Invalid end date</mat-error>
                         }
                     </mat-form-field>
+                    @for (item of cart(); track $index) {
+                        <div class="flex flex-row justify-center gap-5">
+                            <p>{{ item.name }}</p>
+                            <p>{{ item.base_price | currency }}</p>
+                        </div>
+                    }
                   
                     <button mat-button (click)="reserveProperty()">
                         Reserve
@@ -48,15 +54,6 @@
                     <button mat-button routerLink="/login" >
                         Login to reserve
                     </button>
-                }
-                @for (item of cart; track $index) {
-                    <div class="flex flex-row space-x-2">
-                        <p>{{ item.name }}</p>
-                        <p>{{ item.price | currency: 'EUR' }}</p>
-                        <button mat-button (click)="removeServiceFromCart(item)">
-                            Remove
-                        </button>
-                    </div>
                 }
             </div>
         </div>
@@ -70,6 +67,37 @@
             } @else {
                 <p>Reviews : No reviews yet </p>
             }
+        </div>
+        <div>
+            <form>
+                <mat-form-field class="example-chip-list">
+                  <mat-label>Services</mat-label>
+                  <mat-chip-grid #chipGrid aria-label="Service selection">
+                    @for (service of cart(); track $index) {
+                      <mat-chip-row (removed)="remove(service)">
+                        {{service.name}}
+                        <button matChipRemove [attr.aria-label]="'remove ' + service">
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip-row>
+                    }
+                  </mat-chip-grid>
+                  <input
+                    name="currentService"
+                    placeholder="Choose services that suit you..."
+                    [(ngModel)]="currentService"
+                    [matChipInputFor]="chipGrid"
+                    [matAutocomplete]="auto"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)"
+                  />
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    @for (service of servicesStore.services(); track service) {
+                      <mat-option [value]="service">{{service.name}}</mat-option>
+                    }
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
         </div>
         <!-- <div class="flex flex-col rounded-lg border-4 w-5/6 p-2">
             <h2 class="underline">Available services</h2>

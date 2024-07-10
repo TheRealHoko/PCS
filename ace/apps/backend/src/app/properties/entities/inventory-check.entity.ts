@@ -12,13 +12,13 @@ export class InventoryCheck {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: false })
+    @Column()
     check_type: "IN" | "OUT";
 
-    @Column({ nullable: false })
+    @Column()
     check_date: Date;
 
-    @Column({ nullable: false })
+    @Column()
     description: string;
 
     @ManyToOne(() => Property, property => property.inventoryChecks)

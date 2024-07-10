@@ -8,14 +8,13 @@ import {
 } from 'typeorm';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
-import { Comment, IProperty } from '@ace/shared';
 import { PropertyUnavailability } from './property-unavailability.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
 import { InventoryCheck } from './inventory-check.entity';
 import { Review } from '../../services/entities/review.entity';
 
 @Entity()
-export class Property implements IProperty {
+export class Property {
   @PrimaryGeneratedColumn()
   id: number;
 

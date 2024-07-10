@@ -13,7 +13,6 @@ import { Role } from '../../roles/entities/role.entity';
 import { Address } from '../../address/entities/address.entity';
 import { Service } from '../../services/entities/service.entity';
 import { Property } from '../../properties/entities/property.entity';
-import { IUser } from '@ace/shared';
 import { Booking } from '../../bookings/entities/booking.entity';
 import { Ticket } from '../../tickets/entities/ticket.entity';
 import { Upload } from '../../uploads/entities/upload.entity';
@@ -21,7 +20,7 @@ import { Comment } from '../../tickets/entities/comment.entity';
 import { Review } from '../../services/entities/review.entity';
 
 @Entity()
-export class User implements IUser {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 

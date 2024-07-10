@@ -9,7 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { authGuard } from './guard/auth.guard';
 import { RoleEnum } from '@ace/shared';
 import { rolesGuard } from './guard/roles.guard';
-import { ServiceCreationFormComponent } from './provider-form/provider-form.component';
+import { ServiceCreationFormComponent } from './service-creation-form/service-creation-form.component';
 import { publicGuard } from './guard/public.guard';
 import { ServiceDashboardComponent } from './service-dashboard/service-dashboard.component';
 import { PropertyCreationComponent } from './property-creation/property-creation.component';
@@ -49,8 +49,32 @@ export const appRoutes: Route[] = [
     children: [
       { path: 'users', component: UsersComponent },
       { path: 'review', component: ReviewComponent },
-      { path: 'property', component: PropertyAdminDashboardComponent },
-      { path: 'provider', component: ProviderAdminDashboardComponent },
+      {
+        path: 'property',
+        children: [
+          {
+            path: ':id/edit',
+            component: PropertyEditComponent
+          },
+          {
+            path: '',
+            component: PropertyAdminDashboardComponent
+          }
+        ]
+      },
+      {
+        path: 'provider',
+        children: [
+          {
+            path: ':id/edit',
+            component: ServiceEditComponent
+          },
+          {
+            path: '',
+            component: ProviderAdminDashboardComponent
+          }
+        ]
+      },
       { path: 'tools', component: ToolsComponent },
     ],
   },
